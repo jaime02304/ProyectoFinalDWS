@@ -1,7 +1,6 @@
 package edu.ProyectoFinal.servicios;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -10,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.ProyectoFinal.Dto.GruposIndexDto;
 import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -29,7 +28,7 @@ public class GruposServicios {
 	 * @throws Exception
 	 * @throws NullPointerException
 	 */
-	public ModelAndView obtenerLosGruposTops()   {
+	public ModelAndView obtenerLosGruposTops() {
 		ModelAndView vista = new ModelAndView();
 
 		Client cliente = ClientBuilder.newClient();
@@ -60,31 +59,40 @@ public class GruposServicios {
 	 * @throws Exception
 	 * @throws NullPointerException
 	 */
-	private List<GruposIndexDto> listadoGruposTop(Response respuestaApi)   {
+	private List<GruposIndexDto> listadoGruposTop(Response respuestaApi) {
 		// Leer el JSON recibido
 		String jsonString = respuestaApi.readEntity(String.class);
 
 		// Parsear el JSON recibido
-		JSONArray gruposArray = new JSONArray(jsonString); // El JSON raíz es un array
+		JSONObject jsonResponse = new JSONObject(jsonString); // El JSON raíz es un objeto
 
-		// Crear lista de Usuarios
+		// Verificar que la propiedad "grupos" existe y es un JSONArray
+		JSONArray gruposArray = jsonResponse.optJSONArray("grupos"); // Usamos optJSONArray para evitar excepción si no
+																		// existe
+
+		// Crear lista de GruposIndexDto
 		List<GruposIndexDto> listaGrupos = new ArrayList<>();
 
-		// recorrer el ArraJSON para ir extrayendo los campos y añadirlo al
-		// usuarioCompletoDto
-		for (int i = 0; i < gruposArray.length(); i++) {
-			JSONObject jsonGrupo = gruposArray.getJSONObject(i);
-			GruposIndexDto grupo = new GruposIndexDto();
+		if (gruposArray != null) {
+			// Recorrer el JSONArray para extraer los campos y añadirlos a la lista
+			for (int i = 0; i < gruposArray.length(); i++) {
+				JSONObject jsonGrupo = gruposArray.getJSONObject(i);
+				GruposIndexDto grupo = new GruposIndexDto();
 
-			// Extraer datos del JSON
-			grupo.setNombreGrupo(jsonGrupo.getString("nombreGrupo"));
-			grupo.setCategoriaNombre(jsonGrupo.getString("categoriaNombre"));
-			grupo.setSubCategoriaNombre(jsonGrupo.getString("subCategoriaNombre"));
+				// Extraer datos del JSON
+				grupo.setNombreGrupo(jsonGrupo.getString("nombreGrupo"));
+				grupo.setCategoriaNombre(jsonGrupo.getString("categoriaNombre"));
+				grupo.setSubCategoriaNombre(jsonGrupo.getString("subCategoriaNombre"));
 
-			// Crear objeto Usuario y añadirlo a la lista
-			listaGrupos.add(grupo);
+				// Añadir el grupo a la lista
+				listaGrupos.add(grupo);
+			}
+		} else {
+			// Si no se encuentra el array de "grupos", manejar el caso de error
+			System.out.println("No se encontró el array 'grupos' en la respuesta JSON.");
 		}
+
+		// Retornar la lista de grupos
 		return listaGrupos;
 	}
-
 }

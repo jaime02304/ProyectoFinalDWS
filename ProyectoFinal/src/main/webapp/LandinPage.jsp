@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -209,26 +210,40 @@
 							<div class="zonaGruposMain2 d-md-none d-lg-block">
 								<div class="tituloBienvenida">GRUPOS</div>
 								<div class="contenedorGrupos">
-									<div class="trozoGrupo">
-										<div class="NombreGrupo">Nombre</div>
-										<div class="categoriaGrupo">Categoría</div>
-										<div class="tematicaGrupo">Temática</div>
-										<div>
-											<a href="#" class="verGrupo">Ver</a>
+									<c:forEach var="grupo" items="${listaGrupos}">
+										<div class="trozoGrupo">
+											<div class="NombreGrupo">
+												<c:out value="${grupo.nombreGrupo}"></c:out>
+											</div>
+											<div class="categoriaGrupo">
+												<c:out value="${grupo.categoriaNombre}"></c:out>
+											</div>
+											<div class="tematicaGrupo">
+												<c:out value="${grupo.subCategoriaNombre}"></c:out>
+											</div>
+											<div>
+												<a href="#" class="verGrupo">Ver</a>
+											</div>
 										</div>
-									</div>
+									</c:forEach>
 								</div>
 							</div>
 							<div class="zonaGruposMain2 d-lg-none">
 								<div class="tituloBienvenida">GRUPOS</div>
 								<div class="contenedorGrupos">
-									<div class="trozoGrupo">
-										<div class="NombreGrupo">Nombre</div>
-										<div class="tematicaGrupo">Temática</div>
-										<div>
-											<a href="#" class="verGrupo">Ver</a>
+									<c:forEach var="grupo" items="${listaGrupos}">
+										<div class="trozoGrupo">
+											<div class="NombreGrupo">
+												<c:out value="${grupo.nombreGrupo}"></c:out>
+											</div>
+											<div class="categoriaGrupo">
+												<c:out value="${grupo.categoriaNombre}"></c:out>
+											</div>
+											<div>
+												<a href="#" class="verGrupo">Ver</a>
+											</div>
 										</div>
-									</div>
+									</c:forEach>
 								</div>
 							</div>
 						</div>
@@ -277,13 +292,19 @@
 					<div class="zonaGruposMain2">
 						<div class="tituloBienvenida">GRUPOS</div>
 						<div class="contenedorGrupos">
-							<div class="trozoGrupo">
-								<div class="NombreGrupo">Nombre</div>
-								<div class="tematicaGrupo">Temática</div>
-								<div>
-									<a href="#" class="verGrupo">Ver</a>
+							<c:forEach var="grupo" items="${listaGrupos}">
+								<div class="trozoGrupo">
+									<div class="NombreGrupo">
+										<c:out value="${grupo.nombreGrupo}"></c:out>
+									</div>
+									<div class="categoriaGrupo">
+										<c:out value="${grupo.categoriaNombre}"></c:out>
+									</div>
+									<div>
+										<a href="#" class="verGrupo">Ver</a>
+									</div>
 								</div>
-							</div>
+							</c:forEach>
 						</div>
 					</div>
 				</div>

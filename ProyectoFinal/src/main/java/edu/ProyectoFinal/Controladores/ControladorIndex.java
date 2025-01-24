@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.ProyectoFinal.servicios.GruposServicios;
+
 /**
  * Controlador de la vista principal
  * 
@@ -14,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ControladorIndex {
 
-	//private GruposServicios serviciosGrupos;
+	GruposServicios serviciosGrupos = new GruposServicios();
 
 	/**
 	 * Metodo que muestra la vista y objetos de la misma
@@ -23,9 +25,10 @@ public class ControladorIndex {
 	 * @throws IOException
 	 */
 	@GetMapping("/")
-	protected ModelAndView index()  {
-		ModelAndView vista = new ModelAndView("LandinPage");
-		// vista = serviciosGrupos.obtenerLosGruposTops();
+	protected ModelAndView index() {
+		ModelAndView vista = new ModelAndView();
+		vista = serviciosGrupos.obtenerLosGruposTops();
+		vista.setViewName("LandinPage");
 		return vista;
 
 	}

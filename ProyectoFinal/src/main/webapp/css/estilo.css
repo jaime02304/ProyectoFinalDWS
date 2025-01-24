@@ -331,14 +331,26 @@ a {
 	font-size: 24px;
 }
 
-@keyframes bombeo { 0% {
+@keyframes bombeo {
+	0% {
 	transform: scale(1);
 }
-
-50%{
-transform:scale(1.2);}
-100%{
-transform:scale(1);}
+50%
+{
+transform
+:
+scale(
+1.2
+);
+}
+100%
+{
+transform
+:
+scale(
+1
+);
+}
 }
 /* LA derecha de la pagina */
 .parteDerechaMain {
@@ -406,6 +418,7 @@ transform:scale(1);}
 }
 
 .contenedorGrupos {
+	scrollbar-width: none;
 	width: 100%;
 	height: 90%;
 	margin-top: 50px;
@@ -422,6 +435,11 @@ transform:scale(1);}
 	align-items: center;
 	overflow-y: auto;
 	overflow-x: hidden;
+}
+
+.contenedorGrupos::-webkit-scrollbar {
+	scrollbar-width: none;
+	display: none; /* Chrome, Safari */
 }
 
 .trozoGrupo {
