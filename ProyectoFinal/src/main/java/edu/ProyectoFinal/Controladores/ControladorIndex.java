@@ -28,11 +28,18 @@ public class ControladorIndex {
 	 */
 	@GetMapping("/")
 	protected ModelAndView index(HttpSession sesionIniciada) {
-		UsuarioPerfilDto usuario = (UsuarioPerfilDto) sesionIniciada.getAttribute("Usuario");
-		ModelAndView vista = new ModelAndView();
-		vista = serviciosGrupos.obtenerLosGruposTops();
-		vista.setViewName("LandinPage");
-		return vista;
+		try {
+			UsuarioPerfilDto usuario = (UsuarioPerfilDto) sesionIniciada.getAttribute("Usuario");
+			ModelAndView vista = new ModelAndView();
+			vista = serviciosGrupos.obtenerLosGruposTops();
+			vista.setViewName("LandinPage");
+			return vista;
+		} catch (Exception e) {
+			ModelAndView vista = new ModelAndView("InicioSesion");
+			vista.addObject("error", "Error al cargar la pagina inicial.");
+			// vista.setViewName("error");
+			return vista;
+		}
 
 	}
 }

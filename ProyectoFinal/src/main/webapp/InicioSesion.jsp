@@ -52,8 +52,7 @@
 		<div class="d-none d-md-block zonaCompleta">
 			<div class="container" id="container">
 				<div class="formularioContenedor sign-up-container">
-					<form
-						action="${pageContext.request.contextPath}/Registro"
+					<form action="${pageContext.request.contextPath}/Registro"
 						method="post">
 						<h2 class="registroTitulo">Registrarse</h2>
 						<input type="text" placeholder="Nombre Completo"
@@ -87,7 +86,7 @@
 							</div>
 							<a href="#">¿Has olvidado tu contraseña?</a>
 						</div>
-						<button class="botonNavegador">Iniciar Sesion</button>
+						<button class="botonNavegador botonIS1">Iniciar Sesion</button>
 					</form>
 				</div>
 
@@ -96,7 +95,7 @@
 						<div class="overlay-panel overlay-left">
 							<h2 class="titulo">Bienvenido</h2>
 							<p>Inicia sesión con tu cuenta</p>
-							<button class="botonNavegador" id="signIn">Iniciar
+							<button class="botonNavegador botonIS1" id="signIn">Iniciar
 								sesion</button>
 						</div>
 						<div class="overlay-panel overlay-right">
@@ -122,32 +121,36 @@
 							<div class="social-contenedor">
 								<a href="#" class="social1"><i class="fab fa-google"></i></a>
 							</div>
-							<a href="#" class="olvidoContra">¿Has
-								olvidado tu contraseña?</a>
+							<a href="#" class="olvidoContra">¿Has olvidado tu contraseña?</a>
 						</div>
 						<button class="botonNavegador botonIS1">Iniciar Sesion</button>
 						<button type="button" onclick="flipForm()"
-							class="botonFlip botonNavegador">
-							Registrase</button>
+							class="botonFlip botonNavegador">Registrase</button>
 					</form>
 					<!-- Formulario Trasero -->
-					<form action="#" class="form1 form-back formsm">
+					<form action="${pageContext.request.contextPath}/Registro"
+						method="post" class="form1 form-back formsm">
 						<h2 class="registroTitulo1">Registrarse</h2>
-						<input type="text" placeholder="N o m b r e  c o m p l e t o" />
-						<input type="text" placeholder="A l i a s" /> <input type="email"
-							placeholder="C o r r e o  e l e c t r ó n i c o" /> <input
-							type="password" placeholder="C o n t r a s e ñ a" /> <input
-							type="password" placeholder="R e p e t i r  c o n t r a s e ñ a" />
+						<input type="text" placeholder="N o m b r e  c o m p l e t o"
+							name="nombreCompletoUsu"
+							value="${nuevoUsuario.nombreCompletoUsu}" required /> <input
+							type="text" placeholder="A l i a s" name="aliasUsu"
+							value="${nuevoUsuario.aliasUsu}" required /> <input type="email"
+							placeholder="C o r r e o  e l e c t r ó n i c o"
+							name="correoElectronicoUsu"
+							value="${nuevoUsuario.correoElectronicoUsu}" required /> <input
+							type="password" placeholder="C o n t r a s e ñ a"
+							name="contraseniaUsu" value="${nuevoUsuario.contraseniaUsu}"
+							required /> <input type="password"
+							placeholder="R e p e t i r  c o n t r a s e ñ a" />
 						<div class="social-contenedor3">
-							<a href="#" class="social"><i
-								class="fab fa-google-plus-g"></i></a>
+							<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
 						</div>
 						<div class="debajoDeLosInputs2">
 							<button class="botonNavegador botonRegistro">
 								Registrarse</button>
 							<button type="button" onclick="flipForm()"
-								class="botonFlip botonNavegador botonIS1">
-								inicio Sesion</button>
+								class="botonFlip botonNavegador botonIS1">inicio Sesion</button>
 						</div>
 					</form>
 				</div>

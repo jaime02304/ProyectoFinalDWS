@@ -56,9 +56,19 @@
 						href="#" class="d-xl-none d-md-block d-none"><button
 							class="botonNavegador botonCategoria">CATEGORÍA</button></a>
 					<!-- Aqui deberia de poner una condicion que si es admin coja una cosa y si no que haga la otra -->
-					<a href="InicioSesion.jsp"><button class="botonIconoIS">
-							<i class="fas fa-user icono"></i>
-						</button></a> <a href="#"><button class="botonNavegador botonAdmin">ADMIN</button></a>
+					<c:if test="${Usuario == null}">
+						<a href="InicioSesion.jsp"><button class="botonIconoIS">
+								<i class="fas fa-user icono"></i>
+							</button></a>
+					</c:if>
+					<c:if test="${Usuario != null}">
+						<c:if test="${Usuario.rolUsu != 'user'}">
+							<a href="#"><button class=" botonNavegador ">ADMIN</button></a>
+						</c:if>
+						<c:if test="${Usuario.rolUsu == 'user'}">
+							<a href="#"><button class="botonNavegador ">PERFIL</button></a>
+						</c:if>
+					</c:if>
 				</div>
 			</div>
 		</nav>
@@ -84,8 +94,17 @@
 					<div class="menu-desplegable" id="menuOpciones">
 						<a href="#">GRUPOS</a> <a href="#">CATEGORÍA</a>
 						<!--AQUI DEBERIA DE PONER LA CONDICION EN LA CUAL SI SE INICIA SESION PONDRA PERFIL USUARIO O PERFIL ADMINISTRADOR-->
-						<a href="<%=request.getContextPath()%>/InicioSesion.jsp">INICIAR
-							SESION</a>
+						<c:if test="${Usuario == null}">
+							<a href="InicioSesion.jsp">INICIAR SESION</a>
+						</c:if>
+						<c:if test="${Usuario != null}">
+							<c:if test="${Usuario.rolUsu != 'user'}">
+								<a href="#">ADMIN</a>
+							</c:if>
+							<c:if test="${Usuario.rolUsu == 'user'}">
+								<a href="#">PERFIL</a>
+							</c:if>
+						</c:if>
 					</div>
 				</div>
 			</div>

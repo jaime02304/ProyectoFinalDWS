@@ -24,7 +24,7 @@ import jakarta.ws.rs.core.Response;
 public class InicioSesionServicio {
 
 	GruposServicios servicioGrupos = new GruposServicios();
-	
+
 	// representa un patrón de expresión regular para luego compararla
 	private Pattern email1 = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.(com|net|es)$");
 
@@ -72,7 +72,7 @@ public class InicioSesionServicio {
 		if (respuestaApi.getStatus() == 200) {
 			UsuarioPerfilDto respuestaCuerpoApi = respuestaApi.readEntity(UsuarioPerfilDto.class);
 			sesionIniciada.setAttribute("Usuario", respuestaCuerpoApi);
-			vista=servicioGrupos.obtenerLosGruposTops();
+			vista = servicioGrupos.obtenerLosGruposTops();
 			vista.setViewName("LandinPage");
 		} else {
 			vista.setViewName("InicioSesion");
@@ -80,6 +80,46 @@ public class InicioSesionServicio {
 		}
 		return vista;
 
+	}
+
+	/**
+	 * Metodo que manda los dato necesarios hacia la api para buscar al usuario en
+	 * la base de datos y tener la informacion de su perfil
+	 * 
+	 * @author jpribio - 28/01/25
+	 * @param buscarUsuario
+	 * @param sesionIniciada
+	 * @return
+	 * @throws NullPointerException
+	 * @throws Exception
+	 * @throws IllegalArgumentException
+	 */
+	public ModelAndView inicioSesion(UsuarioRegistroDto buscarUsuario, HttpSession sesionIniciada)
+			throws NullPointerException, Exception, IllegalArgumentException {
+		ModelAndView vista = new ModelAndView();
+		UsuarioRegistroDto busquedaDeUsuario = new UsuarioRegistroDto(buscarUsuario.getCorreoElectronicoUsu(),
+				buscarUsuario.getContraseniaUsu());
+
+		if (!validarEmail(busquedaDeUsuario.getCorreoElectronicoUsu())) {
+			System.out.println("Correo electrónico inválido.");
+			vista.setViewName("InicioSesion");
+			return vista; // Aseguramos el retorno
+		}
+
+		Client cliente = ClientBuilder.newClient();
+		String url = "http://localhost:8081/api/usuario/inicioSesion";
+		Response respuestaApi = cliente.target(url).request(MediaType.APPLICATION_JSON).get();
+
+		if (respuestaApi.getStatus() == 200) {
+			UsuarioPerfilDto respuestaCuerpoApi = respuestaApi.readEntity(UsuarioPerfilDto.class);
+			sesionIniciada.setAttribute("Usuario", respuestaCuerpoApi);
+			vista = servicioGrupos.obtenerLosGruposTops();
+			vista.setViewName("LandinPage");
+		} else {
+			vista.setViewName("InicioSesion");
+			vista.addObject("error", "Ha habido un error con la web por favor vuelva en 5 minutos");
+		}
+		return vista;
 	}
 
 }

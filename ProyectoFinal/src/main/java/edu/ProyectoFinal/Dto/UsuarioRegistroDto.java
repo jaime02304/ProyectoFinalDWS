@@ -45,13 +45,12 @@ public class UsuarioRegistroDto {
 		super();
 	}
 
-	public UsuarioRegistroDto(String nombreCompletoUsu, String aliasUsu, String correoElectronicoUsu,
-			String contraseniaUsu) {
+	public UsuarioRegistroDto(String correoElectronicoUsu, String contraseniaUsu) {
 		super();
-		this.nombreCompletoUsu = nombreCompletoUsu;
-		this.aliasUsu = aliasUsu;
 		this.correoElectronicoUsu = correoElectronicoUsu;
 		this.contraseniaUsu = contraseniaUsu;
 	}
+
+	
 
 }

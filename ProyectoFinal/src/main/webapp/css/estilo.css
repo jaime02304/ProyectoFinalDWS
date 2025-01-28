@@ -100,7 +100,7 @@ a {
 
 .botonNavegador {
 	font-family: "Bangers", sans-serif;
-	width: 200px;
+	width: 150px;
 	height: 70px;
 	border-radius: 10px;
 	background-color: black;
@@ -135,8 +135,29 @@ a {
 }
 
 /* Boton de administrador */
-.botonAdmin {
-	display: none;
+.botonAdmin .botonUser{
+	font-family: "Bangers", sans-serif;
+	width: 150px;
+	height: 70px;
+	border-radius: 10px;
+	background-color: black;
+	color: white;
+	border: none;
+	cursor: pointer;
+	font-size: 26px;
+	transition: box-shadow 0.5s ease;
+}
+ .botonUser{
+	font-family: "Bangers", sans-serif;
+	width: 150px;
+	height: 70px;
+	border-radius: 10px;
+	background-color: black;
+	color: white;
+	border: none;
+	cursor: pointer;
+	font-size: 26px;
+	transition: box-shadow 0.5s ease;
 }
 
 .botonIconoIS {
@@ -331,10 +352,10 @@ a {
 	font-size: 24px;
 }
 
-@keyframes bombeo {
-	0% {
+@keyframes bombeo { 0% {
 	transform: scale(1);
 }
+
 50%
 {
 transform
