@@ -6,7 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
 import edu.ProyectoFinal.servicios.GruposServicios;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Controlador de la vista principal
@@ -25,7 +27,8 @@ public class ControladorIndex {
 	 * @throws IOException
 	 */
 	@GetMapping("/")
-	protected ModelAndView index() {
+	protected ModelAndView index(HttpSession sesionIniciada) {
+		UsuarioPerfilDto usuario = (UsuarioPerfilDto) sesionIniciada.getAttribute("Usuario");
 		ModelAndView vista = new ModelAndView();
 		vista = serviciosGrupos.obtenerLosGruposTops();
 		vista.setViewName("LandinPage");
