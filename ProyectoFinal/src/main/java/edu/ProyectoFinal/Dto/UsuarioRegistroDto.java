@@ -1,4 +1,5 @@
 package edu.ProyectoFinal.Dto;
+
 /**
  * Clase donde se encuentra los atributos del registro del nuevo usuario
  */
@@ -50,7 +51,5 @@ public class UsuarioRegistroDto {
 		this.correoElectronicoUsu = correoElectronicoUsu;
 		this.contraseniaUsu = contraseniaUsu;
 	}
-
-	
 
 }

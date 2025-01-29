@@ -76,17 +76,21 @@
 				</div>
 
 				<div class="formularioContenedor sign-in-container">
-					<form action="#">
+					<form action="${pageContext.request.contextPath}/IS" method="post">
 						<h2 class="inicioSesionTitulo">Inicio sesion</h2>
-						<input type="email" placeholder="Correo electrónico" /> <input
-							type="password" placeholder="Contraseña" />
+						<input type="email" placeholder="Correo electrónico"
+							name="correoElectronicoUsu"
+							value="${nuevoUsuario.correoElectronicoUsu}" required /> <input
+							type="password" placeholder="Contraseña" name="contraseniaUsu"
+							value="${nuevoUsuario.contraseniaUsu}" required />
 						<div class="debajoDeLosInputs">
 							<div class="social-contenedor">
 								<a href="#" class="social"><i class="fab fa-google"></i></a>
 							</div>
 							<a href="#">¿Has olvidado tu contraseña?</a>
 						</div>
-						<button class="botonNavegador botonIS1">Iniciar Sesion</button>
+						<button type="submit" class="botonNavegador botonIS1">Iniciar
+							Sesion</button>
 					</form>
 				</div>
 
@@ -112,11 +116,16 @@
 			<div class="form-container capacidadMinima" id="formContainer">
 				<div class="form-inner">
 					<!-- Formulario Frontal -->
-					<form action="#" class="form formsm">
+					<form action="${pageContext.request.contextPath}/IS" method="post"
+						class="form formsm">
 						<h2 class="inicioSesionTitulo1">Inicio sesion</h2>
 						<input type="email"
-							placeholder="C o r r e o  e l e c t r ó n i c o" /> <input
-							type="password" placeholder="C o n t r a s e ñ a" />
+							placeholder="C o r r e o  e l e c t r ó n i c o"
+							name="correoElectronicoUsu"
+							value="${nuevoUsuario.correoElectronicoUsu}" required /> <input
+							type="password" placeholder="C o n t r a s e ñ a"
+							name="contraseniaUsu" value="${nuevoUsuario.contraseniaUsu}"
+							required />
 						<div class="debajoDeLosInputs1">
 							<div class="social-contenedor">
 								<a href="#" class="social1"><i class="fab fa-google"></i></a>

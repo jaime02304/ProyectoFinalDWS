@@ -1,4 +1,5 @@
 package edu.ProyectoFinal.Dto;
+
 /**
  * Clase donde se encuentra los atributos de los usuarios para el perfil
  */
@@ -11,6 +12,16 @@ public class UsuarioPerfilDto {
 	private byte[] fotoUsu;
 	private Boolean esPremium = false;
 	private String rolUsu = "user";
+	private Boolean esVerificadoEntidad = false;
+
+	// Getter y setter
+	public Boolean getEsVerificadoEntidad() {
+		return esVerificadoEntidad;
+	}
+
+	public void setEsVerificadoEntidad(Boolean esVerificadoEntidad) {
+		this.esVerificadoEntidad = esVerificadoEntidad;
+	}
 
 	public String getRolUsu() {
 		return rolUsu;

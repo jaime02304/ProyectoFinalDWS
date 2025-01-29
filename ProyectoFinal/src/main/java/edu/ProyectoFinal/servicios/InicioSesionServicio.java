@@ -108,13 +108,20 @@ public class InicioSesionServicio {
 
 		Client cliente = ClientBuilder.newClient();
 		String url = "http://localhost:8081/api/usuario/inicioSesion";
+		ObjectMapper objectMapper = new ObjectMapper();
+		String usuarioJson = objectMapper.writeValueAsString(busquedaDeUsuario);
 		Response respuestaApi = cliente.target(url).request(MediaType.APPLICATION_JSON).get();
 
-		if (respuestaApi.getStatus() == 200) {
+		if (respuestaApi.getStatus() == 200 ) {
 			UsuarioPerfilDto respuestaCuerpoApi = respuestaApi.readEntity(UsuarioPerfilDto.class);
-			sesionIniciada.setAttribute("Usuario", respuestaCuerpoApi);
-			vista = servicioGrupos.obtenerLosGruposTops();
-			vista.setViewName("LandinPage");
+			if(respuestaCuerpoApi!=null) {
+				sesionIniciada.setAttribute("Usuario", respuestaCuerpoApi);
+				vista = servicioGrupos.obtenerLosGruposTops();
+				vista.setViewName("LandinPage");
+			}else {
+				vista.setViewName("InicioSesion");
+				vista.addObject("error", "El usuario no ha sido encontrado por favor");
+			}
 		} else {
 			vista.setViewName("InicioSesion");
 			vista.addObject("error", "Ha habido un error con la web por favor vuelva en 5 minutos");
