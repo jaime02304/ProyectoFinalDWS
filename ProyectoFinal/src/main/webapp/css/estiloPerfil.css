@@ -1,0 +1,229 @@
+body,
+html {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto; /* Permite el scroll vertical */
+}
+
+.imagenUsuPerfil {
+  width: 85%;
+  height: 100%;
+  border: 1px solid black;
+  border-radius: 20px;
+}
+.aliasPerfil {
+  font-family: "Bangers", sans-serif;
+  color: black;
+  font-size: 6vh;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.encabezado {
+  margin-top: 5%;
+  width: 100%;
+  height: 20%;
+  display: flex;
+  align-items: start;
+}
+
+.columnaPrincipal {
+  height: 100%;
+}
+.columnaPrincipalB{
+    width: 100%;
+    height: 70%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.contenedorPrincipalPerfil {
+  height: 100%;
+  width: 100%;
+  border: 1px solid #01137ac2;
+  background-color: rgba(11, 17, 49, 0.6);
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  overflow-y: auto;
+}
+
+
+.contenedorMainPerfil {
+  width: 100%;
+  padding-bottom: 10px;
+  height: 80%;
+  overflow-y: auto;
+}
+
+.contenedorInfoPerfil {
+  background-color: rgb(206, 206, 206);
+  border: 1px solid black;
+  border-radius: 20px;
+  margin: 10px;
+  height: 100%;
+}
+
+.divImagenPerfil {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.divAliasPerfil {
+  width: 50%;
+  height: 100%;
+}
+
+.DatosPerfil {
+  font-family: "Bangers", sans-serif;
+  margin-top: 30px;
+  padding-left: 5%;
+  color: black;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  text-align: center;
+  justify-content: start;
+  align-items: center;
+}
+.DatosPerfilInfo {
+  font-family: "Bangers", sans-serif;
+  margin-top: 30px;
+  color: black;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  text-align: center;
+  justify-content: start;
+  align-items: center;
+  word-wrap: break-word;
+}
+
+.ContenedorDatosPerfil {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.botonModificador {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.botonModificador i {
+  color: black;
+  font-size: 24px;
+}
+
+.ValidarUsuario {
+  margin: 30px;
+  width: 120px;
+  text-align: center;
+}
+
+.hacersePremiumBoton {
+  margin: 30px;
+  width: 120px;
+  text-align: center;
+}
+
+.contenedorDosPerfil {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+  margin: 10px;
+}
+.contenedorInfoPerfilDerecho {
+  margin: 10px;
+}
+.contenedorInfoPerfilDerechoB {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(206, 206, 206);
+  border: 1px solid black;
+  border-radius: 20px;
+  height: 47%;
+  width: 100%;
+  text-align: center;
+}
+
+.NombreGrupoP,
+.categoriaGrupoP,
+.tematicaGrupoP {
+  font-size: 2.5vh;
+}
+.verGrupoP {
+  text-decoration: none;
+  color: black;
+  font-size: 2.5vh;
+}
+
+.verGrupoP:hover {
+  color: rgb(255, 103, 15);
+}
+
+.contenidoMensaje {
+  width: 50%;
+  height: 90%;
+  font-size: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.tiposMensaje {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tiposMensaje button {
+  margin: 20px;
+  font-family: "Bangers", sans-serif;
+  border-radius: 10px;
+  width: 150px;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  cursor: pointer;
+  font-size: 26px;
+  transition: box-shadow 0.5s ease;
+}
+
+.tiposMensaje button:hover {
+  box-shadow: 5px 5px 15px rgb(255, 103, 15), -5px -5px 15px rgb(255, 103, 15);
+}
+
+.contenedorGruposB {
+    width: 100%;
+    height: 90%;
+    margin-top: 50px;
+    border: 1px solid black;
+    background-color: rgb(206, 206, 206);
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-family: "Bangers", sans-serif;
+    font-size: 2.5vh;
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }

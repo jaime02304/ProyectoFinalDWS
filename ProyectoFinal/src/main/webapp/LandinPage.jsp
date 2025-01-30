@@ -66,7 +66,7 @@
 							<a href="#"><button class=" botonNavegador ">ADMIN</button></a>
 						</c:if>
 						<c:if test="${Usuario.rolUsu == 'user'}">
-							<a href="#"><button class="botonNavegador ">PERFIL</button></a>
+							<a href="<%=request.getContextPath()%>/perfilUsuario.jsp"><button class="botonNavegador ">PERFIL</button></a>
 						</c:if>
 					</c:if>
 				</div>
