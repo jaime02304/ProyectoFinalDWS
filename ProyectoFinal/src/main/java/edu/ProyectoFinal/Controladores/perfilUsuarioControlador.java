@@ -21,7 +21,7 @@ public class perfilUsuarioControlador {
 		try {
 			vista.setViewName("perfilUsuario");
 		} catch (Exception e) {
-			vista.setViewName("LandinPage");
+			vista.setViewName("error");
 			vista.addObject("error", "No se ha cargado la página del perfil personal");
 		}
 

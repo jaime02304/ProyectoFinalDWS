@@ -35,7 +35,7 @@ public class ControladorIndex {
 			vista.setViewName("LandinPage");
 		} catch (Exception e) {
 			// Manejo de excepciones y configuración del error
-			vista.setViewName("InicioSesion");
+			vista.setViewName("error");
 			vista.addObject("error", "Error al cargar la página inicial.");
 		}
 
