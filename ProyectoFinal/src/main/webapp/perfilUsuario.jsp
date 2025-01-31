@@ -11,9 +11,12 @@
 <link rel="shortcut icon"
 	href="<%=request.getContextPath()%>/imagenes/Gemini_Generated_Image_3majls3majls3maj.jpg"
 	type="image/x-icon" />
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/estilo.css" />
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/estiloiniciosesion.css" />
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/estiloPerfil.css" />
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/estilo.css" />
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/estiloiniciosesion.css" />
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/estiloPerfil.css" />
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -32,18 +35,21 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 </head>
 
-<body style="	background:
+<body
+	style="	background:
 		url('<%=request.getContextPath()%>/imagenes/artbreeder-image-2024-12-14T13_41_59.055Z.jpeg')
 		no-repeat top left/cover;">
 	<!-- Header completo -->
 	<header>
 		<div class="d-none d-md-block">
-			<a href="<%=request.getContextPath()%>/LandinPage.jsp"><button class="botonNavegador botonVolvermd">
+			<a href="<%=request.getContextPath()%>/"><button
+					class="botonNavegador botonVolvermd">
 					<i class="fas fa-arrow-left"></i> Volver
 				</button></a>
 		</div>
 		<div class="d-block d-md-none">
-			<a href="<%=request.getContextPath()%>/LandinPage.jsp"><button class="botonNavegador botonVolversm">
+			<a href="<%=request.getContextPath()%>/"><button
+					class="botonNavegador botonVolversm">
 					<i class="fas fa-arrow-left"></i> Volver
 				</button></a>
 		</div>
@@ -97,6 +103,7 @@
 						<h3 class="DatosPerfilInfo">Usuario Basico</h3>
 					</div>
 					<div class="ContenedorDatosPerfil">
+						<button class="hacersePremiumBoton botonNavegador">Cerrar</button>
 						<button class="ValidarUsuario botonNavegador">Validar</button>
 						<button class="hacersePremiumBoton botonNavegador">Premium</button>
 					</div>

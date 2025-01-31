@@ -41,7 +41,7 @@
 		<nav class="navegadorPrincipal">
 			<div class="contenedorPrincipal">
 				<div class="logo-contenedor">
-					<a href="<%=request.getContextPath()%>/LandinPage.jsp"><img
+					<a href="<%=request.getContextPath()%>/"><img
 						class="imagenLogo"
 						src="<%=request.getContextPath()%>/imagenes/Modified_Image_Pure_Black_Background.png"
 						alt="Logo de la pagina web" width="200px" /> </a>
@@ -57,7 +57,7 @@
 							class="botonNavegador botonCategoria">CATEGORÍA</button></a>
 					<!-- Aqui deberia de poner una condicion que si es admin coja una cosa y si no que haga la otra -->
 					<c:if test="${Usuario == null}">
-						<a href="InicioSesion.jsp"><button class="botonIconoIS">
+						<a href="<%=request.getContextPath()%>/InicioSesion"><button class="botonIconoIS">
 								<i class="fas fa-user icono"></i>
 							</button></a>
 					</c:if>
@@ -66,7 +66,8 @@
 							<a href="#"><button class=" botonNavegador ">ADMIN</button></a>
 						</c:if>
 						<c:if test="${Usuario.rolUsu == 'user'}">
-							<a href="<%=request.getContextPath()%>/perfilUsuario.jsp"><button class="botonNavegador ">PERFIL</button></a>
+							<a href="<%=request.getContextPath()%>/PerfilUsuario"><button
+									class="botonNavegador ">PERFIL</button></a>
 						</c:if>
 					</c:if>
 				</div>
@@ -79,7 +80,7 @@
 		<nav class="navegadorPrincipalS">
 			<div class="contenedorPrincipal">
 				<div class="logo-contenedor">
-					<a href="<%=request.getContextPath()%>/LandinPage.jsp"> <img
+					<a href="<%=request.getContextPath()%>/"> <img
 						class="imagenLogo2"
 						src="<%=request.getContextPath()%>/imagenes/Modified_Image_Pure_Black_Background.png"
 						alt="Logo de la pagina web" width="200px" />
@@ -95,14 +96,14 @@
 						<a href="#">GRUPOS</a> <a href="#">CATEGORÍA</a>
 						<!--AQUI DEBERIA DE PONER LA CONDICION EN LA CUAL SI SE INICIA SESION PONDRA PERFIL USUARIO O PERFIL ADMINISTRADOR-->
 						<c:if test="${Usuario == null}">
-							<a href="InicioSesion.jsp">INICIAR SESION</a>
+							<a href="<%=request.getContextPath()%>/InicioSesion">INICIAR SESION</a>
 						</c:if>
 						<c:if test="${Usuario != null}">
 							<c:if test="${Usuario.rolUsu != 'user'}">
 								<a href="#">ADMIN</a>
 							</c:if>
 							<c:if test="${Usuario.rolUsu == 'user'}">
-								<a href="#">PERFIL</a>
+								<a href="<%=request.getContextPath()%>/PerfilUsuario">PERFIL</a>
 							</c:if>
 						</c:if>
 					</div>
@@ -160,6 +161,12 @@
 							<div class="zonaGruposMain">
 								<div class="tituloBienvenida">GRUPOS</div>
 								<div class="contenedorGrupos">
+
+									<c:if test="${empty listaGrupos}">
+										<div class="mensajeGrupo">
+											<c:out value="${mensajeGrupo}"></c:out>
+										</div>
+									</c:if>
 
 									<c:forEach var="grupo" items="${listaGrupos}">
 										<div class="trozoGrupo">

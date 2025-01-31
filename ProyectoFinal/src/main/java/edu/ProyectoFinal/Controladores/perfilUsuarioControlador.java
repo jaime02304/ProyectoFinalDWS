@@ -17,17 +17,15 @@ public class perfilUsuarioControlador {
 
 	@GetMapping("/PerfilUsuario")
 	public ModelAndView vistaPerfilYAdministradores(HttpSession sesionIniciada) {
+		ModelAndView vista = new ModelAndView();
 		try {
-			ModelAndView vista = new ModelAndView();
 			vista.setViewName("perfilUsuario");
-			return vista;
-			
 		} catch (Exception e) {
-			ModelAndView vista = new ModelAndView("LandinPage");
-			//vista.setViewName("error");
-			vista.addObject("error","NO se ha cargado la pagina del perfil personal");
-			return vista;
+			vista.setViewName("LandinPage");
+			vista.addObject("error", "No se ha cargado la página del perfil personal");
 		}
+
+		return vista;
 	}
-	
+
 }

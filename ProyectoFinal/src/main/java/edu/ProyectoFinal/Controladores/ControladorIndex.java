@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
 import edu.ProyectoFinal.servicios.GruposServicios;
 import jakarta.servlet.http.HttpSession;
 
@@ -28,18 +27,19 @@ public class ControladorIndex {
 	 */
 	@GetMapping("/")
 	protected ModelAndView index(HttpSession sesionIniciada) {
+		ModelAndView vista = new ModelAndView();
+
 		try {
-			UsuarioPerfilDto usuario = (UsuarioPerfilDto) sesionIniciada.getAttribute("Usuario");
-			ModelAndView vista = new ModelAndView();
+			// Obtención de los grupos y establecimiento del nombre de la vista
 			vista = serviciosGrupos.obtenerLosGruposTops();
 			vista.setViewName("LandinPage");
-			return vista;
 		} catch (Exception e) {
-			ModelAndView vista = new ModelAndView("InicioSesion");
-			vista.addObject("error", "Error al cargar la pagina inicial.");
-			// vista.setViewName("error");
-			return vista;
+			// Manejo de excepciones y configuración del error
+			vista.setViewName("InicioSesion");
+			vista.addObject("error", "Error al cargar la página inicial.");
 		}
 
+		return vista;
 	}
+
 }
