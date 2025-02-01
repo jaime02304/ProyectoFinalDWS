@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 import edu.ProyectoFinal.Dto.UsuarioRegistroDto;
-import edu.ProyectoFinal.servicios.GruposServicios;
 import edu.ProyectoFinal.servicios.InicioSesionServicio;
 import jakarta.servlet.http.HttpSession;
+	
 
 @Controller
 public class InicioSesionControlador {
 
 	InicioSesionServicio servicioDeInicioDeSesion = new InicioSesionServicio();
 
-	GruposServicios servicioGrupos = new GruposServicios();
 
 	@GetMapping("/InicioSesion")
 	public ModelAndView InicioSesionVista() {

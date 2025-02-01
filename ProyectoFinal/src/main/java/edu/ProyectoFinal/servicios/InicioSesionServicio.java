@@ -75,6 +75,7 @@ public class InicioSesionServicio {
 	        if (respuestaApi.getStatus() == 200) {
 	            UsuarioPerfilDto usuarioPerfil = respuestaApi.readEntity(UsuarioPerfilDto.class);
 	            sesionIniciada.setAttribute("Usuario", usuarioPerfil);
+	            sesionIniciada.setMaxInactiveInterval(60 * 60 * 24 * 7); 
 	            vista = servicioGrupos.obtenerLosGruposTops();
 	            vista.setViewName("LandinPage");
 	        } else {
@@ -132,6 +133,7 @@ public class InicioSesionServicio {
 
 	        if (usuarioPerfil != null && usuarioPerfil.getCorreoElectronicoUsu().equals(usuario.getCorreoElectronicoUsu())) {
 	            sesion.setAttribute("Usuario", usuarioPerfil);
+	            sesion.setMaxInactiveInterval(60 * 60 * 24 * 7); 
 	            vista = servicioGrupos.obtenerLosGruposTops();
 	            vista.setViewName("LandinPage");
 	        } else {

@@ -56,6 +56,7 @@
 	</header>
 
 	<main class="contenedorMainPerfil">
+		<c:set var="usuario" value="${sessionScope.Usuario}" />
 		<!--PArte de PC-->
 		<div class="container contenedorPrincipalPerfil d-none d-lg-block">
 			<div class="row columnaPrincipal">
@@ -63,47 +64,85 @@
 					<div class="encabezado">
 						<!--Si esta sin imagen un imput para insertar una imagen-->
 						<div class="divImagenPerfil">
-							<img
-								src="imagenes/artbreeder-image-2024-12-14T13_53_57.670Z.jpeg"
-								alt="Foto Perfil del usuario" class="imagenUsuPerfil" />
+
+							<c:choose>
+								<c:when test="${not empty usuario.fotoUsu}">
+									<img src="<c:out value='${usuario.fotoUsu}' />"
+										alt="Foto Perfil del usuario" class="imagenUsuPerfil" />
+								</c:when>
+								<c:otherwise>
+									<!-- Mostrar un formulario si no hay imagen -->
+									<form action="" method="post" enctype="multipart/form-data"
+										class="formularioFoto">
+										<input type="file" name="fotoUsu" id="fotoUsu" required
+											class="fotoUsu" /> <label for="fotoUsu" class="btn-file">Seleccionar
+											archivo</label>
+										<button type="submit" class=" botonSubir botonNavegador">Subir</button>
+									</form>
+								</c:otherwise>
+							</c:choose>
 						</div>
-						<div class="divAliasPerfil">
-							<h1 class="aliasPerfil">ALIAS</h1>
-						</div>
+						<form action="actualizarAlias" method="post"
+							class="formularioAlias">
+							<div class="divAliasPerfil">
+								<h1 class="aliasPerfil">
+									<c:out value="${usuario.aliasUsu}" default="ALIAS" />
+								</h1>
+							</div>
+							<button type="submit" class="botonModificador">
+								<i class="fa-solid fa-pen"></i>
+							</button>
+						</form>
 					</div>
 					<div class="ContenedorDatosPerfil">
 						<h3 class="DatosPerfil">Nombre Completo:</h3>
-						<h3 class="DatosPerfilInfo">
-							Jaime Prieto Rubio
-							<button class="botonModificador">
-								<i class="fa-solid fa-pen"></i>
-							</button>
-						</h3>
+						<form action="" method="post" class="formularioElementos">
+							<h3 class="DatosPerfilInfo">
+								<c:out value="${usuario.nombreCompletoUsu}" default="" />
+								<button class="botonModificador" type="submit">
+									<i class="fa-solid fa-pen"></i>
+								</button>
+							</h3>
+						</form>
 					</div>
 					<div class="ContenedorDatosPerfil">
 						<h3 class="DatosPerfil">Teléfono Móvil:</h3>
-						<h3 class="DatosPerfilInfo">
-							674583437
-							<button class="botonModificador">
-								<i class="fa-solid fa-pen"></i>
-							</button>
-						</h3>
+						<form action="" method="post" class="formularioElementos">
+							<h3 class="DatosPerfilInfo">
+								<c:out value="${usuario.movilUsu}" default="" />
+								<button class="botonModificador">
+									<i class="fa-solid fa-pen"></i>
+								</button>
+							</h3>
+						</form>
 					</div>
 					<div class="ContenedorDatosPerfil">
 						<h3 class="DatosPerfil">Correo:</h3>
-						<h3 class="DatosPerfilInfo">
-							Jaime.p.r023@gmail.com
-							<button class="botonModificador">
-								<i class="fa-solid fa-pen"></i>
-							</button>
-						</h3>
+						<form action="" method="post" class="formularioElementos">
+							<h3 class="DatosPerfilInfo">
+								<c:out value="${usuario.correoElectronicoUsu}" default="" />
+								<button class="botonModificador">
+									<i class="fa-solid fa-pen"></i>
+								</button>
+							</h3>
+						</form>
 					</div>
 					<div class="ContenedorDatosPerfil">
 						<h3 class="DatosPerfil">Tipo de Usuario:</h3>
-						<h3 class="DatosPerfilInfo">Usuario Basico</h3>
+						<h3 class="DatosPerfilInfo">
+							<c:choose>
+								<c:when test="${usuario.esPremium}">
+                Usuario Premium
+            </c:when>
+								<c:otherwise>
+                Usuario Básico
+            </c:otherwise>
+							</c:choose>
+						</h3>
 					</div>
 					<div class="ContenedorDatosPerfil">
-						<button class="hacersePremiumBoton botonNavegador">Cerrar</button>
+						<a href="<%=request.getContextPath()%>/CerrarSesion"><button
+								class="hacersePremiumBoton botonNavegador">Cerrar</button></a>
 						<button class="ValidarUsuario botonNavegador">Validar</button>
 						<button class="hacersePremiumBoton botonNavegador">Premium</button>
 					</div>
@@ -147,48 +186,87 @@
 					<div class="encabezado">
 						<!--Si esta sin imagen un imput para insertar una imagen-->
 						<div class="divImagenPerfil">
-							<img
-								src="imagenes/artbreeder-image-2024-12-14T13_53_57.670Z.jpeg"
-								alt="Foto Perfil del usuario" class="imagenUsuPerfil" />
+
+							<c:choose>
+								<c:when test="${not empty usuario.fotoUsu}">
+									<img src="<c:out value='${usuario.fotoUsu}' />"
+										alt="Foto Perfil del usuario" class="imagenUsuPerfil" />
+								</c:when>
+								<c:otherwise>
+									<!-- Mostrar un formulario si no hay imagen -->
+									<form action="" method="post" enctype="multipart/form-data"
+										class="formularioFoto">
+										<input type="file" name="fotoUsu" id="fotoUsu" required
+											class="fotoUsu" /> <label for="fotoUsu" class="btn-file">Seleccionar
+											archivo</label>
+										<button type="submit" class=" botonSubir botonNavegador">Subir</button>
+									</form>
+								</c:otherwise>
+							</c:choose>
 						</div>
-						<div class="divAliasPerfil">
-							<h1 class="aliasPerfil">ALIAS</h1>
-						</div>
+						<form action="actualizarAlias" method="post"
+							class="formularioAlias">
+							<div class="divAliasPerfil">
+								<h1 class="aliasPerfil">
+									<c:out value="${usuario.aliasUsu}" default="ALIAS" />
+								</h1>
+							</div>
+							<button type="submit" class="botonModificador">
+								<i class="fa-solid fa-pen"></i>
+							</button>
+						</form>
 					</div>
 					<div class="ContenedorDatosPerfil">
 						<h3 class="DatosPerfil">Nombre Completo:</h3>
-						<h3 class="DatosPerfilInfo">
-							Jaime Prieto Rubio
-							<button class="botonModificador">
-								<i class="fa-solid fa-pen"></i>
-							</button>
-						</h3>
+						<form action="" method="post" class="formularioElementos">
+							<h3 class="DatosPerfilInfo">
+								<c:out value="${usuario.nombreCompletoUsu}" default="" />
+								<button class="botonModificador" type="submit">
+									<i class="fa-solid fa-pen"></i>
+								</button>
+							</h3>
+						</form>
 					</div>
 					<div class="ContenedorDatosPerfil">
 						<h3 class="DatosPerfil">Teléfono Móvil:</h3>
-						<h3 class="DatosPerfilInfo">
-							674583437
-							<button class="botonModificador">
-								<i class="fa-solid fa-pen"></i>
-							</button>
-						</h3>
+						<form action="" method="post" class="formularioElementos">
+							<h3 class="DatosPerfilInfo">
+								<c:out value="${usuario.movilUsu}" default="" />
+								<button class="botonModificador">
+									<i class="fa-solid fa-pen"></i>
+								</button>
+							</h3>
+						</form>
 					</div>
 					<div class="ContenedorDatosPerfil">
 						<h3 class="DatosPerfil">Correo:</h3>
-						<h3 class="DatosPerfilInfo">
-							Jaime.p.r023@gmail.com
-							<button class="botonModificador">
-								<i class="fa-solid fa-pen"></i>
-							</button>
-						</h3>
+						<form action="" method="post" class="formularioElementos">
+							<h3 class="DatosPerfilInfo">
+								<c:out value="${usuario.correoElectronicoUsu}" default="" />
+								<button class="botonModificador">
+									<i class="fa-solid fa-pen"></i>
+								</button>
+							</h3>
+						</form>
 					</div>
 					<div class="ContenedorDatosPerfil">
 						<h3 class="DatosPerfil">Tipo de Usuario:</h3>
-						<h3 class="DatosPerfilInfo">Usuario Basico</h3>
+						<h3 class="DatosPerfilInfo">
+							<c:choose>
+								<c:when test="${usuario.esPremium}">
+                Usuario Premium
+            </c:when>
+								<c:otherwise>
+                Usuario Básico
+            </c:otherwise>
+							</c:choose>
+						</h3>
 					</div>
 					<div class="ContenedorDatosPerfil">
-						<button class="ValidarUsuario botonNavegador">Validar</button>
-						<button class="hacersePremiumBoton botonNavegador">Premium</button>
+						<button class="ValidarUsuario2 botonNavegador">Validar</button>
+						<button class="hacersePremiumBoton2 botonNavegador">Premium</button>
+						<a href="<%=request.getContextPath()%>/CerrarSesion"><button
+								class="hacersePremiumBoton2 botonNavegador">Cerrar</button></a>
 					</div>
 				</div>
 				<div class="row columnaPrincipalB">
@@ -220,5 +298,6 @@
 			</div>
 		</div>
 	</main>
+
 </body>
 </html>
