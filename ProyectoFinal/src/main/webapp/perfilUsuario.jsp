@@ -69,6 +69,9 @@
 								<c:when test="${not empty usuario.fotoUsu}">
 									<img src="<c:out value='${usuario.fotoUsu}' />"
 										alt="Foto Perfil del usuario" class="imagenUsuPerfil" />
+									<button class="botonModificador" type="submit">
+										<i class="fa-solid fa-pen"></i>
+									</button>
 								</c:when>
 								<c:otherwise>
 									<!-- Mostrar un formulario si no hay imagen -->
@@ -82,70 +85,61 @@
 								</c:otherwise>
 							</c:choose>
 						</div>
-						<form action="actualizarAlias" method="post"
-							class="formularioAlias">
-							<div class="divAliasPerfil">
-								<h1 class="aliasPerfil">
-									<c:out value="${usuario.aliasUsu}" default="ALIAS" />
-								</h1>
-							</div>
-							<button type="submit" class="botonModificador">
-								<i class="fa-solid fa-pen"></i>
-							</button>
-						</form>
+						<div class="divAliasPerfil">
+							<h1 class="aliasPerfil">
+								<c:out value="${usuario.aliasUsu}" default="ALIAS" />
+							</h1>
+						</div>
+						<button type="submit" class="botonModificador">
+							<i class="fa-solid fa-pen"></i>
+						</button>
 					</div>
-					<div class="ContenedorDatosPerfil">
-						<h3 class="DatosPerfil">Nombre Completo:</h3>
-						<form action="" method="post" class="formularioElementos">
+					<div class="ContenedorCompleto">
+						<div class="ContenedorDatosPerfil">
+							<h3 class="DatosPerfil">Nombre Completo:</h3>
 							<h3 class="DatosPerfilInfo">
 								<c:out value="${usuario.nombreCompletoUsu}" default="" />
 								<button class="botonModificador" type="submit">
 									<i class="fa-solid fa-pen"></i>
 								</button>
 							</h3>
-						</form>
-					</div>
-					<div class="ContenedorDatosPerfil">
-						<h3 class="DatosPerfil">Teléfono Móvil:</h3>
-						<form action="" method="post" class="formularioElementos">
+						</div>
+						<div class="ContenedorDatosPerfil">
+							<h3 class="DatosPerfil">Teléfono Móvil:</h3>
 							<h3 class="DatosPerfilInfo">
 								<c:out value="${usuario.movilUsu}" default="" />
 								<button class="botonModificador">
 									<i class="fa-solid fa-pen"></i>
 								</button>
 							</h3>
-						</form>
-					</div>
-					<div class="ContenedorDatosPerfil">
-						<h3 class="DatosPerfil">Correo:</h3>
-						<form action="" method="post" class="formularioElementos">
+						</div>
+						<div class="ContenedorDatosPerfil">
+							<h3 class="DatosPerfil">Correo:</h3>
 							<h3 class="DatosPerfilInfo">
 								<c:out value="${usuario.correoElectronicoUsu}" default="" />
-								<button class="botonModificador">
-									<i class="fa-solid fa-pen"></i>
-								</button>
 							</h3>
-						</form>
-					</div>
-					<div class="ContenedorDatosPerfil">
-						<h3 class="DatosPerfil">Tipo de Usuario:</h3>
-						<h3 class="DatosPerfilInfo">
-							<c:choose>
-								<c:when test="${usuario.esPremium}">
+						</div>
+						<div class="ContenedorDatosPerfil">
+							<h3 class="DatosPerfil">Tipo de Usuario:</h3>
+							<h3 class="DatosPerfilInfo">
+								<c:choose>
+									<c:when test="${usuario.esPremium}">
                 Usuario Premium
             </c:when>
-								<c:otherwise>
+									<c:otherwise>
                 Usuario Básico
             </c:otherwise>
-							</c:choose>
-						</h3>
+								</c:choose>
+							</h3>
+						</div>
+						<div class="ContenedorDatosPerfil">
+							<a href="<%=request.getContextPath()%>/CerrarSesion"><button
+									class="hacersePremiumBoton botonNavegador">Cerrar</button></a>
+							<button class="ValidarUsuario botonNavegador">Validar</button>
+							<button class="hacersePremiumBoton botonNavegador">Premium</button>
+						</div>
 					</div>
-					<div class="ContenedorDatosPerfil">
-						<a href="<%=request.getContextPath()%>/CerrarSesion"><button
-								class="hacersePremiumBoton botonNavegador">Cerrar</button></a>
-						<button class="ValidarUsuario botonNavegador">Validar</button>
-						<button class="hacersePremiumBoton botonNavegador">Premium</button>
-					</div>
+
 				</div>
 				<div class="col">
 					<div class="row contenedorDosPerfil">
@@ -177,7 +171,6 @@
 				</div>
 			</div>
 		</div>
-		</div>
 
 		<!--PArte de movil mini tablet-->
 		<div class="container contenedorPrincipalPerfil d-block d-lg-none">
@@ -204,69 +197,65 @@
 								</c:otherwise>
 							</c:choose>
 						</div>
-						<form action="actualizarAlias" method="post"
-							class="formularioAlias">
-							<div class="divAliasPerfil">
-								<h1 class="aliasPerfil">
-									<c:out value="${usuario.aliasUsu}" default="ALIAS" />
-								</h1>
-							</div>
-							<button type="submit" class="botonModificador">
-								<i class="fa-solid fa-pen"></i>
-							</button>
-						</form>
+						<div class="divAliasPerfil">
+							<h1 class="aliasPerfil">
+								<c:out value="${usuario.aliasUsu}" default="ALIAS" />
+							</h1>
+						</div>
+						<button type="submit" class="botonModificador">
+							<i class="fa-solid fa-pen"></i>
+						</button>
 					</div>
-					<div class="ContenedorDatosPerfil">
-						<h3 class="DatosPerfil">Nombre Completo:</h3>
-						<form action="" method="post" class="formularioElementos">
-							<h3 class="DatosPerfilInfo">
+					<div class="ContenedorCompleto">
+						<div class="ContenedorDatosPerfilB">
+							<h3 class="DatosPerfil2">Nombre Completo:</h3>
+							<h3 class="DatosPerfilInfo2">
 								<c:out value="${usuario.nombreCompletoUsu}" default="" />
 								<button class="botonModificador" type="submit">
 									<i class="fa-solid fa-pen"></i>
 								</button>
 							</h3>
-						</form>
-					</div>
-					<div class="ContenedorDatosPerfil">
-						<h3 class="DatosPerfil">Teléfono Móvil:</h3>
-						<form action="" method="post" class="formularioElementos">
-							<h3 class="DatosPerfilInfo">
+						</div>
+						<div class="ContenedorDatosPerfilB">
+							<h3 class="DatosPerfil2">Teléfono Móvil:</h3>
+							<h3 class="DatosPerfilInfo2">
 								<c:out value="${usuario.movilUsu}" default="" />
 								<button class="botonModificador">
 									<i class="fa-solid fa-pen"></i>
 								</button>
 							</h3>
-						</form>
-					</div>
-					<div class="ContenedorDatosPerfil">
-						<h3 class="DatosPerfil">Correo:</h3>
-						<form action="" method="post" class="formularioElementos">
-							<h3 class="DatosPerfilInfo">
+						</div>
+						<div class="ContenedorDatosPerfilB">
+							<h3 class="DatosPerfil2">Correo:</h3>
+							<h3 class="DatosPerfilInfo2">
 								<c:out value="${usuario.correoElectronicoUsu}" default="" />
-								<button class="botonModificador">
-									<i class="fa-solid fa-pen"></i>
-								</button>
 							</h3>
-						</form>
-					</div>
-					<div class="ContenedorDatosPerfil">
-						<h3 class="DatosPerfil">Tipo de Usuario:</h3>
-						<h3 class="DatosPerfilInfo">
-							<c:choose>
-								<c:when test="${usuario.esPremium}">
+						</div>
+						<div class="ContenedorDatosPerfilB">
+							<h3 class="DatosPerfil2">Tipo de Usuario:</h3>
+							<h3 class="DatosPerfilInfo2">
+								<c:choose>
+									<c:when test="${usuario.esPremium}">
                 Usuario Premium
             </c:when>
-								<c:otherwise>
+									<c:otherwise>
                 Usuario Básico
             </c:otherwise>
-							</c:choose>
-						</h3>
-					</div>
-					<div class="ContenedorDatosPerfil">
-						<button class="ValidarUsuario2 botonNavegador">Validar</button>
-						<button class="hacersePremiumBoton2 botonNavegador">Premium</button>
-						<a href="<%=request.getContextPath()%>/CerrarSesion"><button
-								class="hacersePremiumBoton2 botonNavegador">Cerrar</button></a>
+								</c:choose>
+							</h3>
+						</div>
+						<div class="ContenedorDatosPerfil2">
+							<div class="divBoton">
+								<button class="ValidarUsuario2 botonNavegador">Validar</button>
+							</div>
+							<div class="divBoton">
+								<button class="hacersePremiumBoton2 botonNavegador">Premium</button>
+							</div>
+							<div class="divBoton">
+								<a href="<%=request.getContextPath()%>/CerrarSesion"><button
+										class="hacersePremiumBoton2 botonNavegador">Cerrar</button></a>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="row columnaPrincipalB">

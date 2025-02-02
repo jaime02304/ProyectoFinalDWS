@@ -103,11 +103,11 @@ body, html {
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	background-color: transparent;}
+	background-color: transparent;
+}
 
 .DatosPerfil {
 	font-family: "Bangers", sans-serif;
-	margin-top: 30px;
 	padding-left: 5%;
 	color: black;
 	width: 100%;
@@ -120,7 +120,30 @@ body, html {
 
 .DatosPerfilInfo {
 	font-family: "Bangers", sans-serif;
-	margin-top: 30px;
+	color: black;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	text-align: center;
+	justify-content: start;
+	align-items: center;
+	word-wrap: break-word;
+}
+
+.DatosPerfil2 {
+	font-family: "Bangers", sans-serif;
+	padding-left: 5%;
+	color: black;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	text-align: center;
+	justify-content: start;
+	align-items: center;
+}
+
+.DatosPerfilInfo2 {
+	font-family: "Bangers", sans-serif;
 	color: black;
 	width: 100%;
 	height: 100%;
@@ -135,6 +158,21 @@ body, html {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	height: 20%;
+}
+
+.ContenedorDatosPerfilB {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 20%;
+}
+
+.ContenedorDatosPerfil2 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
 }
 
 .botonModificador {
@@ -161,18 +199,18 @@ body, html {
 }
 
 .ValidarUsuario2 {
-	margin-top: 30px;
+	margin: auto;
 	width: auto;
 	text-align: center;
+	font-size: 3vb;
 }
 
 .hacersePremiumBoton2 {
-	margin-top: 30px;
-	margin-right: 10%;
-	margin-left: 10%;
+	margin: auto;
 	width: auto;
 	text-align: center;
 	width: auto;
+	font-size: 3vb;
 }
 
 .botonSubir {
@@ -300,4 +338,13 @@ body, html {
 	cursor: pointer;
 	font-size: 20px;
 	transition: box-shadow 0.5s ease;
+}
+
+.ContenedorCompleto {
+	height: 75%;
+	width: 100%;
+}
+
+.divBoton {
+	margin: auto;
 }

@@ -5,6 +5,7 @@ package edu.ProyectoFinal.Dto;
  */
 public class UsuarioPerfilDto {
 
+	private Long idUsu;
 	private String nombreCompletoUsu = "aaaaa";
 	private String aliasUsu = "aaaaa";
 	private String correoElectronicoUsu = "aaaaa";
@@ -15,8 +16,17 @@ public class UsuarioPerfilDto {
 	private Boolean esVerificadoEntidad = false;
 
 	// Getter y setter
+
 	public Boolean getEsVerificadoEntidad() {
 		return esVerificadoEntidad;
+	}
+
+	public Long getIdUsu() {
+		return idUsu;
+	}
+
+	public void setIdUsu(Long idUsu) {
+		this.idUsu = idUsu;
 	}
 
 	public void setEsVerificadoEntidad(Boolean esVerificadoEntidad) {
