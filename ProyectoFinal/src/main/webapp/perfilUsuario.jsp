@@ -136,7 +136,7 @@
 							<a href="<%=request.getContextPath()%>/CerrarSesion"><button
 									class="hacersePremiumBoton botonNavegador">Cerrar</button></a>
 							<button class="ValidarUsuario botonNavegador">Validar</button>
-							<button class="hacersePremiumBoton botonNavegador">Premium</button>
+							<button class="hacersePremiumBoton botonNavegador" onclick="alertaDelPremium()">Premium</button>
 						</div>
 					</div>
 
@@ -145,28 +145,69 @@
 					<div class="row contenedorDosPerfil">
 						<div class="col contenedorInfoPerfilDerecho contenedorGruposB">
 							<!--Aqui en la parte admin se debera poner los usuario y grupos que se deban de poder modificar o eliminar-->
-							<div class="trozoGrupo">
-								<div class="NombreGrupoP">Nombre</div>
-								<div class="categoriaGrupoP">Categoria</div>
-								<div class="tematicaGrupoP d-xl-block d-none">Tematica</div>
-								<div>
-									<a href="#" class="verGrupoP">Ver</a>
-								</div>
-							</div>
+							<c:if test="${usuario.rolUsu == 'user'}">
+								<c:choose>
+									<c:when test="${empty listadoGruposUsuario}">
+										<div class="mensajeGrupo">
+											<c:out value="No se encontraron grupos disponibles." />
+										</div>
+										<div class="tiposMensaje">
+											<button>Crear Grupo</button>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="grupo" items="${listadoGruposUsuario}">
+											<div class="trozoGrupo">
+												<div class="NombreGrupo">
+													<c:out value="${grupo.nombreGrupo}" />
+												</div>
+												<div class="categoriaGrupo">
+													<c:out value="${grupo.categoriaNombre}" />
+												</div>
+												<div class="tematicaGrupo">
+													<c:out value="${grupo.subCategoriaNombre}" />
+												</div>
+												<div>
+													<a href="#" class="verGrupo">Ver</a>
+												</div>
+											</div>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>
+							</c:if>
+							<c:if test="${usuario.rolUsu == 'admin'}">
+							</c:if>
+
 						</div>
 					</div>
 					<div class="col contenedorInfoPerfilDerechoB">
 						<div class="contenidoMensaje">
-							<div class="contenidoMensaje2">¡Bienvenid@ a AnimeXP! 🌟 El
-								espacio donde el anime, los videojuegos y la pasión de los fans
-								se encuentran. 🎮✨ Descubre contenidos épicos, conecta con una
-								comunidad increíble y vive tu afición como nunca antes. 🧡
-								¡Explora, juega y siéntete como en casa! 🚀</div>
+							<div class="contenidoMensaje2">
+								<c:choose>
+									<c:when
+										test="${not empty comentario and not empty comentario.comentarioTexto}">
+                    ${comentario.comentarioTexto}
+                </c:when>
+									<c:otherwise>
+                    No se encontraron comentarios para este usuario.
+                </c:otherwise>
+								</c:choose>
+							</div>
 						</div>
-						<div class="tiposMensaje">
-							<button>Categoría</button>
-							<button>Temática</button>
-						</div>
+						<c:choose>
+							<c:when
+								test="${not empty comentario and not empty comentario.comentarioTexto}">
+								<div class="tiposMensaje">
+									<button>${comentario.categoriaTipo}</button>
+									<button>${comentario.subCategoriaTipo}</button>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="tiposMensaje">
+									<button>Crear</button>
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</div>
@@ -249,7 +290,7 @@
 								<button class="ValidarUsuario2 botonNavegador">Validar</button>
 							</div>
 							<div class="divBoton">
-								<button class="hacersePremiumBoton2 botonNavegador">Premium</button>
+								<button class="hacersePremiumBoton2 botonNavegador" onclick="alertaDelPremium()">Premium</button>
 							</div>
 							<div class="divBoton">
 								<a href="<%=request.getContextPath()%>/CerrarSesion"><button
@@ -261,32 +302,76 @@
 				<div class="row columnaPrincipalB">
 					<div class="col contenedorInfoPerfilDerecho contenedorGruposB">
 						<!--Aqui en la parte admin se debera poner los usuario y grupos que se deban de poder modificar o eliminar-->
-						<div class="trozoGrupo">
-							<div class="NombreGrupoP">Nombre</div>
-							<div class="categoriaGrupoP">Categoria</div>
-							<div class="tematicaGrupoP d-xl-block d-none">Tematica</div>
-							<div>
-								<a href="#" class="verGrupoP">Ver</a>
-							</div>
-						</div>
+						<c:if test="${usuario.rolUsu == 'user'}">
+							<c:choose>
+								<c:when test="${empty listadoGruposUsuario}">
+									<div class="mensajeGrupo">
+										<c:out value="No se encontraron grupos disponibles." />
+									</div>
+									<div class="tiposMensaje">
+										<button>Crear Grupo</button>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<c:forEach var="grupo" items="${listadoGruposUsuario}">
+										<div class="trozoGrupo">
+											<div class="NombreGrupo">
+												<c:out value="${grupo.nombreGrupo}" />
+											</div>
+											<div class="categoriaGrupo">
+												<c:out value="${grupo.categoriaNombre}" />
+											</div>
+											<div class="tematicaGrupo">
+												<c:out value="${grupo.subCategoriaNombre}" />
+											</div>
+											<div>
+												<a href="#" class="verGrupo">Ver</a>
+											</div>
+										</div>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+						</c:if>
+						<c:if test="${usuario.rolUsu == 'admin'}">
+						</c:if>
 					</div>
 					<div class="col contenedorInfoPerfilDerechoB">
 						<div class="contenidoMensaje">
-							<div class="contenidoMensaje2">¡Bienvenid@ a AnimeXP! 🌟 El
-								espacio donde el anime, los videojuegos y la pasión de los fans
-								se encuentran. 🎮✨ Descubre contenidos épicos, conecta con una
-								comunidad increíble y vive tu afición como nunca antes. 🧡
-								¡Explora, juega y siéntete como en casa! 🚀</div>
+							<div class="contenidoMensaje2">
+								<c:choose>
+									<c:when
+										test="${not empty comentario and not empty comentario.comentarioTexto}">
+                    ${comentario.comentarioTexto}
+                </c:when>
+									<c:otherwise>
+                    No se encontraron comentarios para este usuario.
+                </c:otherwise>
+								</c:choose>
+							</div>
 						</div>
-						<div class="tiposMensaje">
-							<button>Categoría</button>
-							<button>Temática</button>
-						</div>
+						<c:choose>
+							<c:when
+								test="${not empty comentario and not empty comentario.comentarioTexto}">
+								<div class="tiposMensaje">
+									<button>${comentario.categoriaTipo}</button>
+									<button>${comentario.subCategoriaTipo}</button>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="tiposMensaje">
+									<button>Crear</button>
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</div>
 		</div>
 	</main>
-
+	<script src="<%=request.getContextPath()%>/js/javaScriptPerfil.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
 </body>
 </html>

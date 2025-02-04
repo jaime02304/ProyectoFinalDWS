@@ -7,7 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.ProyectoFinal.Dto.GruposIndexDto;
+import edu.ProyectoFinal.Dto.GruposListadoDto;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.*;
 import jakarta.ws.rs.core.MediaType;
@@ -32,30 +32,23 @@ public class GruposServicios {
 		ModelAndView vista = new ModelAndView();
 		String url = "http://localhost:8081/api/index/grupos";
 
-		try (Client cliente = ClientBuilder.newClient()) {
-			// Llamar a la API
-			Response respuestaApi = cliente.target(url).request(MediaType.APPLICATION_JSON).get();
+		try {
+			Response respuestaApi = ClientBuilder.newClient().target(url).request(MediaType.APPLICATION_JSON).get();
 
 			if (respuestaApi.getStatus() == 200) {
-				// Procesar la respuesta de la API
-				List<GruposIndexDto> listadoGruposCompletosTop = listadoGruposTop(respuestaApi);
+				List<GruposListadoDto> listadoGruposCompletosTop = listadoGruposTop(respuestaApi);
+				vista.addObject("listaGrupos", listadoGruposCompletosTop);
 
-				// Verificar si la lista está vacía y agregar el mensaje correspondiente
 				if (listadoGruposCompletosTop.isEmpty()) {
 					vista.addObject("mensajeGrupo", "No se encontraron grupos disponibles.");
 				}
-				// Agregar la lista de grupos al modelo
-				vista.addObject("listaGrupos", listadoGruposCompletosTop);
 			} else {
-				// En caso de error en la API, agregar mensaje informativo
-				vista.addObject("error", "No se ha encontrado ningún grupo debido a un error en la API.");
+				vista.addObject("error", "Error al obtener los grupos: " + respuestaApi.getStatusInfo().toString());
 			}
 		} catch (Exception e) {
-			// Manejo de cualquier excepción inesperada
 			vista.addObject("error", "Error al conectar con la API: " + e.getMessage());
 		}
 
-		// Retornar la vista
 		return vista;
 	}
 
@@ -68,8 +61,8 @@ public class GruposServicios {
 	 * @throws Exception
 	 * @throws NullPointerException
 	 */
-	private List<GruposIndexDto> listadoGruposTop(Response respuestaApi) {
-		List<GruposIndexDto> listaGrupos = new ArrayList<>();
+	private List<GruposListadoDto> listadoGruposTop(Response respuestaApi) {
+		List<GruposListadoDto> listaGrupos = new ArrayList<>();
 
 		try {
 			// Parsear directamente el JSON recibido desde la respuesta
@@ -79,13 +72,13 @@ public class GruposServicios {
 			// Extraer el JSONArray de "grupos", si existe
 			JSONArray gruposArray = jsonResponse.optJSONArray("grupos");
 
+			// Si el array no es nulo, procesamos los grupos
 			if (gruposArray != null) {
-				// Recorrer el JSONArray y mapear a GruposIndexDto
 				for (int i = 0; i < gruposArray.length(); i++) {
 					JSONObject jsonGrupo = gruposArray.getJSONObject(i);
-					GruposIndexDto grupo = new GruposIndexDto();
+					GruposListadoDto grupo = new GruposListadoDto();
 
-					// Extraer y asignar directamente los campos
+					// Asignación directa de los valores
 					grupo.setNombreGrupo(jsonGrupo.optString("nombreGrupo"));
 					grupo.setCategoriaNombre(jsonGrupo.optString("categoriaNombre"));
 					grupo.setSubCategoriaNombre(jsonGrupo.optString("subCategoriaNombre"));
@@ -96,11 +89,11 @@ public class GruposServicios {
 			} else {
 				System.out.println("No se encontró el array 'grupos' en la respuesta JSON.");
 			}
+
 		} catch (Exception e) {
 			System.err.println("Error al parsear la respuesta JSON: " + e.getMessage());
 		}
 
-		// Retornar la lista de grupos
 		return listaGrupos;
 	}
 

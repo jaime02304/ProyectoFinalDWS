@@ -263,9 +263,10 @@ body, html {
 .contenidoMensaje {
 	width: 50%;
 	height: 90%;
-	font-size: 20px;
+	font-size: 22px;
 	overflow-y: auto;
 	overflow-x: hidden;
+	font-family: 'Bangers';
 }
 
 .tiposMensaje {

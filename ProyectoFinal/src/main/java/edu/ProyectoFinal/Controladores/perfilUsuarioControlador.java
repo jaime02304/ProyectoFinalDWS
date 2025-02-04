@@ -4,7 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
 import edu.ProyectoFinal.servicios.GruposServicios;
+import edu.ProyectoFinal.servicios.PerfilServicio;
 import jakarta.servlet.http.HttpSession;
 
 /**
@@ -17,12 +19,16 @@ import jakarta.servlet.http.HttpSession;
 public class perfilUsuarioControlador {
 	
 	GruposServicios servicioGrupos = new GruposServicios();
+	
+	PerfilServicio servicioPerfil=new PerfilServicio();
 
 	@GetMapping("/PerfilUsuario")
 	public ModelAndView vistaPerfilYAdministradores(HttpSession sesionIniciada) {
 		ModelAndView vista = new ModelAndView();
+		UsuarioPerfilDto usuarioABuscar = (UsuarioPerfilDto) sesionIniciada.getAttribute("Usuario");
 		try {
-			vista.setViewName("perfilUsuario");
+			vista=servicioPerfil.obtenerGruposDelUsuario(usuarioABuscar);
+			vista=servicioPerfil.busquedaDelComentarioDelUsuario(usuarioABuscar);
 		} catch (Exception e) {
 			vista.setViewName("error");
 			vista.addObject("error", "No se ha cargado la página del perfil personal");

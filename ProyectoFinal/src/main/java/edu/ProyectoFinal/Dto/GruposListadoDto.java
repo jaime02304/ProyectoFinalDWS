@@ -3,7 +3,7 @@ package edu.ProyectoFinal.Dto;
 /**
  * Dto donde se encuentra as caracteristicas necesaria de los grupos en el index
  */
-public class GruposIndexDto {
+public class GruposListadoDto {
 
 	private Long idGrupo;
 	private String nombreGrupo = "aaaaa";
