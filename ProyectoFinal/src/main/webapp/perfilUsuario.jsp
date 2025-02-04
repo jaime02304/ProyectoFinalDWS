@@ -135,8 +135,11 @@
 						<div class="ContenedorDatosPerfil">
 							<a href="<%=request.getContextPath()%>/CerrarSesion"><button
 									class="hacersePremiumBoton botonNavegador">Cerrar</button></a>
-							<button class="ValidarUsuario botonNavegador">Validar</button>
-							<button class="hacersePremiumBoton botonNavegador" onclick="alertaDelPremium()">Premium</button>
+							<c:if test="${usuario.esVerificadoEntidad==false}">
+								<button class="ValidarUsuario botonNavegador">Validar</button>
+							</c:if>
+							<button class="hacersePremiumBoton botonNavegador"
+								onclick="alertaDelPremium()">Premium</button>
 						</div>
 					</div>
 
@@ -252,7 +255,7 @@
 							<h3 class="DatosPerfil2">Nombre Completo:</h3>
 							<h3 class="DatosPerfilInfo2">
 								<c:out value="${usuario.nombreCompletoUsu}" default="" />
-								<button class="botonModificador" type="submit">
+								<button class="botonModificador">
 									<i class="fa-solid fa-pen"></i>
 								</button>
 							</h3>
@@ -287,10 +290,13 @@
 						</div>
 						<div class="ContenedorDatosPerfil2">
 							<div class="divBoton">
-								<button class="ValidarUsuario2 botonNavegador">Validar</button>
+								<c:if test="${usuario.esVerificadoEntidad==false}">
+									<button class="ValidarUsuario2 botonNavegador">Validar</button>
+								</c:if>
 							</div>
 							<div class="divBoton">
-								<button class="hacersePremiumBoton2 botonNavegador" onclick="alertaDelPremium()">Premium</button>
+								<button class="hacersePremiumBoton2 botonNavegador"
+									onclick="alertaDelPremium()">Premium</button>
 							</div>
 							<div class="divBoton">
 								<a href="<%=request.getContextPath()%>/CerrarSesion"><button
@@ -367,6 +373,35 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- Modal para editar usuario -->
+		<%-- 		<div class="modal fade" id="editarDatosModal" tabindex="-1"
+			aria-labelledby="editarDatosModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="editarDatosModalLabel">Editar
+							Información</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form id="formEditarDatos" method="post"
+							action="${pageContext.request.contextPath}/actualizarDatos">
+							<input type="hidden" id="campoEditar" name="campoEditar">
+							<!-- Nombre del campo -->
+							<div class="mb-3">
+								<label id="labelCampo" class="form-label"></label> <input
+									type="text" class="form-control" id="valorEditar"
+									name="valorEditar" required>
+							</div>
+							<button type="submit" class="btn btn-primary">Guardar
+								Cambios</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div> --%>
 	</main>
 	<script src="<%=request.getContextPath()%>/js/javaScriptPerfil.js"></script>
 	<script

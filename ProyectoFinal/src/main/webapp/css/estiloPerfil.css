@@ -192,6 +192,12 @@ body, html {
 	text-align: center;
 }
 
+
+.ValidarUsuario {
+	width: 120px;
+	text-align: center;
+}
+
 .hacersePremiumBoton {
 	margin: 30px;
 	width: 120px;
