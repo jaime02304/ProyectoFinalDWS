@@ -194,6 +194,36 @@ public class PerfilServicio {
 	}
 
 	/**
+	 * Metodo que hace la peticion a la api y devuelve todos los usuarios 
+	 * 
+	 * @author jpribio - 06/02/25
+	 * @return
+	 */
+	public ModelAndView obtenerUsuariosParaSAdmin() {
+		ModelAndView vista = new ModelAndView();
+		String url = "http://localhost:8081/api/usuarioSAdminPerfil";
+
+		try {
+			Response respuestaApi = ClientBuilder.newClient().target(url).request(MediaType.APPLICATION_JSON).get();
+
+			if (respuestaApi.getStatus() == 200) {
+				List<UsuarioPerfilDto> listadoUsuario = listadoUsuarios(respuestaApi);
+				vista.addObject("listadoUsuariosSAdmin", listadoUsuario);
+
+				if (listadoUsuario.isEmpty()) {
+					vista.addObject("mensajeGrupo", "No se encontraron usuarios disponibles.");
+				}
+			} else {
+				vista.addObject("error", "Error al obtener los usuarios: " + respuestaApi.getStatusInfo().toString());
+			}
+		} catch (Exception e) {
+			vista.addObject("error", "Error al conectar con la API: " + e.getMessage());
+		}
+
+		return vista;
+	}
+
+	/**
 	 * Metodo privado que coge del texto plano los grupos y los pasa a gruposDTo
 	 * 
 	 * @author jpribio - 23/01/25

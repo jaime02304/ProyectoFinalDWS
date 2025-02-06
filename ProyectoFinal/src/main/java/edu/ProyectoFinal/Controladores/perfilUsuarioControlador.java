@@ -17,26 +17,47 @@ import jakarta.servlet.http.HttpSession;
  */
 @Controller
 public class perfilUsuarioControlador {
-	
-	GruposServicios servicioGrupos = new GruposServicios();
-	
-	PerfilServicio servicioPerfil=new PerfilServicio();
 
+	GruposServicios servicioGrupos = new GruposServicios();
+
+	PerfilServicio servicioPerfil = new PerfilServicio();
+
+	/**
+	 * Metodo que muestra la pagina del perfil tanto de los usuarios como la de los
+	 * administradores
+	 * 
+	 * @author jpribio - 06/02/25
+	 * @param sesionIniciada
+	 * @return
+	 */
 	@GetMapping("/PerfilUsuario")
 	public ModelAndView vistaPerfilYAdministradores(HttpSession sesionIniciada) {
 		ModelAndView vista = new ModelAndView();
 		UsuarioPerfilDto usuarioABuscar = (UsuarioPerfilDto) sesionIniciada.getAttribute("Usuario");
+
 		try {
-			if(usuarioABuscar.getRolUsu().equals("user")) {
-				vista=servicioPerfil.obtenerGruposDelUsuario(usuarioABuscar);
-				vista=servicioPerfil.busquedaDelComentarioDelUsuario(usuarioABuscar);
-			}else if(usuarioABuscar.getRolUsu().equals("admin")){
-				//vista= servicioPerfil.obtenerGruposParaAdmin();
-				vista=servicioPerfil.obtenerUsuariosRolUser();
-			}else {
-				
+			if (usuarioABuscar != null) {
+				switch (usuarioABuscar.getRolUsu()) {
+				case "user":
+					vista = servicioPerfil.obtenerGruposDelUsuario(usuarioABuscar);
+					servicioPerfil.busquedaDelComentarioDelUsuario(usuarioABuscar).getModel().forEach(vista::addObject);
+					break;
+
+				case "admin":
+					vista = servicioPerfil.obtenerGruposParaAdmin();
+					servicioPerfil.obtenerUsuariosRolUser().getModel().forEach(vista::addObject);
+					break;
+
+				default: // Super Admin u otros roles
+					vista = servicioPerfil.obtenerGruposParaAdmin();
+					servicioPerfil.obtenerUsuariosParaSAdmin().getModel().forEach(vista::addObject);
+					break;
+				}
+				vista.setViewName("perfilUsuario");
+			} else {
+				vista.setViewName("error");
+				vista.addObject("error", "Usuario no encontrado en la sesión.");
 			}
-			vista.setViewName("perfilUsuario");
 		} catch (Exception e) {
 			vista.setViewName("error");
 			vista.addObject("error", "No se ha cargado la página del perfil personal");
@@ -45,6 +66,13 @@ public class perfilUsuarioControlador {
 		return vista;
 	}
 
+	/**
+	 * Metodo de cerrar la sesion del usuario
+	 * 
+	 * @author jpribio - 06/02/25
+	 * @param cerrarSesion
+	 * @return
+	 */
 	@GetMapping("/CerrarSesion")
 	public ModelAndView cerrarSesionUsuario(HttpSession cerrarSesion) {
 		ModelAndView vista = new ModelAndView();

@@ -241,10 +241,10 @@
 											<div class="NombreGrupo">
 												<c:out value="${grupo.nombreGrupo}"></c:out>
 											</div>
-											<div class="categoriaGrupo">
+											<div class="categoriaGrupo" style="margin:5%;">
 												<c:out value="${grupo.categoriaNombre}"></c:out>
 											</div>
-											<div class="tematicaGrupo">
+											<div class="tematicaGrupo" style="margin:5%;">
 												<c:out value="${grupo.subCategoriaNombre}"></c:out>
 											</div>
 											<div>
@@ -262,7 +262,7 @@
 											<div class="NombreGrupo">
 												<c:out value="${grupo.nombreGrupo}"></c:out>
 											</div>
-											<div class="categoriaGrupo">
+											<div class="categoriaGrupo" style="margin:5%;">
 												<c:out value="${grupo.categoriaNombre}"></c:out>
 											</div>
 											<div>

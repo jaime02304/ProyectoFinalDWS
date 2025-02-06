@@ -144,9 +144,10 @@
 					</div>
 
 				</div>
-				<div class="col">
+				<div class="col" style="height: 100%;">
 					<div class="row contenedorDosPerfil">
 						<div class="col contenedorInfoPerfilDerecho contenedorGruposB">
+							<h3>Grupos</h3>
 							<!--Aqui en la parte admin se debera poner los usuario y grupos que se deban de poder modificar o eliminar-->
 							<c:if test="${usuario.rolUsu == 'user'}">
 								<c:choose>
@@ -207,41 +208,107 @@
 								</c:choose>
 							</c:if>
 						</div>
-					</div>
-					<div class="col contenedorInfoPerfilDerechoB">
-						<div class="contenidoMensaje">
-							<div class="contenidoMensaje2">
+
+
+						<c:if test="${ usuario.rolUsu == 'user'}">
+							<div class="col contenedorInfoPerfilDerechoB">
+								<div class="contenidoMensaje">
+									<div class="contenidoMensaje2">
+										<c:choose>
+											<c:when
+												test="${not empty comentario and not empty comentario.comentarioTexto}">
+                    ${comentario.comentarioTexto}
+                </c:when>
+											<c:otherwise>
+                    No se encontraron comentarios para este usuario.
+                </c:otherwise>
+										</c:choose>
+									</div>
+								</div>
 								<c:choose>
 									<c:when
 										test="${not empty comentario and not empty comentario.comentarioTexto}">
-                    ${comentario.comentarioTexto}
-                </c:when>
+										<div class="tiposMensaje">
+											<button>${comentario.categoriaTipo}</button>
+											<button>${comentario.subCategoriaTipo}</button>
+										</div>
+									</c:when>
 									<c:otherwise>
-                    No se encontraron comentarios para este usuario.
-                </c:otherwise>
+										<div class="tiposMensaje">
+											<button>Crear</button>
+										</div>
+									</c:otherwise>
 								</c:choose>
 							</div>
-						</div>
-						<c:choose>
-							<c:when
-								test="${not empty comentario and not empty comentario.comentarioTexto}">
-								<div class="tiposMensaje">
-									<button>${comentario.categoriaTipo}</button>
-									<button>${comentario.subCategoriaTipo}</button>
-								</div>
-							</c:when>
-							<c:otherwise>
-								<div class="tiposMensaje">
-									<button>Crear</button>
-								</div>
-							</c:otherwise>
-						</c:choose>
+						</c:if>
+						<c:if test="${usuario.rolUsu == 'admin'}">
+							<div class="col contenedorInfoPerfilDerecho contenedorGruposB">
+								<h3>Usuarios</h3>
+								<c:choose>
+									<c:when test="${empty listadoUsuariosAdmin}">
+										<div class="mensajeGrupo">
+											<c:out value="No se encontraron grupos disponibles." />
+										</div>
+										<div class="tiposMensaje">
+											<button>Crear Usuario</button>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="usuario" items="${listadoUsuariosAdmin}">
+											<div class="trozoGrupo">
+												<div class="NombreGrupo">
+													<c:out value="${usuario.aliasUsu}" />
+												</div>
+												<div>
+													<a href="#" class="verGrupo">Modificar</a>
+												</div>
+												<div>
+													<a href="#" class="verGrupo">Borrar</a>
+												</div>
+											</div>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>
+							</div>
+						</c:if>
+
+						<c:if test="${usuario.rolUsu == 'sadmin'}">
+							<div class="col contenedorInfoPerfilDerecho contenedorGruposB">
+								<h3>Usuarios</h3>
+								<c:choose>
+									<c:when test="${empty listadoUsuariosSAdmin}">
+										<div class="mensajeGrupo">
+											<c:out value="No se encontraron grupos disponibles." />
+										</div>
+										<div class="tiposMensaje">
+											<button>Crear Usuario</button>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="usuario" items="${listadoUsuariosSAdmin}">
+											<div class="trozoGrupo">
+												<div class="NombreGrupo">
+													<c:out value="${usuario.aliasUsu}" />
+												</div>
+												<div>
+													<a href="#" class="verGrupo">Modificar</a>
+												</div>
+												<div>
+													<a href="#" class="verGrupo">Borrar</a>
+												</div>
+											</div>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>
+							</div>
+						</c:if>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<!--PArte de movil mini tablet-->
+		<c:set var="usuario" value="${sessionScope.Usuario}" />
 		<div class="container contenedorPrincipalPerfil d-block d-lg-none">
 			<div class="row columnaPrincipal">
 				<div class="col contenedorInfoPerfil">
@@ -315,23 +382,25 @@
 						</div>
 						<div class="ContenedorDatosPerfil2">
 							<div class="divBoton">
-								<c:if test="${usuario.esVerificadoEntidad==false}">
-									<button class="ValidarUsuario2 botonNavegador">Validar</button>
-								</c:if>
+								<a href="<%=request.getContextPath()%>/CerrarSesion"><button
+										class="hacersePremiumBoton2 botonNavegador">Cerrar</button></a>
 							</div>
 							<div class="divBoton">
 								<button class="hacersePremiumBoton2 botonNavegador"
 									onclick="alertaDelPremium()">Premium</button>
 							</div>
+
 							<div class="divBoton">
-								<a href="<%=request.getContextPath()%>/CerrarSesion"><button
-										class="hacersePremiumBoton2 botonNavegador">Cerrar</button></a>
+								<c:if test="${usuario.esVerificadoEntidad==false}">
+									<button class="ValidarUsuario2 botonNavegador">Validar</button>
+								</c:if>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="row columnaPrincipalB">
 					<div class="col contenedorInfoPerfilDerecho contenedorGruposB">
+						<h3>Grupos</h3>
 						<!--Aqui en la parte admin se debera poner los usuario y grupos que se deban de poder modificar o eliminar-->
 						<c:if test="${usuario.rolUsu == 'user'}">
 							<c:choose>
@@ -363,38 +432,127 @@
 								</c:otherwise>
 							</c:choose>
 						</c:if>
-						<c:if test="${usuario.rolUsu == 'admin'}">
+						<c:if
+							test="${usuario.rolUsu == 'admin' or usuario.rolUsu == 'sadmin'}">
+							<c:choose>
+								<c:when test="${empty listadoGruposAdmin}">
+									<div class="mensajeGrupo">
+										<c:out value="No se encontraron grupos disponibles." />
+									</div>
+									<div class="tiposMensaje">
+										<button>Crear Grupo</button>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<c:forEach var="grupo" items="${listadoGruposAdmin}">
+										<div class="trozoGrupo">
+											<div class="NombreGrupo">
+												<c:out value="${grupo.nombreGrupo}" />
+											</div>
+											<div>
+												<a href="#" class="verGrupo">Modificar</a>
+											</div>
+											<div>
+												<a href="#" class="verGrupo">Borrar</a>
+											</div>
+										</div>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
 						</c:if>
 					</div>
-					<div class="col contenedorInfoPerfilDerechoB">
-						<div class="contenidoMensaje">
-							<div class="contenidoMensaje2">
-								<c:choose>
-									<c:when
-										test="${not empty comentario and not empty comentario.comentarioTexto}">
+					<c:if test="${ usuario.rolUsu == 'user'}">
+						<div class="col contenedorInfoPerfilDerechoB">
+							<div class="contenidoMensaje">
+								<div class="contenidoMensaje2">
+									<c:choose>
+										<c:when
+											test="${not empty comentario and not empty comentario.comentarioTexto}">
                     ${comentario.comentarioTexto}
                 </c:when>
-									<c:otherwise>
+										<c:otherwise>
                     No se encontraron comentarios para este usuario.
                 </c:otherwise>
-								</c:choose>
+									</c:choose>
+								</div>
 							</div>
+							<c:choose>
+								<c:when
+									test="${not empty comentario and not empty comentario.comentarioTexto}">
+									<div class="tiposMensaje">
+										<button>${comentario.categoriaTipo}</button>
+										<button>${comentario.subCategoriaTipo}</button>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div class="tiposMensaje">
+										<button>Crear</button>
+									</div>
+								</c:otherwise>
+							</c:choose>
 						</div>
-						<c:choose>
-							<c:when
-								test="${not empty comentario and not empty comentario.comentarioTexto}">
-								<div class="tiposMensaje">
-									<button>${comentario.categoriaTipo}</button>
-									<button>${comentario.subCategoriaTipo}</button>
-								</div>
-							</c:when>
-							<c:otherwise>
-								<div class="tiposMensaje">
-									<button>Crear</button>
-								</div>
-							</c:otherwise>
-						</c:choose>
-					</div>
+					</c:if>
+					<c:if test="${usuario.rolUsu == 'admin'}">
+						<div class="col contenedorInfoPerfilDerecho contenedorGruposB">
+						<h3>Usuarios</h3>
+							<c:choose>
+								<c:when test="${empty listadoUsuariosAdmin}">
+									<div class="mensajeGrupo">
+										<c:out value="No se encontraron grupos disponibles." />
+									</div>
+									<div class="tiposMensaje">
+										<button>Crear Usuario</button>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<c:forEach var="usuario" items="${listadoUsuariosAdmin}">
+										<div class="trozoGrupo">
+											<div class="NombreGrupo">
+												<c:out value="${usuario.aliasUsu}" />
+											</div>
+											<div>
+												<a href="#" class="verGrupo">Modificar</a>
+											</div>
+											<div>
+												<a href="#" class="verGrupo">Borrar</a>
+											</div>
+										</div>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</c:if>
+
+					<c:if test="${usuario.rolUsu == 'sadmin'}">
+						<div class="col contenedorInfoPerfilDerecho contenedorGruposB">
+						<h3>USuarios</h3>
+							<c:choose>
+								<c:when test="${empty listadoUsuariosSAdmin}">
+									<div class="mensajeGrupo">
+										<c:out value="No se encontraron grupos disponibles." />
+									</div>
+									<div class="tiposMensaje">
+										<button>Crear Usuario</button>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<c:forEach var="usuario" items="${listadoUsuariosSAdmin}">
+										<div class="trozoGrupo">
+											<div class="NombreGrupo">
+												<c:out value="${usuario.aliasUsu}" />
+											</div>
+											<div>
+												<a href="#" class="verGrupo">Modificar</a>
+											</div>
+											<div>
+												<a href="#" class="verGrupo">Borrar</a>
+											</div>
+										</div>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</c:if>
 				</div>
 			</div>
 		</div>
