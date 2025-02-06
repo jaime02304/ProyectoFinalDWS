@@ -161,7 +161,7 @@
 									</c:when>
 									<c:otherwise>
 										<c:forEach var="grupo" items="${listadoGruposUsuario}">
-											<div class="trozoGrupo">
+											<div class="trozoGrupo" style="height: auto;">
 												<div class="NombreGrupo">
 													<c:out value="${grupo.nombreGrupo}" />
 												</div>
@@ -192,15 +192,15 @@
 									</c:when>
 									<c:otherwise>
 										<c:forEach var="grupo" items="${listadoGruposAdmin}">
-											<div class="trozoGrupo">
+											<div class="trozoGrupo" style="height: auto;">
 												<div class="NombreGrupo">
 													<c:out value="${grupo.nombreGrupo}" />
 												</div>
 												<div>
-													<a href="#" class="verGrupo">Modificar</a>
+													<a href="#" class="verGrupo2">Modificar</a>
 												</div>
 												<div>
-													<a href="#" class="verGrupo">Borrar</a>
+													<a href="#" class="verGrupo2">Borrar</a>
 												</div>
 											</div>
 										</c:forEach>
@@ -255,15 +255,15 @@
 									</c:when>
 									<c:otherwise>
 										<c:forEach var="usuario" items="${listadoUsuariosAdmin}">
-											<div class="trozoGrupo">
+											<div class="trozoGrupo" style="height: auto;">
 												<div class="NombreGrupo">
 													<c:out value="${usuario.aliasUsu}" />
 												</div>
 												<div>
-													<a href="#" class="verGrupo">Modificar</a>
+													<a href="#" class="verGrupo2">Modificar</a>
 												</div>
 												<div>
-													<a href="#" class="verGrupo">Borrar</a>
+													<a href="#" class="verGrupo2">Borrar</a>
 												</div>
 											</div>
 										</c:forEach>
@@ -286,15 +286,15 @@
 									</c:when>
 									<c:otherwise>
 										<c:forEach var="usuario" items="${listadoUsuariosSAdmin}">
-											<div class="trozoGrupo">
+											<div class="trozoGrupo" style="height: auto;">
 												<div class="NombreGrupo">
 													<c:out value="${usuario.aliasUsu}" />
 												</div>
 												<div>
-													<a href="#" class="verGrupo">Modificar</a>
+													<a href="#" class="verGrupo2">Modificar</a>
 												</div>
 												<div>
-													<a href="#" class="verGrupo">Borrar</a>
+													<a href="#" class="verGrupo2">Borrar</a>
 												</div>
 											</div>
 										</c:forEach>
@@ -414,7 +414,7 @@
 								</c:when>
 								<c:otherwise>
 									<c:forEach var="grupo" items="${listadoGruposUsuario}">
-										<div class="trozoGrupo">
+										<div class="trozoGrupo" style="height: auto;">
 											<div class="NombreGrupo">
 												<c:out value="${grupo.nombreGrupo}" />
 											</div>
@@ -445,15 +445,15 @@
 								</c:when>
 								<c:otherwise>
 									<c:forEach var="grupo" items="${listadoGruposAdmin}">
-										<div class="trozoGrupo">
+										<div class="trozoGrupo" style="height: auto;">
 											<div class="NombreGrupo">
 												<c:out value="${grupo.nombreGrupo}" />
 											</div>
 											<div>
-												<a href="#" class="verGrupo">Modificar</a>
+												<a href="#" class="verGrupo2">Modificar</a>
 											</div>
 											<div>
-												<a href="#" class="verGrupo">Borrar</a>
+												<a href="#" class="verGrupo2">Borrar</a>
 											</div>
 										</div>
 									</c:forEach>
@@ -506,15 +506,15 @@
 								</c:when>
 								<c:otherwise>
 									<c:forEach var="usuario" items="${listadoUsuariosAdmin}">
-										<div class="trozoGrupo">
+										<div class="trozoGrupo" style="height: auto;">
 											<div class="NombreGrupo">
 												<c:out value="${usuario.aliasUsu}" />
 											</div>
 											<div>
-												<a href="#" class="verGrupo">Modificar</a>
+												<a href="#" class="verGrupo2">Modificar</a>
 											</div>
 											<div>
-												<a href="#" class="verGrupo">Borrar</a>
+												<a href="#" class="verGrupo2">Borrar</a>
 											</div>
 										</div>
 									</c:forEach>
@@ -537,15 +537,15 @@
 								</c:when>
 								<c:otherwise>
 									<c:forEach var="usuario" items="${listadoUsuariosSAdmin}">
-										<div class="trozoGrupo">
+										<div class="trozoGrupo" style="height: auto;">
 											<div class="NombreGrupo">
 												<c:out value="${usuario.aliasUsu}" />
 											</div>
 											<div>
-												<a href="#" class="verGrupo">Modificar</a>
+												<a href="#" class="verGrupo2">Modificar</a>
 											</div>
 											<div>
-												<a href="#" class="verGrupo">Borrar</a>
+												<a href="#" class="verGrupo2">Borrar</a>
 											</div>
 										</div>
 									</c:forEach>
