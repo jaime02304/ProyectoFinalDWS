@@ -37,13 +37,13 @@
 	<!-- Header completo -->
 	<header>
 		<div class="d-none d-md-block">
-			<a href="<%=request.getContextPath()%>/LandinPage.jsp"><button
+			<a href="<%=request.getContextPath()%>/"><button
 					class="botonNavegador botonVolvermd">
 					<i class="fas fa-arrow-left"></i> Volver
 				</button></a>
 		</div>
 		<div class="d-block d-md-none">
-			<a href="<%=request.getContextPath()%>/LandinPage.jsp"><button
+			<a href="<%=request.getContextPath()%>/"><button
 					class="botonNavegador botonVolversm">
 					<i class="fas fa-arrow-left"></i> Volver
 				</button></a>
@@ -134,9 +134,12 @@
 							</div>
 							<a href="#" class="olvidoContra">¿Has olvidado tu contraseña?</a>
 						</div>
-						<button class="botonNavegador botonIS1">Iniciar Sesion</button>
-						<button type="button" onclick="flipForm()"
-							class="botonFlip botonNavegador">Registrase</button>
+						<div
+							style="display: flex; width: 100%; flex-direction: column; height: 30%; justify-content: space-evenly; align-items: center;">
+							<button class="botonNavegador botonIS1">Iniciar Sesion</button>
+							<button type="button" onclick="flipForm()"
+								class="botonFlip botonNavegador" style="width: auto; height:auto;">Registrase</button>
+						</div>
 					</form>
 					<!-- Formulario Trasero -->
 					<form action="${pageContext.request.contextPath}/Registro"

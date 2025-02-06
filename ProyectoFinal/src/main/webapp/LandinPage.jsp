@@ -63,7 +63,7 @@
 					</c:if>
 					<c:if test="${Usuario != null}">
 						<c:if test="${Usuario.rolUsu != 'user'}">
-							<a href="#"><button class=" botonNavegador ">ADMIN</button></a>
+							<a href="<%=request.getContextPath()%>/PerfilUsuario"><button class=" botonNavegador ">ADMIN</button></a>
 						</c:if>
 						<c:if test="${Usuario.rolUsu == 'user'}">
 							<a href="<%=request.getContextPath()%>/PerfilUsuario"><button
@@ -100,7 +100,7 @@
 						</c:if>
 						<c:if test="${Usuario != null}">
 							<c:if test="${Usuario.rolUsu != 'user'}">
-								<a href="#">ADMIN</a>
+								<a href="<%=request.getContextPath()%>/PerfilUsuario">ADMIN</a>
 							</c:if>
 							<c:if test="${Usuario.rolUsu == 'user'}">
 								<a href="<%=request.getContextPath()%>/PerfilUsuario">PERFIL</a>

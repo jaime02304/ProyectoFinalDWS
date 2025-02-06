@@ -54,10 +54,8 @@ public class PerfilServicio {
 
 				if (comentario != null) {
 					vista.addObject("comentario", comentario);
-					vista.setViewName("perfilUsuario");
 				} else {
 					vista.addObject("mensajePerfil", "No se encontraron comentarios para el usuario.");
-					vista.setViewName("perfilUsuario");
 				}
 			} else {
 				logger.warn("Error en la API, código de estado: {}", respuestaApi.getStatus());
@@ -101,8 +99,11 @@ public class PerfilServicio {
 	}
 
 	/**
+	 * metodo que manda una peticion a la api para recoger los grupos creados por el
+	 * usuario
 	 * 
-	 * @return
+	 * @param ususarioParaFiltrar
+	 * @return vista
 	 */
 	public ModelAndView obtenerGruposDelUsuario(UsuarioPerfilDto ususarioParaFiltrar) {
 		ModelAndView vista = new ModelAndView();
@@ -114,7 +115,7 @@ public class PerfilServicio {
 					.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
 
 			if (respuestaApi.getStatus() == 200) {
-				List<GruposListadoDto> listadoGruposUsuario = listadoGruposUsuario(respuestaApi);
+				List<GruposListadoDto> listadoGruposUsuario = listadoGrupos(respuestaApi);
 				vista.addObject("listadoGruposUsuario", listadoGruposUsuario);
 
 				if (listadoGruposUsuario.isEmpty()) {
@@ -122,6 +123,68 @@ public class PerfilServicio {
 				}
 			} else {
 				vista.addObject("error", "Error al obtener los grupos: " + respuestaApi.getStatusInfo().toString());
+			}
+		} catch (Exception e) {
+			vista.addObject("error", "Error al conectar con la API: " + e.getMessage());
+		}
+
+		return vista;
+	}
+
+	/**
+	 * Metodo que manda la peticion y coge todos los grupos para que lo pueda
+	 * observar el administrador
+	 * 
+	 * @author jpribio - 06/02/25
+	 * @return vista
+	 */
+	public ModelAndView obtenerGruposParaAdmin() {
+		ModelAndView vista = new ModelAndView();
+		String url = "http://localhost:8081/api/grupos";
+
+		try {
+			Response respuestaApi = ClientBuilder.newClient().target(url).request(MediaType.APPLICATION_JSON).get();
+
+			if (respuestaApi.getStatus() == 200) {
+				List<GruposListadoDto> listadoGruposAdmin = listadoGrupos(respuestaApi);
+				vista.addObject("listadoGruposAdmin", listadoGruposAdmin);
+
+				if (listadoGruposAdmin.isEmpty()) {
+					vista.addObject("mensajeGrupo", "No se encontraron grupos disponibles.");
+				}
+			} else {
+				vista.addObject("error", "Error al obtener los grupos: " + respuestaApi.getStatusInfo().toString());
+			}
+		} catch (Exception e) {
+			vista.addObject("error", "Error al conectar con la API: " + e.getMessage());
+		}
+
+		return vista;
+	}
+
+	/**
+	 * Metodo que hace la peticion a la api y devuelve todos los usuarios con el rol
+	 * de user
+	 * 
+	 * @author jpribio - 06/02/25
+	 * @return
+	 */
+	public ModelAndView obtenerUsuariosRolUser() {
+		ModelAndView vista = new ModelAndView();
+		String url = "http://localhost:8081/api/usuariosPerfil";
+
+		try {
+			Response respuestaApi = ClientBuilder.newClient().target(url).request(MediaType.APPLICATION_JSON).get();
+
+			if (respuestaApi.getStatus() == 200) {
+				List<UsuarioPerfilDto> listadoUsuario = listadoUsuarios(respuestaApi);
+				vista.addObject("listadoUsuariosAdmin", listadoUsuario);
+
+				if (listadoUsuario.isEmpty()) {
+					vista.addObject("mensajeGrupo", "No se encontraron usuarios disponibles.");
+				}
+			} else {
+				vista.addObject("error", "Error al obtener los usuarios: " + respuestaApi.getStatusInfo().toString());
 			}
 		} catch (Exception e) {
 			vista.addObject("error", "Error al conectar con la API: " + e.getMessage());
@@ -139,7 +202,7 @@ public class PerfilServicio {
 	 * @throws Exception
 	 * @throws NullPointerException
 	 */
-	private List<GruposListadoDto> listadoGruposUsuario(Response respuestaApi) {
+	private List<GruposListadoDto> listadoGrupos(Response respuestaApi) {
 		List<GruposListadoDto> listaGrupos = new ArrayList<>();
 
 		try {
@@ -168,6 +231,49 @@ public class PerfilServicio {
 		}
 
 		return listaGrupos;
+	}
+
+	/**
+	 * Metodo privado que coge del texto plano los usuarios y los pasa a
+	 * usuarioPerfilDto
+	 * 
+	 * @author jpribio - 06/02/25
+	 * @param respuestaApi
+	 * @return
+	 */
+	private List<UsuarioPerfilDto> listadoUsuarios(Response respuestaApi) {
+		List<UsuarioPerfilDto> listadoUsuario = new ArrayList<>();
+
+		try {
+			String jsonString = respuestaApi.readEntity(String.class);
+			JSONObject jsonResponse = new JSONObject(jsonString);
+
+			JSONArray gruposArray = jsonResponse.optJSONArray("usuarioPerfil");
+
+			if (gruposArray != null) {
+				for (int i = 0; i < gruposArray.length(); i++) {
+					JSONObject jsonUsuario = gruposArray.getJSONObject(i);
+					UsuarioPerfilDto usuario = new UsuarioPerfilDto();
+					usuario.setIdUsu(jsonUsuario.getLong("idUsu"));
+					usuario.setAliasUsu(jsonUsuario.getString("aliasUsu"));
+					usuario.setCorreoElectronicoUsu(jsonUsuario.getString("correoElectronicoUsu"));
+					usuario.setEsPremium(jsonUsuario.getBoolean("esPremium"));
+					usuario.setEsVerificadoEntidad(jsonUsuario.getBoolean("esVerificadoEntidad"));
+					// usuario.setFotoUsu(jsonUsuario.);
+					usuario.setMovilUsu(jsonUsuario.getInt("movilUsu"));
+					usuario.setNombreCompletoUsu(jsonUsuario.getString("nombreCompletoUsu"));
+					usuario.setRolUsu(jsonUsuario.getString("rolUsu"));
+					listadoUsuario.add(usuario);
+				}
+			} else {
+				System.out.println("No se encontró el array 'usuarioPerfil' en la respuesta JSON.");
+			}
+
+		} catch (Exception e) {
+			System.err.println("Error al parsear la respuesta JSON: " + e.getMessage());
+		}
+
+		return listadoUsuario;
 	}
 
 }

@@ -178,9 +178,34 @@
 									</c:otherwise>
 								</c:choose>
 							</c:if>
-							<c:if test="${usuario.rolUsu == 'admin'}">
+							<c:if
+								test="${usuario.rolUsu == 'admin' or usuario.rolUsu == 'sadmin'}">
+								<c:choose>
+									<c:when test="${empty listadoGruposAdmin}">
+										<div class="mensajeGrupo">
+											<c:out value="No se encontraron grupos disponibles." />
+										</div>
+										<div class="tiposMensaje">
+											<button>Crear Grupo</button>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="grupo" items="${listadoGruposAdmin}">
+											<div class="trozoGrupo">
+												<div class="NombreGrupo">
+													<c:out value="${grupo.nombreGrupo}" />
+												</div>
+												<div>
+													<a href="#" class="verGrupo">Modificar</a>
+												</div>
+												<div>
+													<a href="#" class="verGrupo">Borrar</a>
+												</div>
+											</div>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>
 							</c:if>
-
 						</div>
 					</div>
 					<div class="col contenedorInfoPerfilDerechoB">

@@ -27,8 +27,16 @@ public class perfilUsuarioControlador {
 		ModelAndView vista = new ModelAndView();
 		UsuarioPerfilDto usuarioABuscar = (UsuarioPerfilDto) sesionIniciada.getAttribute("Usuario");
 		try {
-			vista=servicioPerfil.obtenerGruposDelUsuario(usuarioABuscar);
-			vista=servicioPerfil.busquedaDelComentarioDelUsuario(usuarioABuscar);
+			if(usuarioABuscar.getRolUsu().equals("user")) {
+				vista=servicioPerfil.obtenerGruposDelUsuario(usuarioABuscar);
+				vista=servicioPerfil.busquedaDelComentarioDelUsuario(usuarioABuscar);
+			}else if(usuarioABuscar.getRolUsu().equals("admin")){
+				//vista= servicioPerfil.obtenerGruposParaAdmin();
+				vista=servicioPerfil.obtenerUsuariosRolUser();
+			}else {
+				
+			}
+			vista.setViewName("perfilUsuario");
 		} catch (Exception e) {
 			vista.setViewName("error");
 			vista.addObject("error", "No se ha cargado la página del perfil personal");
