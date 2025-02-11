@@ -68,7 +68,8 @@
 							<c:choose>
 								<c:when test="${not empty usuario.fotoUsu}">
 									<img src="<c:out value='${usuario.fotoUsu}' />"
-										alt="Foto Perfil del usuario" class="imagenUsuPerfil" />
+										alt="Foto Perfil del usuario" class="imagenUsuPerfil"
+										onclick="openFormularioModal('Fotografía', 'file', '')" />
 									<button class="botonModificador" type="submit">
 										<i class="fa-solid fa-pen"></i>
 									</button>
@@ -90,7 +91,8 @@
 								<c:out value="${usuario.aliasUsu}" default="ALIAS" />
 							</h1>
 						</div>
-						<button type="submit" class="botonModificador">
+						<button type="submit" class="botonModificador"
+							onclick="openFormularioModal('Alias', 'text', '<c:out value="${usuario.aliasUsu}" default="" />')">
 							<i class="fa-solid fa-pen"></i>
 						</button>
 					</div>
@@ -99,7 +101,8 @@
 							<h3 class="DatosPerfil">Nombre Completo:</h3>
 							<h3 class="DatosPerfilInfo">
 								<c:out value="${usuario.nombreCompletoUsu}" default="" />
-								<button class="botonModificador" type="submit">
+								<button class="botonModificador" type="submit"
+									onclick="openFormularioModal('Nombre completo', 'text', '<c:out value="${usuario.nombreCompletoUsu}" default="" />')">
 									<i class="fa-solid fa-pen"></i>
 								</button>
 							</h3>
@@ -108,7 +111,8 @@
 							<h3 class="DatosPerfil">Teléfono Móvil:</h3>
 							<h3 class="DatosPerfilInfo">
 								<c:out value="${usuario.movilUsu}" default="" />
-								<button class="botonModificador">
+								<button class="botonModificador"
+									onclick="openFormularioModal('Teléfono', 'tel', '<c:out value="${usuario.movilUsu}" default="" />')">
 									<i class="fa-solid fa-pen"></i>
 								</button>
 							</h3>
@@ -319,7 +323,8 @@
 							<c:choose>
 								<c:when test="${not empty usuario.fotoUsu}">
 									<img src="<c:out value='${usuario.fotoUsu}' />"
-										alt="Foto Perfil del usuario" class="imagenUsuPerfil" />
+										alt="Foto Perfil del usuario" class="imagenUsuPerfil"
+										onclick="openFormularioModal('Fotografía', 'file', '')" />
 								</c:when>
 								<c:otherwise>
 									<!-- Mostrar un formulario si no hay imagen -->
@@ -338,7 +343,8 @@
 								<c:out value="${usuario.aliasUsu}" default="ALIAS" />
 							</h1>
 						</div>
-						<button type="submit" class="botonModificador">
+						<button type="submit" class="botonModificador"
+							onclick="openFormularioModal('Alias', 'text', '<c:out value="${usuario.aliasUsu}" default="" />')">
 							<i class="fa-solid fa-pen"></i>
 						</button>
 					</div>
@@ -347,7 +353,8 @@
 							<h3 class="DatosPerfil2">Nombre Completo:</h3>
 							<h3 class="DatosPerfilInfo2">
 								<c:out value="${usuario.nombreCompletoUsu}" default="" />
-								<button class="botonModificador">
+								<button class="botonModificador"
+									onclick="openFormularioModal('Nombre completo', 'text', '<c:out value="${usuario.nombreCompletoUsu}" default="" />')">
 									<i class="fa-solid fa-pen"></i>
 								</button>
 							</h3>
@@ -356,7 +363,8 @@
 							<h3 class="DatosPerfil2">Teléfono Móvil:</h3>
 							<h3 class="DatosPerfilInfo2">
 								<c:out value="${usuario.movilUsu}" default="" />
-								<button class="botonModificador">
+								<button class="botonModificador"
+									onclick="openFormularioModal('Teléfono', 'tel', '<c:out value="${usuario.movilUsu}" default="" />')">
 									<i class="fa-solid fa-pen"></i>
 								</button>
 							</h3>
@@ -494,7 +502,7 @@
 					</c:if>
 					<c:if test="${usuario.rolUsu == 'admin'}">
 						<div class="col contenedorInfoPerfilDerecho contenedorGruposB">
-						<h3>Usuarios</h3>
+							<h3>Usuarios</h3>
 							<c:choose>
 								<c:when test="${empty listadoUsuariosAdmin}">
 									<div class="mensajeGrupo">
@@ -525,7 +533,7 @@
 
 					<c:if test="${usuario.rolUsu == 'sadmin'}">
 						<div class="col contenedorInfoPerfilDerecho contenedorGruposB">
-						<h3>USuarios</h3>
+							<h3>USuarios</h3>
 							<c:choose>
 								<c:when test="${empty listadoUsuariosSAdmin}">
 									<div class="mensajeGrupo">
@@ -558,33 +566,25 @@
 		</div>
 
 		<!-- Modal para editar usuario -->
-		<%-- 		<div class="modal fade" id="editarDatosModal" tabindex="-1"
-			aria-labelledby="editarDatosModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="editarDatosModalLabel">Editar
-							Información</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<form id="formEditarDatos" method="post"
-							action="${pageContext.request.contextPath}/actualizarDatos">
-							<input type="hidden" id="campoEditar" name="campoEditar">
-							<!-- Nombre del campo -->
-							<div class="mb-3">
-								<label id="labelCampo" class="form-label"></label> <input
-									type="text" class="form-control" id="valorEditar"
-									name="valorEditar" required>
-							</div>
-							<button type="submit" class="btn btn-primary">Guardar
-								Cambios</button>
-						</form>
-					</div>
-				</div>
+		<div id="formularioModal" class="modal">
+			<div class="contenidoModal">
+				<span class="close" onclick="closeFormularioModal()">&times;</span>
+				<h2 id="tituloModal">Modificar Valor</h2>
+				<form id="formularioDatosModal">
+					<label id="labelModal" for="inputValorModal">Nuevo valor:</label> <input
+						type="text" id="inputValorModal" />
+					<button type="submit" class="manga-button">Guardar</button>
+				</form>
 			</div>
-		</div> --%>
+		</div>
+
+		<!-- Alert Personalizado -->
+		<div id="alertaPersonalizada" class="alerta-personalizada">
+			<div class="alerta-contenido">
+				<p id="alertaMensaje">Mensaje de alerta</p>
+				<button onclick="cerrarAlertaPersonalizada()">Aceptar</button>
+			</div>
+		</div>
 	</main>
 	<script src="<%=request.getContextPath()%>/js/javaScriptPerfil.js"></script>
 	<script

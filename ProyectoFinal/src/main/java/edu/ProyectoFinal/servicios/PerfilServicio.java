@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ProyectoFinal.Dto.ComentariosPerfilDto;
 import edu.ProyectoFinal.Dto.GruposListadoDto;
 import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
+import jakarta.servlet.http.HttpSession;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -102,6 +103,7 @@ public class PerfilServicio {
 	 * metodo que manda una peticion a la api para recoger los grupos creados por el
 	 * usuario
 	 * 
+	 * @author jpribio - 04/02/25
 	 * @param ususarioParaFiltrar
 	 * @return vista
 	 */
@@ -194,7 +196,7 @@ public class PerfilServicio {
 	}
 
 	/**
-	 * Metodo que hace la peticion a la api y devuelve todos los usuarios 
+	 * Metodo que hace la peticion a la api y devuelve todos los usuarios
 	 * 
 	 * @author jpribio - 06/02/25
 	 * @return
@@ -304,6 +306,64 @@ public class PerfilServicio {
 		}
 
 		return listadoUsuario;
+	}
+
+	/**
+	 * Metodo que llama a la api para modificar al usuario y recarga la pagina
+	 * 
+	 * @author jpribio - 11/02/25
+	 * @param usuarioAModificar
+	 * @param usuarioPaFiltrar
+	 * @return
+	 */
+	public ModelAndView modificarUsuario(UsuarioPerfilDto usuarioAModificar, UsuarioPerfilDto usuarioPaFiltrar,
+			HttpSession sesion) {
+		logger.info("Iniciando el proceso de modificación de usuario.");
+
+		usuarioAModificar = combinarUsuario(usuarioAModificar, usuarioPaFiltrar);
+		ModelAndView vista = new ModelAndView();
+		String url = "http://localhost:8081/api/ModificarUsuario";
+
+		try {
+			// Convertir el usuario a JSON para enviarlo a la API
+			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioAModificar);
+			logger.debug("Usuario en JSON: {}", usuarioJson);
+
+			Response respuestaApi = ClientBuilder.newClient().target(url).request(MediaType.APPLICATION_JSON)
+					.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
+
+			logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
+
+			if (respuestaApi.getStatus() == 200) {
+				sesion.setAttribute("Usuario", usuarioAModificar);
+				logger.info("Usuario modificado correctamente en la sesión.");
+			} else {
+				String errorMsg = "Error al modificar el usuario: " + respuestaApi.getStatusInfo().toString();
+				vista.addObject("error", errorMsg);
+				logger.error(errorMsg);
+			}
+		} catch (Exception e) {
+			String errorMsg = "Error al conectar con la API: " + e.getMessage();
+			vista.addObject("error", errorMsg);
+			logger.error("Excepción al conectar con la API", e);
+		}
+
+		return vista;
+	}
+
+	/**
+	 * Metodo que mete los valores de la sesion del usuario con el usuario que se modifica
+	 * @param usuarioAModificar
+	 * @param usuarioPaFiltrar
+	 * @return
+	 */
+	private UsuarioPerfilDto combinarUsuario(UsuarioPerfilDto usuarioAModificar, UsuarioPerfilDto usuarioPaFiltrar) {
+		usuarioAModificar.setIdUsu(usuarioPaFiltrar.getIdUsu());
+		usuarioAModificar.setCorreoElectronicoUsu(usuarioPaFiltrar.getCorreoElectronicoUsu());
+		usuarioAModificar.setEsPremium(usuarioPaFiltrar.getEsPremium());
+		usuarioAModificar.setEsVerificadoEntidad(usuarioPaFiltrar.getEsVerificadoEntidad());
+		usuarioAModificar.setRolUsu(usuarioPaFiltrar.getRolUsu());
+		return usuarioAModificar;
 	}
 
 }

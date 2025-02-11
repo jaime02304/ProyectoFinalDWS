@@ -2,6 +2,8 @@ package edu.ProyectoFinal.Controladores;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
@@ -67,6 +69,30 @@ public class perfilUsuarioControlador {
 	}
 
 	/**
+	 * Metodo que modifica al usuario con los valores incorporados
+	 *
+	 * @author jpribio - 11/02/25
+	 * @param usuarioAModificar
+	 * @param sesionDelUsuario
+	 * @return
+	 */
+	@PostMapping("/ModificarUsuario")
+	public ModelAndView postMethodName(@ModelAttribute UsuarioPerfilDto usuarioAModificar,
+			HttpSession sesionDelUsuario) {
+		UsuarioPerfilDto filtrarUsuario = (UsuarioPerfilDto) sesionDelUsuario.getAttribute("Usuario");
+		ModelAndView vista = new ModelAndView();
+		try {
+			UsuarioPerfilDto usuarioEnSesion = (UsuarioPerfilDto) sesionDelUsuario.getAttribute("Usuario");
+			vista = servicioPerfil.modificarUsuario(usuarioAModificar, usuarioEnSesion, sesionDelUsuario);
+			vista.setViewName("PerfilUsuario");
+		} catch (Exception ex) {
+			vista = new ModelAndView("error");
+			vista.addObject("error", "Ha ocurrido un error al modificar el usuario. Por favor, inténtalo de nuevo.");
+		}
+		return vista;
+	}
+
+	/**
 	 * Metodo de cerrar la sesion del usuario
 	 * 
 	 * @author jpribio - 06/02/25
@@ -79,7 +105,7 @@ public class perfilUsuarioControlador {
 		try {
 			cerrarSesion.invalidate();
 			vista = servicioGrupos.obtenerLosGruposTops();
-			vista.setViewName("LandinPage");
+			vista.setViewName("/");
 		} catch (Exception e) {
 			vista.setViewName("error");
 			vista.addObject("error", "No se ha cargado la página principal.");
