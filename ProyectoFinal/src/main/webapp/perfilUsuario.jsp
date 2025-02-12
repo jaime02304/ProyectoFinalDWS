@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page isELIgnored="false"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,8 +69,7 @@
 							<c:choose>
 								<c:when test="${not empty usuario.fotoUsu}">
 									<img src="<c:out value='${usuario.fotoUsu}' />"
-										alt="Foto Perfil del usuario" class="imagenUsuPerfil"
-										onclick="openFormularioModal('Fotografía', 'file', '')" />
+										alt="Foto Perfil del usuario" class="imagenUsuPerfil">
 									<button class="botonModificador" type="submit">
 										<i class="fa-solid fa-pen"></i>
 									</button>
@@ -92,7 +92,7 @@
 							</h1>
 						</div>
 						<button type="submit" class="botonModificador"
-							onclick="openFormularioModal('Alias', 'text', '<c:out value="${usuario.aliasUsu}" default="" />')">
+							onclick="openFormularioModal()">
 							<i class="fa-solid fa-pen"></i>
 						</button>
 					</div>
@@ -101,20 +101,13 @@
 							<h3 class="DatosPerfil">Nombre Completo:</h3>
 							<h3 class="DatosPerfilInfo">
 								<c:out value="${usuario.nombreCompletoUsu}" default="" />
-								<button class="botonModificador" type="submit"
-									onclick="openFormularioModal('Nombre completo', 'text', '<c:out value="${usuario.nombreCompletoUsu}" default="" />')">
-									<i class="fa-solid fa-pen"></i>
-								</button>
+
 							</h3>
 						</div>
 						<div class="ContenedorDatosPerfil">
 							<h3 class="DatosPerfil">Teléfono Móvil:</h3>
 							<h3 class="DatosPerfilInfo">
 								<c:out value="${usuario.movilUsu}" default="" />
-								<button class="botonModificador"
-									onclick="openFormularioModal('Teléfono', 'tel', '<c:out value="${usuario.movilUsu}" default="" />')">
-									<i class="fa-solid fa-pen"></i>
-								</button>
 							</h3>
 						</div>
 						<div class="ContenedorDatosPerfil">
@@ -323,8 +316,7 @@
 							<c:choose>
 								<c:when test="${not empty usuario.fotoUsu}">
 									<img src="<c:out value='${usuario.fotoUsu}' />"
-										alt="Foto Perfil del usuario" class="imagenUsuPerfil"
-										onclick="openFormularioModal('Fotografía', 'file', '')" />
+										alt="Foto Perfil del usuario" class="imagenUsuPerfil">
 								</c:when>
 								<c:otherwise>
 									<!-- Mostrar un formulario si no hay imagen -->
@@ -353,20 +345,12 @@
 							<h3 class="DatosPerfil2">Nombre Completo:</h3>
 							<h3 class="DatosPerfilInfo2">
 								<c:out value="${usuario.nombreCompletoUsu}" default="" />
-								<button class="botonModificador"
-									onclick="openFormularioModal('Nombre completo', 'text', '<c:out value="${usuario.nombreCompletoUsu}" default="" />')">
-									<i class="fa-solid fa-pen"></i>
-								</button>
 							</h3>
 						</div>
 						<div class="ContenedorDatosPerfilB">
 							<h3 class="DatosPerfil2">Teléfono Móvil:</h3>
 							<h3 class="DatosPerfilInfo2">
 								<c:out value="${usuario.movilUsu}" default="" />
-								<button class="botonModificador"
-									onclick="openFormularioModal('Teléfono', 'tel', '<c:out value="${usuario.movilUsu}" default="" />')">
-									<i class="fa-solid fa-pen"></i>
-								</button>
 							</h3>
 						</div>
 						<div class="ContenedorDatosPerfilB">
@@ -565,14 +549,39 @@
 			</div>
 		</div>
 
+		<c:set var="usuario" value="${sessionScope.Usuario}" />
 		<!-- Modal para editar usuario -->
 		<div id="formularioModal" class="modal">
 			<div class="contenidoModal">
 				<span class="close" onclick="closeFormularioModal()">&times;</span>
-				<h2 id="tituloModal">Modificar Valor</h2>
-				<form id="formularioDatosModal">
-					<label id="labelModal" for="inputValorModal">Nuevo valor:</label> <input
-						type="text" id="inputValorModal" />
+				<h2>Modificar Usuario</h2>
+				<form id="formularioDatosModal" enctype="multipart/form-data">
+					<!-- Campos visibles -->
+					<div>
+						<label for="aliasInput">Alias:</label> <input type="text"
+							id="aliasInput" name="aliasUsu" value="${usuario.aliasUsu}" />
+					</div>
+					<div>
+						<label for="nombreCompletoInput">Nombre Completo:</label> <input
+							type="text" id="nombreCompletoInput" name="nombreCompletoUsu"
+							value="${usuario.nombreCompletoUsu}" />
+					</div>
+					<div>
+						<label for="movilInput">Teléfono Móvil:</label> <input type="tel"
+							id="movilInput" name="movilUsu" value="${usuario.movilUsu}" />
+					</div>
+					<div>
+						<label for="fotoInput">Fotografía:</label> <input type="file"
+							id="fotoInput" name="foto" />
+					</div>
+					<!-- Campos ocultos (se envían pero no se ven) -->
+					<input type="hidden" id="correoInput" name="correoElectronicoUsu"
+						value="${usuario.correoElectronicoUsu}" /> <input type="hidden"
+						id="tipoUsuarioInput" name="tipoUsuario"
+						value="<c:choose>
+                   <c:when test='${usuario.esPremium}'>Premium</c:when>
+                   <c:otherwise>Gratuito</c:otherwise>
+                 </c:choose>" />
 					<button type="submit" class="manga-button">Guardar</button>
 				</form>
 			</div>

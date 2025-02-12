@@ -316,10 +316,9 @@ public class PerfilServicio {
 	 * @param usuarioPaFiltrar
 	 * @return
 	 */
-	public ModelAndView modificarUsuario(UsuarioPerfilDto usuarioAModificar, UsuarioPerfilDto usuarioPaFiltrar,
-			HttpSession sesion) {
+	public ModelAndView modificarUsuario(UsuarioPerfilDto usuarioAModificar, HttpSession sesion) {
 		logger.info("Iniciando el proceso de modificación de usuario.");
-
+		UsuarioPerfilDto usuarioPaFiltrar = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
 		usuarioAModificar = combinarUsuario(usuarioAModificar, usuarioPaFiltrar);
 		ModelAndView vista = new ModelAndView();
 		String url = "http://localhost:8081/api/ModificarUsuario";
@@ -352,7 +351,9 @@ public class PerfilServicio {
 	}
 
 	/**
-	 * Metodo que mete los valores de la sesion del usuario con el usuario que se modifica
+	 * Metodo que mete los valores de la sesion del usuario con el usuario que se
+	 * modifica
+	 * 
 	 * @param usuarioAModificar
 	 * @param usuarioPaFiltrar
 	 * @return
@@ -363,6 +364,7 @@ public class PerfilServicio {
 		usuarioAModificar.setEsPremium(usuarioPaFiltrar.getEsPremium());
 		usuarioAModificar.setEsVerificadoEntidad(usuarioPaFiltrar.getEsVerificadoEntidad());
 		usuarioAModificar.setRolUsu(usuarioPaFiltrar.getRolUsu());
+		
 		return usuarioAModificar;
 	}
 

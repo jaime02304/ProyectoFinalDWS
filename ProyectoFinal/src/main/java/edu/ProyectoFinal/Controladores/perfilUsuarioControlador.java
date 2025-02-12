@@ -77,13 +77,11 @@ public class perfilUsuarioControlador {
 	 * @return
 	 */
 	@PostMapping("/ModificarUsuario")
-	public ModelAndView postMethodName(@ModelAttribute UsuarioPerfilDto usuarioAModificar,
+	public ModelAndView modificarUsuario(@ModelAttribute UsuarioPerfilDto usuarioAModificar,
 			HttpSession sesionDelUsuario) {
-		UsuarioPerfilDto filtrarUsuario = (UsuarioPerfilDto) sesionDelUsuario.getAttribute("Usuario");
 		ModelAndView vista = new ModelAndView();
 		try {
-			UsuarioPerfilDto usuarioEnSesion = (UsuarioPerfilDto) sesionDelUsuario.getAttribute("Usuario");
-			vista = servicioPerfil.modificarUsuario(usuarioAModificar, usuarioEnSesion, sesionDelUsuario);
+			vista = servicioPerfil.modificarUsuario(usuarioAModificar, sesionDelUsuario);
 			vista.setViewName("PerfilUsuario");
 		} catch (Exception ex) {
 			vista = new ModelAndView("error");
