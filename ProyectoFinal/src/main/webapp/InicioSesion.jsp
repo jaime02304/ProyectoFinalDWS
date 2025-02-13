@@ -55,7 +55,7 @@
 			<div class="container" id="container">
 				<div class="formularioContenedor sign-up-container">
 					<form action="${pageContext.request.contextPath}/Registro"
-						method="post">
+						method="post" id="formRegistro">
 						<h2 class="registroTitulo">Registrarse</h2>
 						<input type="text" placeholder="Nombre Completo"
 							name="nombreCompletoUsu"
@@ -65,8 +65,9 @@
 							placeholder="Correo electrónico" name="correoElectronicoUsu"
 							value="${nuevoUsuario.correoElectronicoUsu}" required /> <input
 							type="password" placeholder="Contraseña" name="contraseniaUsu"
-							value="${nuevoUsuario.contraseniaUsu}" required /> <input
-							type="password" placeholder="Repetir contraseña" />
+							id="contraseniaUsu" value="${nuevoUsuario.contraseniaUsu}"
+							required /> <input type="password"
+							placeholder="Repetir contraseña" id="repetirContrasenia" />
 						<div class="debajoDeLosInputs">
 							<div class="social-contenedor2">
 								<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
@@ -138,12 +139,13 @@
 							style="display: flex; width: 100%; flex-direction: column; height: 30%; justify-content: space-evenly; align-items: center;">
 							<button class="botonNavegador botonIS1">Iniciar Sesion</button>
 							<button type="button" onclick="flipForm()"
-								class="botonFlip botonNavegador" style="width: auto; height:auto;">Registrase</button>
+								class="botonFlip botonNavegador"
+								style="width: auto; height: auto;">Registrase</button>
 						</div>
 					</form>
 					<!-- Formulario Trasero -->
 					<form action="${pageContext.request.contextPath}/Registro"
-						method="post" class="form1 form-back formsm">
+						method="post" class="form1 form-back formsm" id="formRegistro2">
 						<h2 class="registroTitulo1">Registrarse</h2>
 						<input type="text" placeholder="N o m b r e  c o m p l e t o"
 							name="nombreCompletoUsu"
@@ -155,19 +157,27 @@
 							value="${nuevoUsuario.correoElectronicoUsu}" required /> <input
 							type="password" placeholder="C o n t r a s e ñ a"
 							name="contraseniaUsu" value="${nuevoUsuario.contraseniaUsu}"
-							required /> <input type="password"
-							placeholder="R e p e t i r  c o n t r a s e ñ a" />
+							required id="contraseniaUsu2" /> <input type="password"
+							placeholder="R e p e t i r  c o n t r a s e ñ a"
+							id="repetirContrasenia2" />
 						<div class="social-contenedor3">
 							<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
 						</div>
 						<div class="debajoDeLosInputs2">
-							<button class="botonNavegador botonRegistro">
+							<button type="submit" class="botonNavegador botonRegistro">
 								Registrarse</button>
 							<button type="button" onclick="flipForm()"
 								class="botonFlip botonNavegador botonIS1">inicio Sesion</button>
 						</div>
 					</form>
 				</div>
+			</div>
+		</div>
+
+		<div id="alertaPersonalizada" class="alerta-personalizada">
+			<div class="alerta-contenido">
+				<p id="alertaMensaje">Mensaje de alerta</p>
+				<button onclick="cerrarAlertaPersonalizada()">Aceptar</button>
 			</div>
 		</div>
 	</main>
