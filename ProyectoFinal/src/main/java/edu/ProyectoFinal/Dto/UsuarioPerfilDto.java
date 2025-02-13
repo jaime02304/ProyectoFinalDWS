@@ -10,6 +10,7 @@ public class UsuarioPerfilDto {
 	private String aliasUsu = "aaaaa";
 	private String correoElectronicoUsu = "aaaaa";
 	private int movilUsu = 0;
+	private String fotoString = "";
 	private byte[] fotoUsu;
 	private Boolean esPremium = false;
 	private String rolUsu = "user";
@@ -19,6 +20,14 @@ public class UsuarioPerfilDto {
 
 	public Boolean getEsVerificadoEntidad() {
 		return esVerificadoEntidad;
+	}
+
+	public String getFotoString() {
+		return fotoString;
+	}
+
+	public void setFotoString(String fotoString) {
+		this.fotoString = fotoString;
 	}
 
 	public Long getIdUsu() {

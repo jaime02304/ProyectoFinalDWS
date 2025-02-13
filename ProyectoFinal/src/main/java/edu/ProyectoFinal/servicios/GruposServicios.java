@@ -35,7 +35,7 @@ public class GruposServicios {
 		try {
 			Response respuestaApi = ClientBuilder.newClient().target(url).request(MediaType.APPLICATION_JSON).get();
 
-			if (respuestaApi.getStatus() == 200) {
+			if (respuestaApi.getStatus() ==  Response.Status.OK.getStatusCode()) {
 				List<GruposListadoDto> listadoGruposCompletosTop = listadoGruposTop(respuestaApi);
 				vista.addObject("listaGrupos", listadoGruposCompletosTop);
 

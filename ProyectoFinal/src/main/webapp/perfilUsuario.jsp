@@ -70,9 +70,6 @@
 								<c:when test="${not empty usuario.fotoUsu}">
 									<img src="<c:out value='${usuario.fotoUsu}' />"
 										alt="Foto Perfil del usuario" class="imagenUsuPerfil">
-									<button class="botonModificador" type="submit">
-										<i class="fa-solid fa-pen"></i>
-									</button>
 								</c:when>
 								<c:otherwise>
 									<!-- Mostrar un formulario si no hay imagen -->
@@ -549,39 +546,33 @@
 			</div>
 		</div>
 
-		<c:set var="usuario" value="${sessionScope.Usuario}" />
+		<c:set var="usuarioAModificar" value="${sessionScope.Usuario}" />
 		<!-- Modal para editar usuario -->
 		<div id="formularioModal" class="modal">
 			<div class="contenidoModal">
 				<span class="close" onclick="closeFormularioModal()">&times;</span>
 				<h2>Modificar Usuario</h2>
-				<form id="formularioDatosModal" enctype="multipart/form-data">
+				<form id="formularioDatosModal" enctype="multipart/form-data"
+					<%-- action="${pageContext.request.contextPath}/ModificarUsuario"
+					method="post" --%>>
 					<!-- Campos visibles -->
 					<div>
 						<label for="aliasInput">Alias:</label> <input type="text"
-							id="aliasInput" name="aliasUsu" value="${usuario.aliasUsu}" />
+							id="aliasInput" name="aliasUsu" value="${usuarioAModificar.aliasUsu}" />
 					</div>
 					<div>
 						<label for="nombreCompletoInput">Nombre Completo:</label> <input
 							type="text" id="nombreCompletoInput" name="nombreCompletoUsu"
-							value="${usuario.nombreCompletoUsu}" />
+							value="${usuarioAModificar.nombreCompletoUsu}" />
 					</div>
 					<div>
 						<label for="movilInput">Teléfono Móvil:</label> <input type="tel"
-							id="movilInput" name="movilUsu" value="${usuario.movilUsu}" />
+							id="movilInput" name="movilUsu" value="${usuarioAModificar.movilUsu}" />
 					</div>
 					<div>
 						<label for="fotoInput">Fotografía:</label> <input type="file"
-							id="fotoInput" name="foto" />
+							id="fotoInput" name="foto" name="fotoUsu" value="${usuarioAModificar.fotoUsu}" />
 					</div>
-					<!-- Campos ocultos (se envían pero no se ven) -->
-					<input type="hidden" id="correoInput" name="correoElectronicoUsu"
-						value="${usuario.correoElectronicoUsu}" /> <input type="hidden"
-						id="tipoUsuarioInput" name="tipoUsuario"
-						value="<c:choose>
-                   <c:when test='${usuario.esPremium}'>Premium</c:when>
-                   <c:otherwise>Gratuito</c:otherwise>
-                 </c:choose>" />
 					<button type="submit" class="manga-button">Guardar</button>
 				</form>
 			</div>

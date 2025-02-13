@@ -1,12 +1,14 @@
 package edu.ProyectoFinal.servicios;
 
+import java.util.Base64;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
 import edu.ProyectoFinal.Dto.UsuarioRegistroDto;
 import jakarta.servlet.http.HttpSession;
@@ -54,42 +56,42 @@ public class InicioSesionServicio {
 	 * @throws IllegalArgumentException
 	 */
 	public ModelAndView nuevoUsuario(UsuarioRegistroDto usuarioNuevo, HttpSession sesionIniciada) {
-	    Logger logger = LoggerFactory.getLogger(getClass());
-	    ModelAndView vista = new ModelAndView("InicioSesion");
+		Logger logger = LoggerFactory.getLogger(getClass());
+		ModelAndView vista = new ModelAndView("InicioSesion");
 
-	    if (!validarEmail(usuarioNuevo.getCorreoElectronicoUsu())) {
-	        logger.warn("Correo electrónico inválido: {}", usuarioNuevo.getCorreoElectronicoUsu());
-	        vista.addObject("error", "Correo electrónico inválido.");
-	        return vista;
-	    }
+		if (!validarEmail(usuarioNuevo.getCorreoElectronicoUsu())) {
+			logger.warn("Correo electrónico inválido: {}", usuarioNuevo.getCorreoElectronicoUsu());
+			vista.addObject("error", "Correo electrónico inválido.");
+			return vista;
+		}
 
-	    String url = "http://localhost:8081/api/usuario/registro";
+		String url = "http://localhost:8081/api/usuario/registro";
 
-	    try (Client cliente = ClientBuilder.newClient()) {
-	        String usuarioJson = new ObjectMapper().writeValueAsString(usuarioNuevo);
+		try (Client cliente = ClientBuilder.newClient()) {
+			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioNuevo);
 
-	        Response respuestaApi = cliente.target(url)
-	                .request(MediaType.APPLICATION_JSON)
-	                .post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
+			Response respuestaApi = cliente.target(url).request(MediaType.APPLICATION_JSON)
+					.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
 
-	        if (respuestaApi.getStatus() == 200) {
-	            UsuarioPerfilDto usuarioPerfil = respuestaApi.readEntity(UsuarioPerfilDto.class);
-	            sesionIniciada.setAttribute("Usuario", usuarioPerfil);
-	            sesionIniciada.setMaxInactiveInterval(60 * 60 * 24 * 7); 
-	            vista = servicioGrupos.obtenerLosGruposTops();
-	            vista.setViewName("LandinPage");
-	        } else {
-	            logger.error("Error en el registro: Código HTTP {}", respuestaApi.getStatus());
-	            vista.setViewName("error");
-	            vista.addObject("error", "Ha habido un error con la web, por favor vuelva en 5 minutos.");
-	        }
-	    } catch (Exception e) {
-	        logger.error("Error al registrar usuario", e);
-	        vista.setViewName("error");
-	        vista.addObject("error", "Ocurrió un problema inesperado. Inténtelo más tarde.");
-	    }
+			if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
+				UsuarioPerfilDto usuarioPerfil = respuestaApi.readEntity(UsuarioPerfilDto.class);
+				usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
+				sesionIniciada.setAttribute("Usuario", usuarioPerfil);
+				sesionIniciada.setMaxInactiveInterval(60 * 60 * 24 * 7);
+				vista = servicioGrupos.obtenerLosGruposTops();
+				vista.setViewName("LandinPage");
+			} else {
+				logger.error("Error en el registro: Código HTTP {}", respuestaApi.getStatus());
+				vista.setViewName("error");
+				vista.addObject("error", "Ha habido un error con la web, por favor vuelva en 5 minutos.");
+			}
+		} catch (Exception e) {
+			logger.error("Error al registrar usuario", e);
+			vista.setViewName("error");
+			vista.addObject("error", "Ocurrió un problema inesperado. Inténtelo más tarde.");
+		}
 
-	    return vista;
+		return vista;
 	}
 
 	/**
@@ -105,48 +107,49 @@ public class InicioSesionServicio {
 	 * @throws IllegalArgumentException
 	 */
 	public ModelAndView inicioSesion(UsuarioRegistroDto usuario, HttpSession sesion) {
-	    Logger logger = LoggerFactory.getLogger(getClass());
-	    ModelAndView vista = new ModelAndView("InicioSesion");
+		Logger logger = LoggerFactory.getLogger(getClass());
+		ModelAndView vista = new ModelAndView("InicioSesion");
 
-	    if (!validarEmail(usuario.getCorreoElectronicoUsu())) {
-	        vista.addObject("error", "Correo electrónico inválido.");
-	        return vista;
-	    }
+		if (!validarEmail(usuario.getCorreoElectronicoUsu())) {
+			vista.addObject("error", "Correo electrónico inválido.");
+			return vista;
+		}
 
-	    String url = "http://localhost:8081/api/usuario/inicioSesion";
+		String url = "http://localhost:8081/api/usuario/inicioSesion";
 
-	    try (Client cliente = ClientBuilder.newClient()) {
-	        String usuarioJson = new ObjectMapper().writeValueAsString(usuario);
+		try (Client cliente = ClientBuilder.newClient()) {
+			String usuarioJson = new ObjectMapper().writeValueAsString(usuario);
 
-	        Response respuesta = cliente.target(url)
-	                .request(MediaType.APPLICATION_JSON)
-	                .post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
+			Response respuesta = cliente.target(url).request(MediaType.APPLICATION_JSON)
+					.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
 
-	        if (respuesta.getStatus() != 200) {
-	            logger.error("Error en la API de inicio de sesión: Código HTTP {}", respuesta.getStatus());
-	            vista.setViewName("error");
-	            vista.addObject("error", "Ha habido un error con la web, por favor intente más tarde.");
-	            return vista;
-	        }
+			if (respuesta.getStatus() != Response.Status.OK.getStatusCode()) {
+				logger.error("Error en la API de inicio de sesión: Código HTTP {}", respuesta.getStatus());
+				vista.setViewName("error");
+				vista.addObject("error", "Ha habido un error con la web, por favor intente más tarde.");
+				return vista;
+			}
 
-	        UsuarioPerfilDto usuarioPerfil = respuesta.readEntity(UsuarioPerfilDto.class);
+			UsuarioPerfilDto usuarioPerfil = respuesta.readEntity(UsuarioPerfilDto.class);
+			usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
 
-	        if (usuarioPerfil != null && usuarioPerfil.getCorreoElectronicoUsu().equals(usuario.getCorreoElectronicoUsu())) {
-	            sesion.setAttribute("Usuario", usuarioPerfil);
-	            sesion.setMaxInactiveInterval(60 * 60 * 24 * 7); 
-	            vista = servicioGrupos.obtenerLosGruposTops();
-	            vista.setViewName("LandinPage");
-	        } else {
-	            vista.setViewName("InicioSesion");
-	            vista.addObject("mensaje", "El usuario no ha sido encontrado.");
-	        }
-	    } catch (Exception e) {
-	        logger.error("Error en el inicio de sesión", e);
-	        vista.setViewName("error");
-	        vista.addObject("error", "Ocurrió un problema inesperado. Inténtelo más tarde.");
-	    }
+			if (usuarioPerfil != null
+					&& usuarioPerfil.getCorreoElectronicoUsu().equals(usuario.getCorreoElectronicoUsu())) {
+				sesion.setAttribute("Usuario", usuarioPerfil);
+				sesion.setMaxInactiveInterval(60 * 60 * 24 * 7);
+				vista = servicioGrupos.obtenerLosGruposTops();
+				vista.setViewName("LandinPage");
+			} else {
+				vista.setViewName("InicioSesion");
+				vista.addObject("mensaje", "El usuario no ha sido encontrado.");
+			}
+		} catch (Exception e) {
+			logger.error("Error en el inicio de sesión", e);
+			vista.setViewName("error");
+			vista.addObject("error", "Ocurrió un problema inesperado. Inténtelo más tarde.");
+		}
 
-	    return vista;
+		return vista;
 	}
 
 }

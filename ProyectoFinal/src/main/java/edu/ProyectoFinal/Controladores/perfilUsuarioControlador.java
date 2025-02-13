@@ -38,28 +38,7 @@ public class perfilUsuarioControlador {
 		UsuarioPerfilDto usuarioABuscar = (UsuarioPerfilDto) sesionIniciada.getAttribute("Usuario");
 
 		try {
-			if (usuarioABuscar != null) {
-				switch (usuarioABuscar.getRolUsu()) {
-				case "user":
-					vista = servicioPerfil.obtenerGruposDelUsuario(usuarioABuscar);
-					servicioPerfil.busquedaDelComentarioDelUsuario(usuarioABuscar).getModel().forEach(vista::addObject);
-					break;
-
-				case "admin":
-					vista = servicioPerfil.obtenerGruposParaAdmin();
-					servicioPerfil.obtenerUsuariosRolUser().getModel().forEach(vista::addObject);
-					break;
-
-				default: // Super Admin u otros roles
-					vista = servicioPerfil.obtenerGruposParaAdmin();
-					servicioPerfil.obtenerUsuariosParaSAdmin().getModel().forEach(vista::addObject);
-					break;
-				}
-				vista.setViewName("perfilUsuario");
-			} else {
-				vista.setViewName("error");
-				vista.addObject("error", "Usuario no encontrado en la sesión.");
-			}
+			vista = servicioPerfil.condicionYCasosPerfil(usuarioABuscar, vista);
 		} catch (Exception e) {
 			vista.setViewName("error");
 			vista.addObject("error", "No se ha cargado la página del perfil personal");
@@ -79,15 +58,14 @@ public class perfilUsuarioControlador {
 	@PostMapping("/ModificarUsuario")
 	public ModelAndView modificarUsuario(@ModelAttribute UsuarioPerfilDto usuarioAModificar,
 			HttpSession sesionDelUsuario) {
-		ModelAndView vista = new ModelAndView();
 		try {
-			vista = servicioPerfil.modificarUsuario(usuarioAModificar, sesionDelUsuario);
-			vista.setViewName("PerfilUsuario");
+			return servicioPerfil.modificarUsuario(usuarioAModificar, sesionDelUsuario);
 		} catch (Exception ex) {
-			vista = new ModelAndView("error");
-			vista.addObject("error", "Ha ocurrido un error al modificar el usuario. Por favor, inténtalo de nuevo.");
+			ModelAndView vistaError = new ModelAndView("error");
+			vistaError.addObject("error",
+					"Ha ocurrido un error al modificar el usuario. Por favor, inténtalo de nuevo.");
+			return vistaError;
 		}
-		return vista;
 	}
 
 	/**
@@ -103,7 +81,7 @@ public class perfilUsuarioControlador {
 		try {
 			cerrarSesion.invalidate();
 			vista = servicioGrupos.obtenerLosGruposTops();
-			vista.setViewName("/");
+			vista.setViewName("LandinPage");
 		} catch (Exception e) {
 			vista.setViewName("error");
 			vista.addObject("error", "No se ha cargado la página principal.");
@@ -111,4 +89,5 @@ public class perfilUsuarioControlador {
 
 		return vista;
 	}
+
 }

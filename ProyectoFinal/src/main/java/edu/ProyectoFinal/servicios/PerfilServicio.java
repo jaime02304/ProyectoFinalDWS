@@ -1,6 +1,7 @@
 package edu.ProyectoFinal.servicios;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.ProyectoFinal.Controladores.perfilUsuarioControlador;
 import edu.ProyectoFinal.Dto.ComentariosPerfilDto;
 import edu.ProyectoFinal.Dto.GruposListadoDto;
 import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
@@ -31,6 +33,7 @@ import jakarta.ws.rs.core.Response;
 public class PerfilServicio {
 
 	private static final Logger logger = LoggerFactory.getLogger(PerfilServicio.class);
+	
 
 	/**
 	 * Metodo que coge el comentario por defecto del usuario
@@ -116,7 +119,7 @@ public class PerfilServicio {
 			Response respuestaApi = ClientBuilder.newClient().target(url).request(MediaType.APPLICATION_JSON)
 					.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
 
-			if (respuestaApi.getStatus() == 200) {
+			if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
 				List<GruposListadoDto> listadoGruposUsuario = listadoGrupos(respuestaApi);
 				vista.addObject("listadoGruposUsuario", listadoGruposUsuario);
 
@@ -147,7 +150,7 @@ public class PerfilServicio {
 		try {
 			Response respuestaApi = ClientBuilder.newClient().target(url).request(MediaType.APPLICATION_JSON).get();
 
-			if (respuestaApi.getStatus() == 200) {
+			if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
 				List<GruposListadoDto> listadoGruposAdmin = listadoGrupos(respuestaApi);
 				vista.addObject("listadoGruposAdmin", listadoGruposAdmin);
 
@@ -178,7 +181,7 @@ public class PerfilServicio {
 		try {
 			Response respuestaApi = ClientBuilder.newClient().target(url).request(MediaType.APPLICATION_JSON).get();
 
-			if (respuestaApi.getStatus() == 200) {
+			if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
 				List<UsuarioPerfilDto> listadoUsuario = listadoUsuarios(respuestaApi);
 				vista.addObject("listadoUsuariosAdmin", listadoUsuario);
 
@@ -208,7 +211,7 @@ public class PerfilServicio {
 		try {
 			Response respuestaApi = ClientBuilder.newClient().target(url).request(MediaType.APPLICATION_JSON).get();
 
-			if (respuestaApi.getStatus() == 200) {
+			if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
 				List<UsuarioPerfilDto> listadoUsuario = listadoUsuarios(respuestaApi);
 				vista.addObject("listadoUsuariosSAdmin", listadoUsuario);
 
@@ -318,28 +321,37 @@ public class PerfilServicio {
 	 */
 	public ModelAndView modificarUsuario(UsuarioPerfilDto usuarioAModificar, HttpSession sesion) {
 		logger.info("Iniciando el proceso de modificación de usuario.");
+
+		// Obtener el usuario actual de la sesión y combinarlo con los datos a modificar
 		UsuarioPerfilDto usuarioPaFiltrar = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
 		usuarioAModificar = combinarUsuario(usuarioAModificar, usuarioPaFiltrar);
+
 		ModelAndView vista = new ModelAndView();
 		String url = "http://localhost:8081/api/ModificarUsuario";
 
 		try {
-			// Convertir el usuario a JSON para enviarlo a la API
+			// Convertir el objeto a JSON para enviarlo a la API
 			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioAModificar);
 			logger.debug("Usuario en JSON: {}", usuarioJson);
 
-			Response respuestaApi = ClientBuilder.newClient().target(url).request(MediaType.APPLICATION_JSON)
-					.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
+			// Usar try-with-resources para gestionar el cierre del cliente automáticamente
+			try (Client client = ClientBuilder.newClient()) {
+				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
+						.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
 
-			logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
+				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
 
-			if (respuestaApi.getStatus() == 200) {
-				sesion.setAttribute("Usuario", usuarioAModificar);
-				logger.info("Usuario modificado correctamente en la sesión.");
-			} else {
-				String errorMsg = "Error al modificar el usuario: " + respuestaApi.getStatusInfo().toString();
-				vista.addObject("error", errorMsg);
-				logger.error(errorMsg);
+				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
+					UsuarioPerfilDto usuarioPerfil = respuestaApi.readEntity(UsuarioPerfilDto.class);
+					usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
+					sesion.setAttribute("Usuario", usuarioPerfil);
+					logger.info("Usuario modificado correctamente en la sesión.");
+					vista=condicionYCasosPerfil(usuarioPerfil, vista);
+				} else {
+					String errorMsg = "Error al modificar el usuario: " + respuestaApi.getStatusInfo();
+					vista.addObject("error", errorMsg);
+					logger.error(errorMsg);
+				}
 			}
 		} catch (Exception e) {
 			String errorMsg = "Error al conectar con la API: " + e.getMessage();
@@ -347,6 +359,33 @@ public class PerfilServicio {
 			logger.error("Excepción al conectar con la API", e);
 		}
 
+		return vista;
+	}
+	
+	
+	public ModelAndView condicionYCasosPerfil(UsuarioPerfilDto usuarioABuscar, ModelAndView vista) {
+		if (usuarioABuscar != null) {
+			switch (usuarioABuscar.getRolUsu()) {
+			case "user":
+				vista =obtenerGruposDelUsuario(usuarioABuscar);
+				busquedaDelComentarioDelUsuario(usuarioABuscar).getModel().forEach(vista::addObject);
+				break;
+
+			case "admin":
+				vista = obtenerGruposParaAdmin();
+				obtenerUsuariosRolUser().getModel().forEach(vista::addObject);
+				break;
+
+			default: // Super Admin u otros roles
+				vista = obtenerGruposParaAdmin();
+				obtenerUsuariosParaSAdmin().getModel().forEach(vista::addObject);
+				break;
+			}
+			vista.setViewName("perfilUsuario");
+		} else {
+			vista.setViewName("error");
+			vista.addObject("error", "Usuario no encontrado en la sesión.");
+		}
 		return vista;
 	}
 
@@ -364,7 +403,9 @@ public class PerfilServicio {
 		usuarioAModificar.setEsPremium(usuarioPaFiltrar.getEsPremium());
 		usuarioAModificar.setEsVerificadoEntidad(usuarioPaFiltrar.getEsVerificadoEntidad());
 		usuarioAModificar.setRolUsu(usuarioPaFiltrar.getRolUsu());
-		
+		if (usuarioAModificar.getFotoUsu() == null) {
+			usuarioAModificar.setFotoUsu(usuarioPaFiltrar.getFotoUsu());
+		}
 		return usuarioAModificar;
 	}
 
