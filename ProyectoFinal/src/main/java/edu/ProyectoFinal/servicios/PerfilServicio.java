@@ -250,7 +250,7 @@ public class PerfilServicio {
 				for (int i = 0; i < gruposArray.length(); i++) {
 					JSONObject jsonGrupo = gruposArray.getJSONObject(i);
 					GruposListadoDto grupo = new GruposListadoDto();
-
+					grupo.setIdGrupo(jsonGrupo.getLong("idGrupo"));
 					grupo.setNombreGrupo(jsonGrupo.optString("nombreGrupo"));
 					grupo.setCategoriaNombre(jsonGrupo.optString("categoriaNombre"));
 					grupo.setSubCategoriaNombre(jsonGrupo.optString("subCategoriaNombre"));

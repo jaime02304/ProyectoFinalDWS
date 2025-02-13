@@ -194,7 +194,8 @@
 													<a href="#" class="verGrupo2">Modificar</a>
 												</div>
 												<div>
-													<a href="#" class="verGrupo2">Borrar</a>
+													<a href="#" class="verGrupo2"
+														onclick="openEliminacionModalG('${grupo.idGrupo}', '${grupo.nombreGrupo}')">Borrar</a>
 												</div>
 											</div>
 										</c:forEach>
@@ -257,7 +258,8 @@
 													<a href="#" class="verGrupo2">Modificar</a>
 												</div>
 												<div>
-													<a href="#" class="verGrupo2">Borrar</a>
+													<a href="#" class="verGrupo2"
+														onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}')">Borrar</a>
 												</div>
 											</div>
 										</c:forEach>
@@ -288,7 +290,8 @@
 													<a href="#" class="verGrupo2">Modificar</a>
 												</div>
 												<div>
-													<a href="#" class="verGrupo2">Borrar</a>
+													<a href="#" class="verGrupo2"
+														onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}')">Borrar</a>
 												</div>
 											</div>
 										</c:forEach>
@@ -442,7 +445,8 @@
 												<a href="#" class="verGrupo2">Modificar</a>
 											</div>
 											<div>
-												<a href="#" class="verGrupo2">Borrar</a>
+												<a href="#" class="verGrupo2"
+													onclick="openEliminacionModalG('${grupo.idGrupo}', '${grupo.nombreGrupo}')">Borrar</a>
 											</div>
 										</div>
 									</c:forEach>
@@ -503,7 +507,8 @@
 												<a href="#" class="verGrupo2">Modificar</a>
 											</div>
 											<div>
-												<a href="#" class="verGrupo2">Borrar</a>
+												<a href="#" class="verGrupo2"
+													onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}')">Borrar</a>
 											</div>
 										</div>
 									</c:forEach>
@@ -534,7 +539,8 @@
 												<a href="#" class="verGrupo2">Modificar</a>
 											</div>
 											<div>
-												<a href="#" class="verGrupo2">Borrar</a>
+												<a href="#" class="verGrupo2"
+													onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}')">Borrar</a>
 											</div>
 										</div>
 									</c:forEach>
@@ -546,19 +552,52 @@
 			</div>
 		</div>
 
+		<!-- MODAL PARA LA ELIMINACION DE USUARIO -->
+		<div id="formularioEliminacionModal" class="modal">
+			<div class="contenidoModal">
+				<span class="close" onclick="closeEliminacionModal()">&times;</span>
+				<h2 id="modalTitulo" style="word-wrap: break-word;">Eliminar
+					Usuario</h2>
+				<form id="formularioDatosModal" enctype="multipart/form-data"
+					onsubmit="enviarEliminacion(event)">
+					<input type="hidden" id="idUsuarioAEliminar" />
+					<div>
+						<button type="submit" class="manga-button">Si</button>
+						<button class="manga-button" onclick="closeEliminacionModal()">No</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- MODAL PARA LA ELIMINACION DE GRUPO -->
+		<div id="formularioEliminacionModalGrupo" class="modal">
+			<div class="contenidoModal">
+				<span class="close" onclick="closeEliminacionModalG()">&times;</span>
+				<h2 id="modalTituloG" style="word-wrap: break-word;">Eliminar
+					Grupo</h2>
+				<form id="formularioDatosModal" enctype="multipart/form-data"
+					onsubmit="enviarEliminacion2(event)">
+					<input type="hidden" id="idGrupoAEliminar" />
+					<div>
+						<button type="submit" class="manga-button">Si</button>
+						<button class="manga-button" onclick="closeEliminacionModalG()">No</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- MODAL PARA EDITAR EL PERFIL PERSONAL -->
 		<c:set var="usuarioAModificar" value="${sessionScope.Usuario}" />
-		<!-- Modal para editar usuario -->
 		<div id="formularioModal" class="modal">
 			<div class="contenidoModal">
 				<span class="close" onclick="closeFormularioModal()">&times;</span>
 				<h2>Modificar Usuario</h2>
-				<form id="formularioDatosModal" enctype="multipart/form-data"
-					<%-- action="${pageContext.request.contextPath}/ModificarUsuario"
-					method="post" --%>>
+				<form id="formularioDatosModal" enctype="multipart/form-data">
 					<!-- Campos visibles -->
 					<div>
 						<label for="aliasInput">Alias:</label> <input type="text"
-							id="aliasInput" name="aliasUsu" value="${usuarioAModificar.aliasUsu}" />
+							id="aliasInput" name="aliasUsu"
+							value="${usuarioAModificar.aliasUsu}" />
 					</div>
 					<div>
 						<label for="nombreCompletoInput">Nombre Completo:</label> <input
@@ -567,11 +606,13 @@
 					</div>
 					<div>
 						<label for="movilInput">Teléfono Móvil:</label> <input type="tel"
-							id="movilInput" name="movilUsu" value="${usuarioAModificar.movilUsu}" />
+							id="movilInput" name="movilUsu"
+							value="${usuarioAModificar.movilUsu}" />
 					</div>
 					<div>
 						<label for="fotoInput">Fotografía:</label> <input type="file"
-							id="fotoInput" name="foto" name="fotoUsu" value="${usuarioAModificar.fotoUsu}" />
+							id="fotoInput" name="foto" name="fotoUsu"
+							value="${usuarioAModificar.fotoUsu}" />
 					</div>
 					<button type="submit" class="manga-button">Guardar</button>
 				</form>
