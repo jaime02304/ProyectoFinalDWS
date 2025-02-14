@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
+import edu.ProyectoFinal.Dto.eliminarElementoPerfilDto;
 import edu.ProyectoFinal.servicios.GruposServicios;
 import edu.ProyectoFinal.servicios.PerfilServicio;
 import jakarta.servlet.http.HttpSession;
@@ -60,6 +61,18 @@ public class perfilUsuarioControlador {
 			HttpSession sesionDelUsuario) {
 		try {
 			return servicioPerfil.modificarUsuario(usuarioAModificar, sesionDelUsuario);
+		} catch (Exception ex) {
+			ModelAndView vistaError = new ModelAndView("error");
+			vistaError.addObject("error",
+					"Ha ocurrido un error al modificar el usuario. Por favor, inténtalo de nuevo.");
+			return vistaError;
+		}
+	}
+
+	@PostMapping("/EliminarElementosComoAdmin")
+	public ModelAndView eliminarUsuario(@ModelAttribute eliminarElementoPerfilDto elemento, HttpSession sesion) {
+		try {
+			return servicioPerfil.enviarElementoParaBorrar(elemento, sesion);
 		} catch (Exception ex) {
 			ModelAndView vistaError = new ModelAndView("error");
 			vistaError.addObject("error",

@@ -107,119 +107,66 @@ document.addEventListener("DOMContentLoaded", function() {
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 //PARTE DE ELIMINAR
-function openEliminacionModal(idUsu, aliasUsu) {
-	// Abre el modal de confirmación de eliminación
-	document.getElementById("formularioEliminacionModal").style.display = "flex";
+function openEliminacionModal(id, filtradorNombre) {
+  // Cacheamos los elementos del DOM
+  const modal = document.getElementById("formularioEliminacionModal");
+  const idInput = document.getElementById("idElementoAEliminar");
+  const nombreInput = document.getElementById("elementoAEliminar");
+  const modalTitulo = document.getElementById("modalTitulo");
 
-	// Guardamos el ID del usuario en un campo oculto
-	document.getElementById("idUsuarioAEliminar").value = idUsu;
-
-	// Actualizamos el título del modal con el alias del usuario
-	document.getElementById("modalTitulo").innerText = "Eliminar Usuario: " + aliasUsu;
+  // Abrimos el modal y asignamos los valores correspondientes
+  modal.style.display = "flex";
+  idInput.value = id;
+  nombreInput.value = filtradorNombre;
+  modalTitulo.innerText = `Eliminar a: ${filtradorNombre}`;
 }
 
 function closeEliminacionModal() {
-	// Cierra el modal
-	document.getElementById("formularioEliminacionModal").style.display = "none";
+  document.getElementById("formularioEliminacionModal").style.display = "none";
 }
 
-// Enviar solicitud para eliminar el usuario
 function enviarEliminacion(event) {
-	event.preventDefault(); // Evita la recarga de la página
+  event.preventDefault(); // Evita la recarga de la página
 
-	// Obtener el ID del usuario a eliminar
-	var idUsu = document.getElementById("idUsuarioAEliminar").value;
+  // Obtenemos los valores de los inputs una sola vez
+  const nombre = document.getElementById("elementoAEliminar").value;
+  const id = document.getElementById("idElementoAEliminar").value;
 
-	if (!idUsu) {
-		console.error("No se encontró el ID del usuario a eliminar.");
-		return;
-	}
+  if (!nombre) {
+    console.error("No se encontró el nombre o identificador del usuario a eliminar.");
+    return;
+  }
 
-	// Obtener el contexto de la aplicación para construir la URL correcta
-	var contextPath = window.location.pathname.split('/')[1]; // Ejemplo: "miapp" si la URL es /miapp/EliminarUsuario
+  // Creamos el FormData e incluimos únicamente los campos deseados
+  const formData = new FormData();
+  formData.append("elementoEliminar", nombre);
+  formData.append("idElementoEliminar", id);
 
-	// Realizar la solicitud POST con fetch para eliminar el usuario
-	fetch("/" + contextPath + "/EliminarUsuarioComoAdmin", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({ idUsu: idUsu })
-	})
-		.then(function(response) {
-			if (response.ok) {
+  // Obtenemos el contexto de la aplicación (asumiendo que está en la URL)
+  const contextPath = window.location.pathname.split('/')[1];
 
-				// Cerrar el modal
-				closeEliminacionModal();
-				mostrarAlertaPersonalizada("El usuario ha sido eliminado correctamente.");
-				// Aquí puedes también actualizar la lista de usuarios en la página si es necesario
-			} else {
-				closeEliminacionModal();
-				mostrarAlertaPersonalizada("Error al eliminar el usuario. Inténtelo nuevamente.");
-			}
-		})
-		.catch(function(error) {
-			console.error("Error en la solicitud:", error);
-			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
-		});
+  // Realizamos la solicitud POST usando fetch con promesas
+  fetch(`/${contextPath}/EliminarElementosComoAdmin`, {
+    method: "POST",
+    body: formData
+  })
+    .then(function(response) {
+      closeEliminacionModal();
+      if (response.ok) {
+        mostrarAlertaPersonalizada("El elemento ha sido eliminado correctamente.");
+      } else {
+        mostrarAlertaPersonalizada("Error al eliminar el elemento. Inténtelo nuevamente.");
+      }
+    })
+    .catch(function(error) {
+      console.error("Error en la solicitud:", error);
+      closeEliminacionModal();
+      mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
+    });
 }
 
-//PARTE GRUPOS
 
-function openEliminacionModalG(idGrupo, nombreGrupo) {
-	// Abre el modal de confirmación de eliminación
-	document.getElementById("formularioEliminacionModalGrupo").style.display = "flex";
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
-	// Guardamos el ID del usuario en un campo oculto
-	document.getElementById("idGrupoAEliminar").value = idGrupo;
-	
-	// Actualizamos el título del modal con el alias del usuario
-	document.getElementById("modalTituloG").innerText = "Eliminar Grupo: " + nombreGrupo;
-}
-
-function closeEliminacionModalG() {
-	// Cierra el modal
-	document.getElementById("formularioEliminacionModalGrupo").style.display = "none";
-}
-
-// Enviar solicitud para eliminar el usuario
-function enviarEliminacion(event) {
-	event.preventDefault(); // Evita la recarga de la página
-
-	// Obtener el ID del usuario a eliminar
-	var idGrupo = document.getElementById("idGrupoAEliminar").value;
-
-	if (!idGrupo) {
-		console.error("No se encontró el ID del usuario a eliminar.");
-		return;
-	}
-
-	// Obtener el contexto de la aplicación para construir la URL correcta
-	var contextPath = window.location.pathname.split('/')[1]; // Ejemplo: "miapp" si la URL es /miapp/EliminarUsuario
-
-	// Realizar la solicitud POST con fetch para eliminar el usuario
-	fetch("/" + contextPath + "/EliminarGrupoComoAdmin", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({ idGrupo: idGrupo })
-	})
-		.then(function(response) {
-			if (response.ok) {
-
-				// Cerrar el modal
-				closeEliminacionModal();
-				mostrarAlertaPersonalizada("El usuario ha sido eliminado correctamente.");
-				// Aquí puedes también actualizar la lista de usuarios en la página si es necesario
-			} else {
-				closeEliminacionModal();
-				mostrarAlertaPersonalizada("Error al eliminar el usuario. Inténtelo nuevamente.");
-			}
-		})
-		.catch(function(error) {
-			console.error("Error en la solicitud:", error);
-			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
-		});
-}
 

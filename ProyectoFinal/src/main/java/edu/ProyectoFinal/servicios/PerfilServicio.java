@@ -17,6 +17,7 @@ import edu.ProyectoFinal.Controladores.perfilUsuarioControlador;
 import edu.ProyectoFinal.Dto.ComentariosPerfilDto;
 import edu.ProyectoFinal.Dto.GruposListadoDto;
 import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
+import edu.ProyectoFinal.Dto.eliminarElementoPerfilDto;
 import jakarta.servlet.http.HttpSession;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -33,7 +34,6 @@ import jakarta.ws.rs.core.Response;
 public class PerfilServicio {
 
 	private static final Logger logger = LoggerFactory.getLogger(PerfilServicio.class);
-	
 
 	/**
 	 * Metodo que coge el comentario por defecto del usuario
@@ -346,7 +346,7 @@ public class PerfilServicio {
 					usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
 					sesion.setAttribute("Usuario", usuarioPerfil);
 					logger.info("Usuario modificado correctamente en la sesión.");
-					vista=condicionYCasosPerfil(usuarioPerfil, vista);
+					vista = condicionYCasosPerfil(usuarioPerfil, vista);
 				} else {
 					String errorMsg = "Error al modificar el usuario: " + respuestaApi.getStatusInfo();
 					vista.addObject("error", errorMsg);
@@ -361,13 +361,66 @@ public class PerfilServicio {
 
 		return vista;
 	}
-	
-	
+
+	/**
+	 * Metodo de eliminar un elemento (ya sea usuario o un grupo siendo
+	 * administrador)
+	 * 
+	 * @author jpribio - 14/02/25
+	 * @param eliminarElemento
+	 * @param sesion
+	 * @return
+	 */
+	public ModelAndView enviarElementoParaBorrar(eliminarElementoPerfilDto eliminarElemento, HttpSession sesion) {
+		logger.info("Iniciando el proceso de eliminar elemento siendo administrador.");
+		ModelAndView vista = new ModelAndView();
+		String url = "http://localhost:8081/api/EliminarElemento";
+
+		try {
+			// Convertir el objeto a JSON para enviarlo a la API
+			String usuarioJson = new ObjectMapper().writeValueAsString(eliminarElemento);
+			logger.debug("Elemento en JSON: {}", usuarioJson);
+
+			// Usar try-with-resources para gestionar el cierre del cliente automáticamente
+			try (Client client = ClientBuilder.newClient()) {
+				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
+						.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
+
+				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
+
+				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
+					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
+					logger.info("Elemento eliminado correctamente.");
+					vista = condicionYCasosPerfil(usuarioPerfil, vista);
+				} else {
+					String errorMsg = "Error al eliminar el elemento: " + respuestaApi.getStatusInfo();
+					vista.addObject("error", errorMsg);
+					logger.error(errorMsg);
+				}
+			}
+		} catch (Exception e) {
+			String errorMsg = "Error al conectar con la API: " + e.getMessage();
+			vista.addObject("error", errorMsg);
+			logger.error("Excepción al conectar con la API", e);
+		}
+
+		return vista;
+	}
+
+	/**
+	 * Metodo para observar la pantalla de inicio en el perfil definiendo los casos
+	 * posibles
+	 * 
+	 * @author jpribio - 14/02/25
+	 * @param usuarioABuscar
+	 * @param vista
+	 * @return
+	 */
 	public ModelAndView condicionYCasosPerfil(UsuarioPerfilDto usuarioABuscar, ModelAndView vista) {
 		if (usuarioABuscar != null) {
 			switch (usuarioABuscar.getRolUsu()) {
 			case "user":
-				vista =obtenerGruposDelUsuario(usuarioABuscar);
+				vista = obtenerGruposDelUsuario(usuarioABuscar);
 				busquedaDelComentarioDelUsuario(usuarioABuscar).getModel().forEach(vista::addObject);
 				break;
 

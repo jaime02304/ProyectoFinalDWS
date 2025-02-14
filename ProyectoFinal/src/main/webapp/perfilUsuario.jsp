@@ -195,7 +195,7 @@
 												</div>
 												<div>
 													<a href="#" class="verGrupo2"
-														onclick="openEliminacionModalG('${grupo.idGrupo}', '${grupo.nombreGrupo}')">Borrar</a>
+														onclick="openEliminacionModal('${grupo.idGrupo}', '${grupo.nombreGrupo}')">Borrar</a>
 												</div>
 											</div>
 										</c:forEach>
@@ -336,7 +336,7 @@
 							</h1>
 						</div>
 						<button type="submit" class="botonModificador"
-							onclick="openFormularioModal('Alias', 'text', '<c:out value="${usuario.aliasUsu}" default="" />')">
+							onclick="openFormularioModal()">
 							<i class="fa-solid fa-pen"></i>
 						</button>
 					</div>
@@ -446,7 +446,7 @@
 											</div>
 											<div>
 												<a href="#" class="verGrupo2"
-													onclick="openEliminacionModalG('${grupo.idGrupo}', '${grupo.nombreGrupo}')">Borrar</a>
+													onclick="openEliminacionModal('${grupo.idGrupo}', '${grupo.nombreGrupo}')">Borrar</a>
 											</div>
 										</div>
 									</c:forEach>
@@ -552,39 +552,23 @@
 			</div>
 		</div>
 
-		<!-- MODAL PARA LA ELIMINACION DE USUARIO -->
+		<!-- MODAL PARA LA ELIMINACION DE ELEMENTOS -->
 		<div id="formularioEliminacionModal" class="modal">
-			<div class="contenidoModal">
+			<div class="contenidoModal2">
 				<span class="close" onclick="closeEliminacionModal()">&times;</span>
-				<h2 id="modalTitulo" style="word-wrap: break-word;">Eliminar
-					Usuario</h2>
+				<h2 id="modalTitulo" style="word-wrap: break-word; width: 90%;">Eliminar
+				</h2>
 				<form id="formularioDatosModal" enctype="multipart/form-data"
 					onsubmit="enviarEliminacion(event)">
-					<input type="hidden" id="idUsuarioAEliminar" />
+					<input type="hidden" id="elementoAEliminar" name="modal" /> <input
+						type="hidden" id="idElementoAEliminar" name="modal" />
 					<div>
 						<button type="submit" class="manga-button">Si</button>
-						<button class="manga-button" onclick="closeEliminacionModal()">No</button>
 					</div>
 				</form>
 			</div>
 		</div>
 
-		<!-- MODAL PARA LA ELIMINACION DE GRUPO -->
-		<div id="formularioEliminacionModalGrupo" class="modal">
-			<div class="contenidoModal">
-				<span class="close" onclick="closeEliminacionModalG()">&times;</span>
-				<h2 id="modalTituloG" style="word-wrap: break-word;">Eliminar
-					Grupo</h2>
-				<form id="formularioDatosModal" enctype="multipart/form-data"
-					onsubmit="enviarEliminacion2(event)">
-					<input type="hidden" id="idGrupoAEliminar" />
-					<div>
-						<button type="submit" class="manga-button">Si</button>
-						<button class="manga-button" onclick="closeEliminacionModalG()">No</button>
-					</div>
-				</form>
-			</div>
-		</div>
 
 		<!-- MODAL PARA EDITAR EL PERFIL PERSONAL -->
 		<c:set var="usuarioAModificar" value="${sessionScope.Usuario}" />
@@ -592,7 +576,8 @@
 			<div class="contenidoModal">
 				<span class="close" onclick="closeFormularioModal()">&times;</span>
 				<h2>Modificar Usuario</h2>
-				<form id="formularioDatosModal" enctype="multipart/form-data">
+				<form id="formularioDatosModal" enctype="multipart/form-data"
+					onsubmit="enviarFormulario(event)">
 					<!-- Campos visibles -->
 					<div>
 						<label for="aliasInput">Alias:</label> <input type="text"
