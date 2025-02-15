@@ -108,65 +108,143 @@ document.addEventListener("DOMContentLoaded", function() {
 
 //PARTE DE ELIMINAR
 function openEliminacionModal(id, filtradorNombre) {
-  // Cacheamos los elementos del DOM
-  const modal = document.getElementById("formularioEliminacionModal");
-  const idInput = document.getElementById("idElementoAEliminar");
-  const nombreInput = document.getElementById("elementoAEliminar");
-  const modalTitulo = document.getElementById("modalTitulo");
+	// Cacheamos los elementos del DOM
+	const modal = document.getElementById("formularioEliminacionModal");
+	const idInput = document.getElementById("idElementoAEliminar");
+	const nombreInput = document.getElementById("elementoAEliminar");
+	const modalTitulo = document.getElementById("modalTitulo");
 
-  // Abrimos el modal y asignamos los valores correspondientes
-  modal.style.display = "flex";
-  idInput.value = id;
-  nombreInput.value = filtradorNombre;
-  modalTitulo.innerText = `Eliminar a: ${filtradorNombre}`;
+	// Abrimos el modal y asignamos los valores correspondientes
+	modal.style.display = "flex";
+	idInput.value = id;
+	nombreInput.value = filtradorNombre;
+	modalTitulo.innerText = `Eliminar a: ${filtradorNombre}`;
 }
 
 function closeEliminacionModal() {
-  document.getElementById("formularioEliminacionModal").style.display = "none";
+	document.getElementById("formularioEliminacionModal").style.display = "none";
 }
 
 function enviarEliminacion(event) {
-  event.preventDefault(); // Evita la recarga de la página
+	event.preventDefault(); // Evita la recarga de la página
 
-  // Obtenemos los valores de los inputs una sola vez
-  const nombre = document.getElementById("elementoAEliminar").value;
-  const id = document.getElementById("idElementoAEliminar").value;
+	// Obtenemos los valores de los inputs una sola vez
+	const nombre = document.getElementById("elementoAEliminar").value;
+	const id = document.getElementById("idElementoAEliminar").value;
 
-  if (!nombre) {
-    console.error("No se encontró el nombre o identificador del usuario a eliminar.");
-    return;
-  }
+	if (!nombre) {
+		console.error("No se encontró el nombre o identificador del usuario a eliminar.");
+		return;
+	}
 
-  // Creamos el FormData e incluimos únicamente los campos deseados
-  const formData = new FormData();
-  formData.append("elementoEliminar", nombre);
-  formData.append("idElementoEliminar", id);
+	// Creamos el FormData e incluimos únicamente los campos deseados
+	const formData = new FormData();
+	formData.append("elementoEliminar", nombre);
+	formData.append("idElementoEliminar", id);
 
-  // Obtenemos el contexto de la aplicación (asumiendo que está en la URL)
-  const contextPath = window.location.pathname.split('/')[1];
+	// Obtenemos el contexto de la aplicación (asumiendo que está en la URL)
+	const contextPath = window.location.pathname.split('/')[1];
 
-  // Realizamos la solicitud POST usando fetch con promesas
-  fetch(`/${contextPath}/EliminarElementosComoAdmin`, {
-    method: "POST",
-    body: formData
-  })
-    .then(function(response) {
-      closeEliminacionModal();
-      if (response.ok) {
-        mostrarAlertaPersonalizada("El elemento ha sido eliminado correctamente.");
-      } else {
-        mostrarAlertaPersonalizada("Error al eliminar el elemento. Inténtelo nuevamente.");
-      }
-    })
-    .catch(function(error) {
-      console.error("Error en la solicitud:", error);
-      closeEliminacionModal();
-      mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
-    });
+	// Realizamos la solicitud POST usando fetch con promesas
+	fetch(`/${contextPath}/EliminarElementosComoAdmin`, {
+		method: "POST",
+		body: formData
+	})
+		.then(function(response) {
+			closeEliminacionModal();
+			if (response.ok) {
+				mostrarAlertaPersonalizada("El elemento ha sido eliminado correctamente.");
+			} else {
+				mostrarAlertaPersonalizada("Error al eliminar el elemento. Inténtelo nuevamente.");
+			}
+		})
+		.catch(function(error) {
+			console.error("Error en la solicitud:", error);
+			closeEliminacionModal();
+			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
+		});
 }
 
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+// Abrir modal de modificación de usuario
+function openModificacionModal(id, nombreCompleto, alias, correo, movil, esPremium, rol, esVerificadoEntidad) {
+	// Cacheamos el modal del DOM
+	const modal = document.getElementById("formularioModificacionModal");
+	modal.style.display = "flex";
+
+	// Asignamos los valores correspondientes a cada campo del formulario
+	document.getElementById("idUsu").value = id;
+	document.getElementById("nombreCompletoUsu").value = nombreCompleto;
+	document.getElementById("aliasUsu").value = alias;
+	document.getElementById("correoElectronicoUsu").value = correo;
+	document.getElementById("movilUsu").value = movil;
+	// Nota: No es posible pre-cargar el campo file (fotoUsu) por razones de seguridad
+	document.getElementById("esPremium").checked = esPremium;
+	document.getElementById("rolUsu").value = rol;
+	document.getElementById("esVerificadoEntidad").checked = esVerificadoEntidad;
+
+	// Actualizamos el título del modal (opcional)
+	document.getElementById("modalTituloMod").innerText = `Modificar usuario: ${alias}`;
+}
+
+// Cerrar modal de modificación de usuario
+function closeModificacionModal() {
+	document.getElementById("formularioModificacionModal").style.display = "none";
+}
+
+// Enviar datos de modificación
+function enviarModificacion(event) {
+	event.preventDefault(); // Evita la recarga de la página
+
+	// Obtenemos los valores de los inputs
+	const id = document.getElementById("idUsu").value;
+	const nombreCompleto = document.getElementById("nombreCompletoUsu").value;
+	const alias = document.getElementById("aliasUsu").value;
+	const correo = document.getElementById("correoElectronicoUsu").value;
+	const movil = document.getElementById("movilUsu").value;
+	const fotoFile = document.getElementById("fotoUsu").files[0]; // Archivo de foto (si se seleccionó)
+	const esPremium = document.getElementById("esPremium").checked;
+	const rol = document.getElementById("rolUsu").value;
+	const esVerificadoEntidad = document.getElementById("esVerificadoEntidad").checked;
+
+	// Creamos el FormData e incluimos los campos deseados
+	const formData = new FormData();
+	formData.append("idUsu", id);
+	formData.append("nombreCompletoUsu", nombreCompleto);
+	formData.append("aliasUsu", alias);
+	formData.append("correoElectronicoUsu", correo);
+	formData.append("movilUsu", movil);
+	if (fotoFile) {
+		formData.append("fotoUsu", fotoFile);
+	}
+	formData.append("esPremium", esPremium);
+	formData.append("rolUsu", rol);
+	formData.append("esVerificadoEntidad", esVerificadoEntidad);
+
+	// Obtenemos el contexto de la aplicación (asumiendo que está en la URL)
+	const contextPath = window.location.pathname.split('/')[1];
+
+	// Realizamos la solicitud POST usando fetch
+	fetch(`/${contextPath}/ModificarUsuarioComoAdmin`, {
+		method: "POST",
+		body: formData
+	})
+		.then(function(response) {
+			closeModificacionModal();
+			if (response.ok) {
+				mostrarAlertaPersonalizada("El usuario ha sido modificado correctamente.");
+			} else {
+				mostrarAlertaPersonalizada("Error al modificar el usuario. Inténtelo nuevamente.");
+			}
+		})
+		.catch(function(error) {
+			console.error("Error en la solicitud:", error);
+			closeModificacionModal();
+			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
+		});
+}
 
 

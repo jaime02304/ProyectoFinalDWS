@@ -194,7 +194,7 @@
 													<a href="#" class="verGrupo2">Modificar</a>
 												</div>
 												<div>
-													<a href="#" class="verGrupo2"
+													<a class="verGrupo2"
 														onclick="openEliminacionModal('${grupo.idGrupo}', '${grupo.nombreGrupo}')">Borrar</a>
 												</div>
 											</div>
@@ -255,10 +255,11 @@
 													<c:out value="${usuario.aliasUsu}" />
 												</div>
 												<div>
-													<a href="#" class="verGrupo2">Modificar</a>
+													<a class="verGrupo2"
+														onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad})">Modificar</a>
 												</div>
 												<div>
-													<a href="#" class="verGrupo2"
+													<a class="verGrupo2"
 														onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}')">Borrar</a>
 												</div>
 											</div>
@@ -287,10 +288,11 @@
 													<c:out value="${usuario.aliasUsu}" />
 												</div>
 												<div>
-													<a href="#" class="verGrupo2">Modificar</a>
+													<a class="verGrupo2"
+														onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad})">Modificar</a>
 												</div>
 												<div>
-													<a href="#" class="verGrupo2"
+													<a class="verGrupo2"
 														onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}')">Borrar</a>
 												</div>
 											</div>
@@ -445,7 +447,7 @@
 												<a href="#" class="verGrupo2">Modificar</a>
 											</div>
 											<div>
-												<a href="#" class="verGrupo2"
+												<a class="verGrupo2"
 													onclick="openEliminacionModal('${grupo.idGrupo}', '${grupo.nombreGrupo}')">Borrar</a>
 											</div>
 										</div>
@@ -504,10 +506,11 @@
 												<c:out value="${usuario.aliasUsu}" />
 											</div>
 											<div>
-												<a href="#" class="verGrupo2">Modificar</a>
+												<a class="verGrupo2"
+													onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad})">Modificar</a>
 											</div>
 											<div>
-												<a href="#" class="verGrupo2"
+												<a class="verGrupo2"
 													onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}')">Borrar</a>
 											</div>
 										</div>
@@ -536,10 +539,11 @@
 												<c:out value="${usuario.aliasUsu}" />
 											</div>
 											<div>
-												<a href="#" class="verGrupo2">Modificar</a>
+												<a class="verGrupo2"
+													onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad})">Modificar</a>
 											</div>
 											<div>
-												<a href="#" class="verGrupo2"
+												<a class="verGrupo2"
 													onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}')">Borrar</a>
 											</div>
 										</div>
@@ -569,6 +573,70 @@
 			</div>
 		</div>
 
+		<!-- MODAL PARA LA MODIFICACIÓN DE USUARIO -->
+		<div id="formularioModificacionModal" class="modal">
+			<div class="contenidoModal2">
+				<span class="close" onclick="closeModificacionModal()">&times;</span>
+				<h2 id="modalTituloMod" style="word-wrap: break-word; width: 90%;">Modificar
+					Usuario</h2>
+				<form id="formularioModificacionDatosModal"
+					enctype="multipart/form-data" onsubmit="enviarModificacion(event)">
+					<!-- Campo oculto para el id del usuario -->
+					<input type="hidden" id="idUsu" name="idUsu" />
+
+					<div>
+						<label for="nombreCompletoUsu">Nombre Completo</label> <input
+							type="text" id="nombreCompletoUsu" name="nombreCompletoUsu"
+							placeholder="Nombre completo" required />
+					</div>
+					<div>
+						<label for="aliasUsu">Alias</label> <input type="text"
+							id="aliasUsu" name="aliasUsu" placeholder="Alias" required />
+					</div>
+					<div>
+						<input type="hidden" id="correoElectronicoUsu"
+							name="correoElectronicoUsu" placeholder="correo@ejemplo.com"
+							required />
+					</div>
+					<div>
+						<label for="movilUsu">Móvil</label> <input type="number"
+							id="movilUsu" name="movilUsu" placeholder="Número de móvil"
+							required />
+					</div>
+					<div>
+						<label for="fotoUsu">Foto</label> <input type="file" id="fotoUsu"
+							name="fotoUsu" accept="image/*" />
+					</div>
+					<div
+						style="display: flex; justify-content: center; align-items: center;">
+						<div
+							style="display: flex; justify-content: center; align-items: center; margin: 10px; flex-direction: column;">
+							<label for="esPremium">Cuenta Premium</label> <input
+								type="checkbox" id="esPremium" name="esPremium" />
+						</div>
+						<div
+							style="display: flex; justify-content: center; align-items: center; margin: 10px; flex-direction: column;">
+							<label for="esVerificadoEntidad">Verificada</label> <input
+								type="checkbox" id="esVerificadoEntidad"
+								name="esVerificadoEntidad" />
+						</div>
+					</div>
+					<div
+						style="display: flex; justify-content: center; align-items: center;">
+						<label for="rolUsu">Rol de Usuario</label> <select id="rolUsu"
+							name="rolUsu">
+							<option value="user">User</option>
+							<option value="admin">Admin</option>
+							<!-- Puedes agregar más opciones según tus necesidades -->
+						</select>
+					</div>
+
+					<div>
+						<button type="submit" class="manga-button">Enviar</button>
+					</div>
+				</form>
+			</div>
+		</div>
 
 		<!-- MODAL PARA EDITAR EL PERFIL PERSONAL -->
 		<c:set var="usuarioAModificar" value="${sessionScope.Usuario}" />
@@ -596,7 +664,7 @@
 					</div>
 					<div>
 						<label for="fotoInput">Fotografía:</label> <input type="file"
-							id="fotoInput" name="foto" name="fotoUsu"
+							id="fotoInput" name="fotoUsu" name="fotoUsu"
 							value="${usuarioAModificar.fotoUsu}" />
 					</div>
 					<button type="submit" class="manga-button">Guardar</button>
@@ -604,7 +672,7 @@
 			</div>
 		</div>
 
-		<!-- Alert Personalizado -->
+		<!-- ALERTA PERSONALIZADA -->
 		<div id="alertaPersonalizada" class="alerta-personalizada">
 			<div class="alerta-contenido">
 				<p id="alertaMensaje">Mensaje de alerta</p>

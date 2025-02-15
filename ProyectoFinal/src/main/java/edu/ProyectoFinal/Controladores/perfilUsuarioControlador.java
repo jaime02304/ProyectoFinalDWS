@@ -69,10 +69,41 @@ public class perfilUsuarioControlador {
 		}
 	}
 
+	/**
+	 * Metodo que recoge al usuario de la vista y lo manda a la api para que sea
+	 * borrado
+	 * 
+	 * @author jpribio - 15/02/25
+	 * @param elemento
+	 * @param sesion
+	 * @return
+	 */
 	@PostMapping("/EliminarElementosComoAdmin")
 	public ModelAndView eliminarUsuario(@ModelAttribute eliminarElementoPerfilDto elemento, HttpSession sesion) {
 		try {
 			return servicioPerfil.enviarElementoParaBorrar(elemento, sesion);
+		} catch (Exception ex) {
+			ModelAndView vistaError = new ModelAndView("error");
+			vistaError.addObject("error",
+					"Ha ocurrido un error al modificar el usuario. Por favor, inténtalo de nuevo.");
+			return vistaError;
+		}
+	}
+
+	/**
+	 * MEtodo que manda el usuario seleccionado a modificar hacia la api y lo
+	 * modifica
+	 * 
+	 * @author jpribio - 15/02/25
+	 * @param usuarioAModificar
+	 * @param sesion
+	 * @return
+	 */
+	@PostMapping("/ModificarUsuarioComoAdmin")
+	public ModelAndView modificarUSuarioComoAdmin(@ModelAttribute UsuarioPerfilDto usuarioAModificar,
+			HttpSession sesion) {
+		try {
+			return servicioPerfil.enviarUsuarioAModificarComoAdmin(usuarioAModificar, sesion);
 		} catch (Exception ex) {
 			ModelAndView vistaError = new ModelAndView("error");
 			vistaError.addObject("error",

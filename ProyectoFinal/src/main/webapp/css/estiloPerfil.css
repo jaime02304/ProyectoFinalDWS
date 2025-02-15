@@ -258,12 +258,14 @@ body, html {
 	text-decoration: none;
 	color: black;
 	font-size: 2.5vh;
+	cursor: pointer;
 }
 
 .verGrupo2 {
 	text-decoration: none;
 	color: black;
 	padding: 10px;
+	cursor: pointer;
 }
 
 .verGrupo2:hover {
@@ -373,7 +375,7 @@ body, html {
 	font-weight: bold;
 	padding: 15px 30px;
 	border: 4px solid black;
-	border-radius:15px;
+	border-radius: 15px;
 	cursor: pointer;
 	text-transform: uppercase;
 	position: relative;
@@ -411,21 +413,8 @@ body, html {
 	padding: 20px;
 }
 
-/* Contenido del modal */
-.contenidoModal {
-	background-color: white;
-	border: 6px solid black;
-	padding: 30px;
-	width: 70%;
-	max-width: 600px;
-	text-align: center;
-	font-size: 20px;
-	box-shadow: 12px 12px 0px black;
-	position: relative;
-	transform: rotate(-2deg);
-}
-
-.contenidoModal2 {
+/* Contenido del modal, unificado para ambos modales */
+.contenidoModal, .contenidoModal2 {
 	background-color: white;
 	border: 6px solid black;
 	padding: 30px;
@@ -437,18 +426,14 @@ body, html {
 	position: relative;
 	transform: rotate(-2deg);
 	display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.contenidoModal2 h2{
-	
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 }
 
 /* En pantallas pequeñas, ajusta el modal */
 @media ( max-width : 768px) {
-	.contenidoModal {
+	.contenidoModal, .contenidoModal2 {
 		width: 100%;
 		padding: 20px;
 		font-size: 18px;
@@ -479,7 +464,7 @@ body, html {
 }
 
 /* Formulario en el modal */
-#formularioDatosModal {
+#formularioDatosModal, #formularioModificacionDatosModal {
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
@@ -487,12 +472,13 @@ body, html {
 	background: transparent;
 }
 
-#formularioDatosModal label {
+/* Etiquetas de ambos formularios */
+#formularioDatosModal label, #formularioModificacionDatosModal label {
 	font-size: 22px;
 }
 
-/* Inputs responsivos */
-#formularioDatosModal input {
+/* Inputs para ambos formularios */
+#formularioDatosModal input, #formularioModificacionDatosModal input {
 	padding: 10px;
 	border: 3px solid black;
 	font-size: 18px;
@@ -502,14 +488,17 @@ body, html {
 	max-width: 400px;
 }
 
-/* Ajuste en móviles */
+/* Ajuste responsivo en móviles */
 @media ( max-width : 600px) {
-	#formularioDatosModal label {
+	#formularioDatosModal label, #formularioModificacionDatosModal label {
 		font-size: 18px;
 	}
-	#formularioDatosModal input {
+	#formularioDatosModal input, #formularioModificacionDatosModal input {
 		font-size: 16px;
 		padding: 8px;
+	}
+	#formularioDatosModal, #formularioModificacionDatosModal {
+		gap: 0;
 	}
 }
 
