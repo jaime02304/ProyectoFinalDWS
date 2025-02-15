@@ -107,17 +107,19 @@ document.addEventListener("DOMContentLoaded", function() {
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 //PARTE DE ELIMINAR
-function openEliminacionModal(id, filtradorNombre) {
+function openEliminacionModal(id, filtradorNombre, esUsuario) {
 	// Cacheamos los elementos del DOM
 	const modal = document.getElementById("formularioEliminacionModal");
 	const idInput = document.getElementById("idElementoAEliminar");
 	const nombreInput = document.getElementById("elementoAEliminar");
+	const esUsuarioV = document.getElementById("esUsuarioElementoAEliminar");
 	const modalTitulo = document.getElementById("modalTitulo");
 
 	// Abrimos el modal y asignamos los valores correspondientes
 	modal.style.display = "flex";
 	idInput.value = id;
 	nombreInput.value = filtradorNombre;
+	esUsuarioV.value=esUsuario;
 	modalTitulo.innerText = `Eliminar a: ${filtradorNombre}`;
 }
 
@@ -131,6 +133,7 @@ function enviarEliminacion(event) {
 	// Obtenemos los valores de los inputs una sola vez
 	const nombre = document.getElementById("elementoAEliminar").value;
 	const id = document.getElementById("idElementoAEliminar").value;
+	const esUsuario = document.getElementById("esUsuarioElementoAEliminar").value;
 
 	if (!nombre) {
 		console.error("No se encontró el nombre o identificador del usuario a eliminar.");
@@ -141,6 +144,7 @@ function enviarEliminacion(event) {
 	const formData = new FormData();
 	formData.append("elementoEliminar", nombre);
 	formData.append("idElementoEliminar", id);
+	formData.append("esUsuarioEliminar", esUsuario)
 
 	// Obtenemos el contexto de la aplicación (asumiendo que está en la URL)
 	const contextPath = window.location.pathname.split('/')[1];
@@ -246,5 +250,107 @@ function enviarModificacion(event) {
 			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
 		});
 }
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+function openModificacionGrupoModal(id, nombreGrupo, categoria, subcategoria) {
+	// Cacheamos el modal del DOM y lo mostramos
+	const modal = document.getElementById("formularioModificacionGrupoModal");
+	modal.style.display = "flex";
+
+	// Asignamos los valores a los inputs
+	document.getElementById("idGrupo").value = id;
+	document.getElementById("nombreGrupo").value = nombreGrupo;
+	document.getElementById("categoriaGrupo").value = categoria;
+
+	// Actualizar subcategorías según la categoría seleccionada
+	actualizarSubcategorias();
+	document.getElementById("subCategoriaGrupo").value = subcategoria;
+
+	// Actualizamos el título del modal (opcional)
+	document.getElementById("modalTituloGrupo").innerText = `Modificar Grupo: ${nombreGrupo}`;
+}
+
+// Función para cerrar el modal
+function closeModificacionGrupoModal() {
+	document.getElementById("formularioModificacionGrupoModal").style.display = "none";
+}
+
+// Función para actualizar dinámicamente las subcategorías
+function actualizarSubcategorias() {
+	const categoria = document.getElementById("categoriaGrupo").value;
+	const subcategoriaSelect = document.getElementById("subCategoriaGrupo");
+
+	// Limpiar opciones previas
+	subcategoriaSelect.innerHTML = "";
+
+	// Subcategorías según la categoría seleccionada
+	const subcategoriasPorCategoria = {
+		anime: [
+			{ value: "isekai", text: "Isekai - Mundos paralelos o alternativos" },
+			{ value: "shonen", text: "Shonen - Para público juvenil masculino" },
+			{ value: "shojo", text: "Shojo - Para público juvenil femenino" }
+		],
+		videojuegos: [
+			{ value: "shooters", text: "Shooters - Disparos en primera o tercera persona" },
+			{ value: "aventuras", text: "Aventuras - Exploración y narrativas" },
+			{ value: "deportes", text: "Deportes - Juegos deportivos" }
+		]
+	};
+
+	// Agregar las opciones de subcategoría según la categoría seleccionada
+	subcategoriasPorCategoria[categoria].forEach(sub => {
+		const option = document.createElement("option");
+		option.value = sub.value;
+		option.textContent = sub.text;
+		if (sub.value === document.getElementById("subCategoriaGrupo").value) {
+			option.selected = true;
+		}
+
+		subcategoriaSelect.appendChild(option);
+	});
+}
+
+// Enviar datos del formulario de modificación del grupo
+function enviarModificacionGrupo(event) {
+	event.preventDefault(); // Evita la recarga de la página
+
+	// Obtener los valores de los inputs
+	const idGrupo = document.getElementById("idGrupo").value;
+	const nombreGrupo = document.getElementById("nombreGrupo").value;
+	const categoriaGrupo = document.getElementById("categoriaGrupo").value;
+	const subCategoriaGrupo = document.getElementById("subCategoriaGrupo").value;
+	console.log(subCategoriaGrupo);
+
+	// Crear objeto FormData para enviar los datos
+	const formData = new FormData();
+	formData.append("idGrupo", idGrupo);
+	formData.append("nombreGrupo", nombreGrupo);
+	formData.append("categoriaNombre", categoriaGrupo);
+	formData.append("subCategoriaNombre", subCategoriaGrupo);
+
+	// Obtener el contexto de la aplicación
+	const contextPath = window.location.pathname.split('/')[1];
+
+	// Realizar la solicitud POST usando fetch
+	fetch(`/${contextPath}/ModificarGrupoComoAdmin`, {
+		method: "POST",
+		body: formData
+	})
+		.then(function(response) {
+			closeModificacionGrupoModal();
+			if (response.ok) {
+				mostrarAlertaPersonalizada("El grupo ha sido modificado correctamente.");
+			} else {
+				mostrarAlertaPersonalizada("Error al modificar el grupo. Inténtelo nuevamente.");
+			}
+		})
+		.catch(function(error) {
+			console.error("Error en la solicitud:", error);
+			closeModificacionGrupoModal();
+			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
+		});
+}
+
 
 

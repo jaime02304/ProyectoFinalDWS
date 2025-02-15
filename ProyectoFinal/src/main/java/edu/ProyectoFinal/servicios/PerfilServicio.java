@@ -452,6 +452,51 @@ public class PerfilServicio {
 	}
 
 	/**
+	 * Metodo que envia el grupo con las caracteristicas cambiadas y devuelve una
+	 * vista
+	 * 
+	 * @author jpribio - 15/02/25
+	 * @param usuarioAModificar
+	 * @param sesion
+	 * @return
+	 */
+	public ModelAndView enviarGrupoAModificarComoAdmin(GruposListadoDto grupoAModificar, HttpSession sesion) {
+		logger.info("Iniciando el proceso de modificar un grupo siendo administrador.");
+		ModelAndView vista = new ModelAndView();
+		String url = "http://localhost:8081/api/ModificarGrupoComoAdmin";
+
+		try {
+			// Convertir el objeto a JSON para enviarlo a la API
+			String grupoJson = new ObjectMapper().writeValueAsString(grupoAModificar);
+			logger.debug("Grupo a modificar en JSON: {}", grupoJson);
+
+			// Usar try-with-resources para gestionar el cierre del cliente automáticamente
+			try (Client client = ClientBuilder.newClient()) {
+				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
+						.post(Entity.entity(grupoJson, MediaType.APPLICATION_JSON));
+
+				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
+
+				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
+					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
+					logger.info("Elemento modificado correctamente.");
+					vista = condicionYCasosPerfil(usuarioPerfil, vista);
+				} else {
+					String errorMsg = "Error al modificar el grupo: " + respuestaApi.getStatusInfo();
+					vista.addObject("error", errorMsg);
+					logger.error(errorMsg);
+				}
+			}
+		} catch (Exception e) {
+			String errorMsg = "Error al conectar con la API: " + e.getMessage();
+			vista.addObject("error", errorMsg);
+			logger.error("Excepción al conectar con la API", e);
+		}
+
+		return vista;
+	}
+
+	/**
 	 * Metodo para observar la pantalla de inicio en el perfil definiendo los casos
 	 * posibles
 	 * 

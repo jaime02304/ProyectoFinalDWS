@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.ProyectoFinal.Dto.GruposListadoDto;
 import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
 import edu.ProyectoFinal.Dto.eliminarElementoPerfilDto;
 import edu.ProyectoFinal.servicios.GruposServicios;
@@ -108,6 +109,26 @@ public class perfilUsuarioControlador {
 			ModelAndView vistaError = new ModelAndView("error");
 			vistaError.addObject("error",
 					"Ha ocurrido un error al modificar el usuario. Por favor, inténtalo de nuevo.");
+			return vistaError;
+		}
+	}
+
+	/**
+	 * Metodo que modifica un grupo segun los nuevos elementos dados en la vista
+	 * 
+	 * @author jpribio - 15/02/25
+	 * @param usuarioAModificar
+	 * @param sesion
+	 * @return
+	 */
+	@PostMapping("/ModificarGrupoComoAdmin")
+	public ModelAndView modificarGrupoComoAdmin(@ModelAttribute GruposListadoDto usuarioAModificar,
+			HttpSession sesion) {
+		try {
+			return servicioPerfil.enviarGrupoAModificarComoAdmin(usuarioAModificar, sesion);
+		} catch (Exception ex) {
+			ModelAndView vistaError = new ModelAndView("error");
+			vistaError.addObject("error", "Ha ocurrido un error al modificar el grupo. Por favor, inténtalo de nuevo.");
 			return vistaError;
 		}
 	}

@@ -411,6 +411,7 @@ body, html {
 	align-items: center;
 	justify-content: center;
 	padding: 20px;
+	overflow-y: auto;
 }
 
 /* Contenido del modal, unificado para ambos modales */
@@ -429,6 +430,7 @@ body, html {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	border-radius: 10px;
 }
 
 /* En pantallas pequeñas, ajusta el modal */
@@ -464,7 +466,8 @@ body, html {
 }
 
 /* Formulario en el modal */
-#formularioDatosModal, #formularioModificacionDatosModal {
+#formularioDatosModal, #formularioModificacionDatosModal,
+	#formularioModificacionGrupo {
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
@@ -473,12 +476,16 @@ body, html {
 }
 
 /* Etiquetas de ambos formularios */
-#formularioDatosModal label, #formularioModificacionDatosModal label {
+#formularioDatosModal label, #formularioModificacionDatosModal label,
+	#formularioModificacionGrupo label {
 	font-size: 22px;
+	text-align: center;
 }
 
 /* Inputs para ambos formularios */
-#formularioDatosModal input, #formularioModificacionDatosModal input {
+#formularioDatosModal input, #formularioModificacionDatosModal input,
+	#formularioModificacionGrupo input, #formularioModificacionGrupo select
+	{
 	padding: 10px;
 	border: 3px solid black;
 	font-size: 18px;
@@ -490,14 +497,18 @@ body, html {
 
 /* Ajuste responsivo en móviles */
 @media ( max-width : 600px) {
-	#formularioDatosModal label, #formularioModificacionDatosModal label {
+	#formularioDatosModal label, #formularioModificacionDatosModal label,
+		#formularioModificacionGrupo label {
 		font-size: 18px;
 	}
-	#formularioDatosModal input, #formularioModificacionDatosModal input {
+	#formularioDatosModal input, #formularioModificacionDatosModal input,
+		#formularioModificacionGrupo input, #formularioModificacionGrupo select
+		{
 		font-size: 16px;
 		padding: 8px;
 	}
-	#formularioDatosModal, #formularioModificacionDatosModal {
+	#formularioDatosModal, #formularioModificacionDatosModal,
+		#formularioModificacionGrupo {
 		gap: 0;
 	}
 }

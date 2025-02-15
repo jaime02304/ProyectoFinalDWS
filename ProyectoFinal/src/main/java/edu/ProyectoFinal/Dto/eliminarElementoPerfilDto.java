@@ -10,6 +10,15 @@ public class eliminarElementoPerfilDto {
 
 	private Long idElementoEliminar;
 	private String elementoEliminar = "aaaaa";
+	private boolean esUsuarioEliminar = false;
+
+	public boolean isEsUsuarioEliminar() {
+		return esUsuarioEliminar;
+	}
+
+	public void setEsUsuarioEliminar(boolean esUsuarioEliminar) {
+		this.esUsuarioEliminar = esUsuarioEliminar;
+	}
 
 	public Long getIdElementoEliminar() {
 		return idElementoEliminar;

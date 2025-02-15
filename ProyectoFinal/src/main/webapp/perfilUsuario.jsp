@@ -191,11 +191,12 @@
 													<c:out value="${grupo.nombreGrupo}" />
 												</div>
 												<div>
-													<a href="#" class="verGrupo2">Modificar</a>
+													<a class="verGrupo2"
+														onclick="openModificacionGrupoModal('${grupo.idGrupo}', '${grupo.nombreGrupo}', '${grupo.categoriaNombre}', '${grupo.subCategoriaNombre}')">Modificar</a>
 												</div>
 												<div>
 													<a class="verGrupo2"
-														onclick="openEliminacionModal('${grupo.idGrupo}', '${grupo.nombreGrupo}')">Borrar</a>
+														onclick="openEliminacionModal('${grupo.idGrupo}', '${grupo.nombreGrupo}', ${false})">Borrar</a>
 												</div>
 											</div>
 										</c:forEach>
@@ -260,7 +261,7 @@
 												</div>
 												<div>
 													<a class="verGrupo2"
-														onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}')">Borrar</a>
+														onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}' , ${true})">Borrar</a>
 												</div>
 											</div>
 										</c:forEach>
@@ -293,7 +294,7 @@
 												</div>
 												<div>
 													<a class="verGrupo2"
-														onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}')">Borrar</a>
+														onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}' , ${true})">Borrar</a>
 												</div>
 											</div>
 										</c:forEach>
@@ -444,11 +445,12 @@
 												<c:out value="${grupo.nombreGrupo}" />
 											</div>
 											<div>
-												<a href="#" class="verGrupo2">Modificar</a>
+												<a class="verGrupo2"
+													onclick="openModificacionGrupoModal('${grupo.idGrupo}', '${grupo.nombreGrupo}', '${grupo.categoriaNombre}', '${grupo.subCategoriaNombre}')">Modificar</a>
 											</div>
 											<div>
 												<a class="verGrupo2"
-													onclick="openEliminacionModal('${grupo.idGrupo}', '${grupo.nombreGrupo}')">Borrar</a>
+													onclick="openEliminacionModal('${grupo.idGrupo}', '${grupo.nombreGrupo}', ${false})">Borrar</a>
 											</div>
 										</div>
 									</c:forEach>
@@ -511,7 +513,7 @@
 											</div>
 											<div>
 												<a class="verGrupo2"
-													onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}')">Borrar</a>
+													onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}', ${true})">Borrar</a>
 											</div>
 										</div>
 									</c:forEach>
@@ -544,7 +546,7 @@
 											</div>
 											<div>
 												<a class="verGrupo2"
-													onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}')">Borrar</a>
+													onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}', ${true})">Borrar</a>
 											</div>
 										</div>
 									</c:forEach>
@@ -565,7 +567,8 @@
 				<form id="formularioDatosModal" enctype="multipart/form-data"
 					onsubmit="enviarEliminacion(event)">
 					<input type="hidden" id="elementoAEliminar" name="modal" /> <input
-						type="hidden" id="idElementoAEliminar" name="modal" />
+						type="hidden" id="idElementoAEliminar" name="modal" /> <input
+						type="hidden" id="esUsuarioElementoAEliminar" name="modal" />
 					<div>
 						<button type="submit" class="manga-button">Si</button>
 					</div>
@@ -633,6 +636,45 @@
 
 					<div>
 						<button type="submit" class="manga-button">Enviar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- MODAL PARA LA MODIFICACIÓN DE GRUPOS -->
+		<div id="formularioModificacionGrupoModal" class="modal">
+			<div class="contenidoModal2">
+				<span class="close" onclick="closeModificacionGrupoModal()">&times;</span>
+				<h2 id="modalTituloGrupo" style="word-wrap: break-word; width: 90%;">Modificar
+					Grupo</h2>
+				<form id="formularioModificacionGrupo"
+					onsubmit="enviarModificacionGrupo(event)">
+					<input type="hidden" id="idGrupo" name="idGrupo" />
+
+					<div>
+						<label for="nombreGrupo">Nombre del Grupo</label> <input
+							type="text" id="nombreGrupo" name="nombreGrupo"
+							placeholder="Nombre del grupo" required />
+					</div>
+
+					<div>
+						<label for="categoriaGrupo">Categoría</label> <select
+							id="categoriaGrupo" name="categoriaGrupo"
+							onchange="actualizarSubcategorias()">
+							<option value="anime">Anime</option>
+							<option value="videojuegos">Videojuegos</option>
+						</select>
+					</div>
+
+					<div>
+						<label for="subCategoriaGrupo">Subcategoría</label> <select
+							id="subCategoriaGrupo" name="subCategoriaGrupo">
+							<!-- Las opciones se llenarán dinámicamente con JavaScript -->
+						</select>
+					</div>
+
+					<div>
+						<button type="submit" class="manga-button">Guardar</button>
 					</div>
 				</form>
 			</div>
