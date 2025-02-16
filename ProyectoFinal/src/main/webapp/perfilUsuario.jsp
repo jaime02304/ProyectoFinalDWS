@@ -170,6 +170,10 @@
 												</div>
 											</div>
 										</c:forEach>
+										<div class="tiposMensaje">
+											<button onclick="openCreacionGrupoModal()">Crear
+												Grupo</button>
+										</div>
 									</c:otherwise>
 								</c:choose>
 							</c:if>
@@ -181,7 +185,8 @@
 											<c:out value="No se encontraron grupos disponibles." />
 										</div>
 										<div class="tiposMensaje">
-											<button>Crear Grupo</button>
+											<button onclick="openCreacionGrupoModal()">Crear
+												Grupo</button>
 										</div>
 									</c:when>
 									<c:otherwise>
@@ -200,6 +205,10 @@
 												</div>
 											</div>
 										</c:forEach>
+										<div class="tiposMensaje">
+											<button onclick="openCreacionGrupoModal()">Crear
+												Grupo</button>
+										</div>
 									</c:otherwise>
 								</c:choose>
 							</c:if>
@@ -279,7 +288,8 @@
 											<c:out value="No se encontraron grupos disponibles." />
 										</div>
 										<div class="tiposMensaje">
-											<button>Crear Usuario</button>
+											<button onclick="openCreacionUsuarioModal()">Crear
+												Usuario</button>
 										</div>
 									</c:when>
 									<c:otherwise>
@@ -298,6 +308,10 @@
 												</div>
 											</div>
 										</c:forEach>
+										<div class="tiposMensaje">
+											<button onclick="openCreacionUsuarioModal()">Crear
+												Usuario</button>
+										</div>
 									</c:otherwise>
 								</c:choose>
 							</div>
@@ -404,7 +418,8 @@
 										<c:out value="No se encontraron grupos disponibles." />
 									</div>
 									<div class="tiposMensaje">
-										<button>Crear Grupo</button>
+										<button onclick="openCreacionGrupoModal()">Crear
+											Grupo</button>
 									</div>
 								</c:when>
 								<c:otherwise>
@@ -424,6 +439,10 @@
 											</div>
 										</div>
 									</c:forEach>
+									<div class="tiposMensaje">
+										<button onclick="openCreacionGrupoModal()">Crear
+											Grupo</button>
+									</div>
 								</c:otherwise>
 							</c:choose>
 						</c:if>
@@ -435,7 +454,8 @@
 										<c:out value="No se encontraron grupos disponibles." />
 									</div>
 									<div class="tiposMensaje">
-										<button>Crear Grupo</button>
+										<button onclick="openCreacionGrupoModal()">Crear
+											Grupo</button>
 									</div>
 								</c:when>
 								<c:otherwise>
@@ -454,6 +474,10 @@
 											</div>
 										</div>
 									</c:forEach>
+									<div class="tiposMensaje">
+										<button onclick="openCreacionGrupoModal()">Crear
+											Grupo</button>
+									</div>
 								</c:otherwise>
 							</c:choose>
 						</c:if>
@@ -498,7 +522,8 @@
 										<c:out value="No se encontraron grupos disponibles." />
 									</div>
 									<div class="tiposMensaje">
-										<button>Crear Usuario</button>
+										<button onclick="openCreacionUsuarioModal()">Crear
+											Usuario</button>
 									</div>
 								</c:when>
 								<c:otherwise>
@@ -517,6 +542,10 @@
 											</div>
 										</div>
 									</c:forEach>
+									<div class="tiposMensaje">
+										<button onclick="openCreacionUsuarioModal()">Crear
+											Usuario</button>
+									</div>
 								</c:otherwise>
 							</c:choose>
 						</div>
@@ -541,6 +570,7 @@
 												<c:out value="${usuario.aliasUsu}" />
 											</div>
 											<div>
+
 												<a class="verGrupo2"
 													onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad})">Modificar</a>
 											</div>
@@ -550,11 +580,125 @@
 											</div>
 										</div>
 									</c:forEach>
+									<div class="tiposMensaje">
+										<button onclick="openCreacionUsuarioModal()">Crear
+											Usuario</button>
+									</div>
 								</c:otherwise>
 							</c:choose>
 						</div>
 					</c:if>
 				</div>
+			</div>
+		</div>
+
+		<!-- MODAL PARA LA CREACION DE USUARIOS -->
+		<div id="formularioCreacionUsuarioModal" class="modal">
+			<div class="contenidoModal2">
+				<span class="close" onclick="closeCreacionUsuarioModal()">&times;</span>
+				<h2 id="modalTituloCreacion"
+					style="word-wrap: break-word; width: 90%;">Crear Nuevo Usuario</h2>
+				<form id="formularioCreacionUsuario" enctype="multipart/form-data"
+					onsubmit="enviarCreacionUsuario(event)">
+
+					<div>
+						<label for="nombreCompletoNuevo">Nombre Completo</label> <input
+							type="text" id="nombreCompletoNuevo" name="nombreCompletoNuevo"
+							placeholder="Nombre completo" required />
+					</div>
+
+					<div>
+						<label for="aliasNuevo">Alias</label> <input type="text"
+							id="aliasNuevo" name="aliasNuevo" placeholder="Alias" required />
+					</div>
+
+					<div>
+						<label for="correoNuevo">Correo Electrónico</label> <input
+							type="email" id="correoNuevo" name="correoNuevo"
+							placeholder="correo@ejemplo.com" required />
+					</div>
+
+					<div>
+						<label for="movilNuevo">Móvil</label> <input type="number"
+							id="movilNuevo" name="movilNuevo" placeholder="Número de móvil"
+							required />
+					</div>
+
+					<div>
+						<label for="fotoNuevo">Foto</label> <input type="file"
+							id="fotoNuevo" name="fotoNuevo" accept="image/*" />
+					</div>
+
+					<div
+						style="display: flex; justify-content: center; align-items: center;">
+						<div
+							style="display: flex; justify-content: center; align-items: center; margin: 10px; flex-direction: column;">
+							<label for="esPremiumNuevo">Cuenta Premium</label> <input
+								type="checkbox" id="esPremiumNuevo" name="esPremiumNuevo" />
+						</div>
+						<div
+							style="display: flex; justify-content: center; align-items: center; margin: 10px; flex-direction: column;">
+							<label for="esVerificadoNuevo">Verificada</label> <input
+								type="checkbox" id="esVerificadoNuevo" name="esVerificadoNuevo" />
+						</div>
+					</div>
+
+					<div
+						style="display: flex; justify-content: center; align-items: center;">
+						<label for="rolNuevo">Rol de Usuario</label> <select id="rolNuevo"
+							name="rolNuevo">
+							<option value="user">User</option>
+							<option value="admin">Admin</option>
+						</select>
+					</div>
+
+					<div>
+						<button type="submit" class="manga-button">Crear</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- MODAL PARA LA CREACION DE GRUPOS -->
+		<div id="formularioCreacionGrupoModal" class="modal">
+			<div class="contenidoModal2">
+				<span class="close" onclick="closeCreacionGrupoModal()">&times;</span>
+				<h2 id="modalTituloGrupoNuevo"
+					style="word-wrap: break-word; width: 90%;">Crear Grupo</h2>
+				<form id="formularioCreacionGrupo"
+					onsubmit="enviarCreacionGrupo(event)">
+					<!-- Campo oculto para el creador, tomado del sessionScope -->
+					<input type="hidden" id="creadorGrupo" name="creadorGrupo"
+						value="${usuario.idUsu}" /> <input type="hidden"
+						id="aliasCreadorNuevo" name="aliasCreador"
+						value="${usuario.aliasUsu}" />
+
+					<div>
+						<label for="nombreGrupoNuevo">Nombre del Grupo</label> <input
+							type="text" id="nombreGrupoNuevo" name="nombreGrupoNuevo"
+							placeholder="Nombre del grupo" required />
+					</div>
+
+					<div>
+						<label for="categoriaGrupoNuevo">Categoría</label> <select
+							id="categoriaGrupoNuevo" name="categoriaGrupoNuevo"
+							onchange="actualizarSubcategoriasCreacion()">
+							<option value="anime">Anime</option>
+							<option value="videojuegos">Videojuegos</option>
+						</select>
+					</div>
+
+					<div>
+						<label for="subCategoriaGrupoNuevo">Subcategoría</label> <select
+							id="subCategoriaGrupoNuevo" name="subCategoriaGrupoNuevo">
+							<!-- Las opciones se llenarán dinámicamente con JavaScript -->
+						</select>
+					</div>
+
+					<div>
+						<button type="submit" class="manga-button">Crear</button>
+					</div>
+				</form>
 			</div>
 		</div>
 

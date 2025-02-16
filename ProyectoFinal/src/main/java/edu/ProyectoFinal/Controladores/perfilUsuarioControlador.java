@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.ProyectoFinal.Dto.GruposDto;
 import edu.ProyectoFinal.Dto.GruposListadoDto;
 import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
 import edu.ProyectoFinal.Dto.eliminarElementoPerfilDto;
@@ -86,7 +87,7 @@ public class perfilUsuarioControlador {
 		} catch (Exception ex) {
 			ModelAndView vistaError = new ModelAndView("error");
 			vistaError.addObject("error",
-					"Ha ocurrido un error al modificar el usuario. Por favor, inténtalo de nuevo.");
+					"Ha ocurrido un error al eliminar el elemento(usuario o grupo). Por favor, inténtalo de nuevo.");
 			return vistaError;
 		}
 	}
@@ -129,6 +130,45 @@ public class perfilUsuarioControlador {
 		} catch (Exception ex) {
 			ModelAndView vistaError = new ModelAndView("error");
 			vistaError.addObject("error", "Ha ocurrido un error al modificar el grupo. Por favor, inténtalo de nuevo.");
+			return vistaError;
+		}
+	}
+
+	/**
+	 * metodo que coge el usuario de la web y lo manda hacia la api
+	 * 
+	 * @author jptibio - 16/02/25
+	 * @param usuarioCreado
+	 * @param sesion
+	 * @return
+	 */
+	@PostMapping("/CrearUsuarioComoAdmin")
+	public ModelAndView crearUnNuevoUsuarioComoAdmin(@ModelAttribute UsuarioPerfilDto usuarioCreado,
+			HttpSession sesion) {
+		try {
+			return servicioPerfil.crearUsuarioComoAdmin(usuarioCreado, sesion);
+		} catch (Exception ex) {
+			ModelAndView vistaError = new ModelAndView("error");
+			vistaError.addObject("error", "Ha ocurrido un error al crear el usuario. Por favor, inténtalo de nuevo.");
+			return vistaError;
+		}
+	}
+
+	/**
+	 * metodo que coge el grupo de la web y lo manda hacia la api
+	 * 
+	 * @author jptibio - 16/02/25
+	 * @param usuarioCreado
+	 * @param sesion
+	 * @return
+	 */
+	@PostMapping("/CrearUsuarioComoAdmin")
+	public ModelAndView crearUnNuevoGrupoComoAdmin(@ModelAttribute GruposDto grupoCreado, HttpSession sesion) {
+		try {
+			return servicioPerfil.crearGrupoComoAdmin(grupoCreado, sesion);
+		} catch (Exception ex) {
+			ModelAndView vistaError = new ModelAndView("error");
+			vistaError.addObject("error", "Ha ocurrido un error al crear el grupo. Por favor, inténtalo de nuevo.");
 			return vistaError;
 		}
 	}

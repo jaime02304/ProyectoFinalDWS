@@ -467,7 +467,8 @@ body, html {
 
 /* Formulario en el modal */
 #formularioDatosModal, #formularioModificacionDatosModal,
-	#formularioModificacionGrupo {
+	#formularioModificacionGrupo, #formularioCreacionUsuario,
+	#formularioCreacionGrupo {
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
@@ -475,17 +476,23 @@ body, html {
 	background: transparent;
 }
 
+#formularioCreacionUsuario, #formularioCreacionGrupo {
+	gap: 5px;
+}
+
 /* Etiquetas de ambos formularios */
 #formularioDatosModal label, #formularioModificacionDatosModal label,
-	#formularioModificacionGrupo label {
+	#formularioModificacionGrupo label, #formularioCreacionUsuario label,
+	#formularioCreacionGrupo label {
 	font-size: 22px;
 	text-align: center;
 }
 
 /* Inputs para ambos formularios */
 #formularioDatosModal input, #formularioModificacionDatosModal input,
-	#formularioModificacionGrupo input, #formularioModificacionGrupo select
-	{
+	#formularioModificacionGrupo input, #formularioModificacionGrupo select,
+	#formularioCreacionUsuario input, #formularioCreacionUsuario select,
+	#formularioCreacionGrupo input, #formularioCreacionGrupo select {
 	padding: 10px;
 	border: 3px solid black;
 	font-size: 18px;
@@ -498,17 +505,20 @@ body, html {
 /* Ajuste responsivo en móviles */
 @media ( max-width : 600px) {
 	#formularioDatosModal label, #formularioModificacionDatosModal label,
-		#formularioModificacionGrupo label {
+		#formularioModificacionGrupo label, #formularioCreacionUsuario label,
+		#formularioCreacionGrupo label {
 		font-size: 18px;
 	}
 	#formularioDatosModal input, #formularioModificacionDatosModal input,
-		#formularioModificacionGrupo input, #formularioModificacionGrupo select
-		{
+		#formularioModificacionGrupo input, #formularioModificacionGrupo select,
+		#formularioCreacionUsuario input, #formularioCreacionUsuario select,
+		#formularioCreacionGrupo input, #formularioCreacionGrupo select {
 		font-size: 16px;
 		padding: 8px;
 	}
 	#formularioDatosModal, #formularioModificacionDatosModal,
-		#formularioModificacionGrupo {
+		#formularioModificacionGrupo, #formularioCreacionUsuario,
+		#formularioCreacionGrupo {
 		gap: 0;
 	}
 }

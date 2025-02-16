@@ -119,7 +119,7 @@ function openEliminacionModal(id, filtradorNombre, esUsuario) {
 	modal.style.display = "flex";
 	idInput.value = id;
 	nombreInput.value = filtradorNombre;
-	esUsuarioV.value=esUsuario;
+	esUsuarioV.value = esUsuario;
 	modalTitulo.innerText = `Eliminar a: ${filtradorNombre}`;
 }
 
@@ -253,6 +253,7 @@ function enviarModificacion(event) {
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+//Abrir modal para la modificacion de grupos
 function openModificacionGrupoModal(id, nombreGrupo, categoria, subcategoria) {
 	// Cacheamos el modal del DOM y lo mostramos
 	const modal = document.getElementById("formularioModificacionGrupoModal");
@@ -351,6 +352,158 @@ function enviarModificacionGrupo(event) {
 			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
 		});
 }
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+//abrir modal para la creacion de usuarios
+function openCreacionUsuarioModal() {
+	document.getElementById("formularioCreacionUsuarioModal").style.display = "flex";
+}
+
+function closeCreacionUsuarioModal() {
+	document.getElementById("formularioCreacionUsuarioModal").style.display = "none";
+}
+
+function enviarCreacionUsuario(event) {
+	event.preventDefault(); // Evita recargar la página
+
+	// Obtener los valores del formulario
+	const nombreCompleto = document.getElementById("nombreCompletoNuevo").value;
+	const alias = document.getElementById("aliasNuevo").value;
+	const correo = document.getElementById("correoNuevo").value;
+	const movil = document.getElementById("movilNuevo").value;
+	const fotoFile = document.getElementById("fotoNuevo").files[0];
+	const esPremium = document.getElementById("esPremiumNuevo").checked;
+	const esVerificado = document.getElementById("esVerificadoNuevo").checked;
+	const rol = document.getElementById("rolNuevo").value;
+
+	// Crear FormData para enviar los datos
+	const formData = new FormData();
+	formData.append("nombreCompletoUsu", nombreCompleto);
+	formData.append("aliasUsu", alias);
+	formData.append("correoElectronicoUsu", correo);
+	formData.append("movilUsu", movil);
+	if (fotoFile) {
+		formData.append("fotoUsu", fotoFile);
+	}
+	formData.append("esPremium", esPremium);
+	formData.append("esVerificadoEntidad", esVerificado);
+	formData.append("rolUsu", rol);
+
+	// Obtener el contexto de la aplicación (si es necesario)
+	const contextPath = window.location.pathname.split('/')[1];
+
+	// Realizar la solicitud POST
+	fetch(`/${contextPath}/CrearUsuarioComoAdmin`, {
+		method: "POST",
+		body: formData
+	})
+		.then(response => {
+			closeCreacionUsuarioModal();
+			if (response.ok) {
+				mostrarAlertaPersonalizada("El usuario ha sido creado correctamente.");
+			} else {
+				mostrarAlertaPersonalizada("Error al crear el usuario. Inténtelo nuevamente.");
+			}
+		})
+		.catch(error => {
+			console.error("Error en la solicitud:", error);
+			closeCreacionUsuarioModal();
+			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
+		});
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+//abrir modal para la creacion de grupos
+// Función para abrir el modal de creación de grupo
+function openCreacionGrupoModal() {
+	const modal = document.getElementById("formularioCreacionGrupoModal");
+	modal.style.display = "flex";
+
+	// Establecer un valor por defecto en la categoría y actualizar subcategorías
+	document.getElementById("categoriaGrupoNuevo").value = "anime";
+	actualizarSubcategoriasCreacion();
+}
+
+// Función para cerrar el modal de creación de grupo
+function closeCreacionGrupoModal() {
+	document.getElementById("formularioCreacionGrupoModal").style.display = "none";
+}
+
+// Función para actualizar dinámicamente las subcategorías en el modal de creación
+function actualizarSubcategoriasCreacion() {
+	const categoria = document.getElementById("categoriaGrupoNuevo").value;
+	const subCategoriaSelect = document.getElementById("subCategoriaGrupoNuevo");
+
+	// Limpiar opciones previas
+	subCategoriaSelect.innerHTML = "";
+
+	// Definir las subcategorías disponibles para cada categoría
+	const subcategoriasPorCategoria = {
+		anime: [
+			{ value: "isekai", text: "Isekai - Mundos paralelos o alternativos" },
+			{ value: "shonen", text: "Shonen - Para público juvenil masculino" },
+			{ value: "shojo", text: "Shojo - Para público juvenil femenino" }
+		],
+		videojuegos: [
+			{ value: "shooters", text: "Shooters - Disparos en primera o tercera persona" },
+			{ value: "aventuras", text: "Aventuras - Exploración y narrativas" },
+			{ value: "deportes", text: "Deportes - Juegos deportivos" }
+		]
+	};
+
+	// Agregar las opciones al select de subcategoría según la categoría seleccionada
+	subcategoriasPorCategoria[categoria].forEach(sub => {
+		const option = document.createElement("option");
+		option.value = sub.value;
+		option.textContent = sub.text;
+		subCategoriaSelect.appendChild(option);
+	});
+}
+
+// Función para enviar los datos del formulario de creación del grupo
+function enviarCreacionGrupo(event) {
+	event.preventDefault(); // Evitar la recarga de la página
+
+	// Obtener los valores de los inputs
+	const creador = document.getElementById("creadorGrupo").value;
+	const nombreGrupo = document.getElementById("nombreGrupoNuevo").value;
+	const categoriaGrupo = document.getElementById("categoriaGrupoNuevo").value;
+	const subCategoriaGrupo = document.getElementById("subCategoriaGrupoNuevo").value;
+	const aliasCreador = document.getElementById("aliasCreadorNuevo").value;
+
+	// Crear FormData para enviar los datos
+	const formData = new FormData();
+	formData.append("idCreador", creador);
+	formData.append("nombreGrupo", nombreGrupo);
+	formData.append("categoriaNombre", categoriaGrupo);
+	formData.append("subCategoriaNombre", subCategoriaGrupo);
+	formData.append("aliasCreadorUString", aliasCreador);
+
+	// Obtener el contexto de la aplicación (si es necesario)
+	const contextPath = window.location.pathname.split('/')[1];
+
+	// Realizar la solicitud POST usando fetch
+	fetch(`/${contextPath}/CrearGrupoComoAdmin`, {
+		method: "POST",
+		body: formData
+	})
+		.then(function(response) {
+			closeCreacionGrupoModal();
+			if (response.ok) {
+				mostrarAlertaPersonalizada("El grupo ha sido creado correctamente.");
+			} else {
+				mostrarAlertaPersonalizada("Error al crear el grupo. Inténtelo nuevamente.");
+			}
+		})
+		.catch(function(error) {
+			console.error("Error en la solicitud:", error);
+			closeCreacionGrupoModal();
+			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
+		});
+}
+
 
 
 

@@ -15,8 +15,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ProyectoFinal.Controladores.perfilUsuarioControlador;
 import edu.ProyectoFinal.Dto.ComentariosPerfilDto;
+import edu.ProyectoFinal.Dto.GruposDto;
 import edu.ProyectoFinal.Dto.GruposListadoDto;
 import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
+import edu.ProyectoFinal.Dto.UsuarioRegistroDto;
 import edu.ProyectoFinal.Dto.eliminarElementoPerfilDto;
 import jakarta.servlet.http.HttpSession;
 import jakarta.ws.rs.client.Client;
@@ -390,6 +392,7 @@ public class PerfilServicio {
 
 				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
 					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
+					sesion.setAttribute("Usuario", usuarioPerfil);
 					logger.info("Elemento eliminado correctamente.");
 					vista = condicionYCasosPerfil(usuarioPerfil, vista);
 				} else {
@@ -434,6 +437,8 @@ public class PerfilServicio {
 
 				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
 					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
+					usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
+					sesion.setAttribute("Usuario", usuarioPerfil);
 					logger.info("Elemento modificado correctamente.");
 					vista = condicionYCasosPerfil(usuarioPerfil, vista);
 				} else {
@@ -479,10 +484,104 @@ public class PerfilServicio {
 
 				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
 					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
+					usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
+					sesion.setAttribute("Usuario", usuarioPerfil);
 					logger.info("Elemento modificado correctamente.");
 					vista = condicionYCasosPerfil(usuarioPerfil, vista);
 				} else {
 					String errorMsg = "Error al modificar el grupo: " + respuestaApi.getStatusInfo();
+					vista.addObject("error", errorMsg);
+					logger.error(errorMsg);
+				}
+			}
+		} catch (Exception e) {
+			String errorMsg = "Error al conectar con la API: " + e.getMessage();
+			vista.addObject("error", errorMsg);
+			logger.error("Excepción al conectar con la API", e);
+		}
+
+		return vista;
+	}
+
+	/**
+	 * Metodo que envia un usuario nuevo a la api para que se cree
+	 * 
+	 * @author jptibio - 16/02/25
+	 * @param usuarioCreado
+	 * @param sesion
+	 * @return
+	 */
+	public ModelAndView crearUsuarioComoAdmin(UsuarioPerfilDto usuarioCreado, HttpSession sesion) {
+		logger.info("Iniciando el proceso de crear un usuario siendo administrador.");
+		ModelAndView vista = new ModelAndView();
+		String url = "http://localhost:8081/api/CrearUsuarioComoAdmin";
+
+		try {
+			// Convertir el objeto a JSON para enviarlo a la API
+			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioCreado);
+			logger.debug("Usuario a crear en JSON: {}", usuarioJson);
+
+			// Usar try-with-resources para gestionar el cierre del cliente automáticamente
+			try (Client client = ClientBuilder.newClient()) {
+				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
+						.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
+
+				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
+
+				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
+					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
+					usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
+					sesion.setAttribute("Usuario", usuarioPerfil);
+					logger.info("Usuario creado correctamente.");
+					vista = condicionYCasosPerfil(usuarioPerfil, vista);
+				} else {
+					String errorMsg = "Error al crear el usuario: " + respuestaApi.getStatusInfo();
+					vista.addObject("error", errorMsg);
+					logger.error(errorMsg);
+				}
+			}
+		} catch (Exception e) {
+			String errorMsg = "Error al conectar con la API: " + e.getMessage();
+			vista.addObject("error", errorMsg);
+			logger.error("Excepción al conectar con la API", e);
+		}
+
+		return vista;
+	}
+
+	/**
+	 * Metodo que envia un grupo nuevo a la api para que se cree
+	 * 
+	 * @author jptibio - 16/02/25
+	 * @param usuarioCreado
+	 * @param sesion
+	 * @return
+	 */
+	public ModelAndView crearGrupoComoAdmin(GruposDto grupoCreado, HttpSession sesion) {
+		logger.info("Iniciando el proceso de crear un grupo siendo administrador.");
+		ModelAndView vista = new ModelAndView();
+		String url = "http://localhost:8081/api/CrearGrupoComoAdmin";
+
+		try {
+			// Convertir el objeto a JSON para enviarlo a la API
+			String grupoJson = new ObjectMapper().writeValueAsString(grupoCreado);
+			logger.debug("Grupo a crear en JSON: {}", grupoJson);
+
+			// Usar try-with-resources para gestionar el cierre del cliente automáticamente
+			try (Client client = ClientBuilder.newClient()) {
+				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
+						.post(Entity.entity(grupoJson, MediaType.APPLICATION_JSON));
+
+				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
+
+				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
+					// Se obtiene el usuario en sesión para actualizar la vista (por ejemplo, para
+					// recargar el listado de grupos)
+					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
+					logger.info("Grupo creado correctamente.");
+					vista = condicionYCasosPerfil(usuarioPerfil, vista);
+				} else {
+					String errorMsg = "Error al crear el grupo: " + respuestaApi.getStatusInfo();
 					vista.addObject("error", errorMsg);
 					logger.error(errorMsg);
 				}
@@ -545,7 +644,7 @@ public class PerfilServicio {
 		usuarioAModificar.setEsPremium(usuarioPaFiltrar.getEsPremium());
 		usuarioAModificar.setEsVerificadoEntidad(usuarioPaFiltrar.getEsVerificadoEntidad());
 		usuarioAModificar.setRolUsu(usuarioPaFiltrar.getRolUsu());
-		if (usuarioAModificar.getFotoUsu() == null) {
+		if (usuarioAModificar.getFotoUsu() == null || usuarioAModificar.getFotoString().isEmpty()) {
 			usuarioAModificar.setFotoUsu(usuarioPaFiltrar.getFotoUsu());
 		}
 		return usuarioAModificar;
