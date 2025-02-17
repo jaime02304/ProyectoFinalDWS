@@ -467,7 +467,6 @@ function enviarCreacionGrupo(event) {
 	event.preventDefault(); // Evitar la recarga de la página
 
 	// Obtener los valores de los inputs
-	const creador = document.getElementById("creadorGrupo").value;
 	const nombreGrupo = document.getElementById("nombreGrupoNuevo").value;
 	const categoriaGrupo = document.getElementById("categoriaGrupoNuevo").value;
 	const subCategoriaGrupo = document.getElementById("subCategoriaGrupoNuevo").value;
@@ -475,7 +474,6 @@ function enviarCreacionGrupo(event) {
 
 	// Crear FormData para enviar los datos
 	const formData = new FormData();
-	formData.append("idCreador", creador);
 	formData.append("nombreGrupo", nombreGrupo);
 	formData.append("categoriaNombre", categoriaGrupo);
 	formData.append("subCategoriaNombre", subCategoriaGrupo);

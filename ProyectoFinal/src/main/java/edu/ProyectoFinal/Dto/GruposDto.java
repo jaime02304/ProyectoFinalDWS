@@ -10,10 +10,7 @@ public class GruposDto {
 	private String nombreGrupo = "aaaaa";
 	private String categoriaNombre = "aaaaa";
 	private String subCategoriaNombre = "aaaaa";
-	private long idCreador;
 	private String aliasCreadorUString = "aaaaa";
-	
-	
 
 	public String getAliasCreadorUString() {
 		return aliasCreadorUString;
@@ -45,14 +42,6 @@ public class GruposDto {
 
 	public void setSubCategoriaNombre(String subCategoriaNombre) {
 		this.subCategoriaNombre = subCategoriaNombre;
-	}
-
-	public long getIdCreador() {
-		return idCreador;
-	}
-
-	public void setIdCreador(long idCreador) {
-		this.idCreador = idCreador;
 	}
 
 }

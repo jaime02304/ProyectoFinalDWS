@@ -155,14 +155,14 @@ public class perfilUsuarioControlador {
 	}
 
 	/**
-	 * metodo que coge el grupo de la web y lo manda hacia la api
+	 * Metodo que coge el grupo de la web y lo manda hacia la api
 	 * 
 	 * @author jptibio - 16/02/25
 	 * @param usuarioCreado
 	 * @param sesion
 	 * @return
 	 */
-	@PostMapping("/CrearUsuarioComoAdmin")
+	@PostMapping("/CrearGrupoComoAdmin")
 	public ModelAndView crearUnNuevoGrupoComoAdmin(@ModelAttribute GruposDto grupoCreado, HttpSession sesion) {
 		try {
 			return servicioPerfil.crearGrupoComoAdmin(grupoCreado, sesion);

@@ -660,6 +660,7 @@
 		</div>
 
 		<!-- MODAL PARA LA CREACION DE GRUPOS -->
+		<c:set var="usuario" value="${sessionScope.Usuario}" />
 		<div id="formularioCreacionGrupoModal" class="modal">
 			<div class="contenidoModal2">
 				<span class="close" onclick="closeCreacionGrupoModal()">&times;</span>
@@ -668,9 +669,7 @@
 				<form id="formularioCreacionGrupo"
 					onsubmit="enviarCreacionGrupo(event)">
 					<!-- Campo oculto para el creador, tomado del sessionScope -->
-					<input type="hidden" id="creadorGrupo" name="creadorGrupo"
-						value="${usuario.idUsu}" /> <input type="hidden"
-						id="aliasCreadorNuevo" name="aliasCreador"
+					<input type="hidden" id="aliasCreadorNuevo" name="aliasUsu"
 						value="${usuario.aliasUsu}" />
 
 					<div>
@@ -786,6 +785,7 @@
 		</div>
 
 		<!-- MODAL PARA LA MODIFICACIÓN DE GRUPOS -->
+
 		<div id="formularioModificacionGrupoModal" class="modal">
 			<div class="contenidoModal2">
 				<span class="close" onclick="closeModificacionGrupoModal()">&times;</span>
