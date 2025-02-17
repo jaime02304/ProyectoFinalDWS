@@ -65,21 +65,13 @@
 					<div class="encabezado">
 						<!--Si esta sin imagen un imput para insertar una imagen-->
 						<div class="divImagenPerfil">
-
 							<c:choose>
 								<c:when test="${not empty usuario.fotoUsu}">
 									<img src="<c:out value='${usuario.fotoUsu}' />"
 										alt="Foto Perfil del usuario" class="imagenUsuPerfil">
 								</c:when>
 								<c:otherwise>
-									<!-- Mostrar un formulario si no hay imagen -->
-									<form action="" method="post" enctype="multipart/form-data"
-										class="formularioFoto">
-										<input type="file" name="fotoUsu" id="fotoUsu" required
-											class="fotoUsu" /> <label for="fotoUsu" class="btn-file">Seleccionar
-											archivo</label>
-										<button type="submit" class=" botonSubir botonNavegador">Subir</button>
-									</form>
+									<div class="imagenUsuPerfil">No Avatar</div>
 								</c:otherwise>
 							</c:choose>
 						</div>
@@ -150,7 +142,8 @@
 											<c:out value="No se encontraron grupos disponibles." />
 										</div>
 										<div class="tiposMensaje">
-											<button>Crear Grupo</button>
+											<button onclick="openCreacionGrupoModal()">Crear
+												Grupo</button>
 										</div>
 									</c:when>
 									<c:otherwise>
@@ -255,7 +248,8 @@
 											<c:out value="No se encontraron grupos disponibles." />
 										</div>
 										<div class="tiposMensaje">
-											<button>Crear Usuario</button>
+											<button onclick="openCreacionUsuarioModal()">Crear
+												Usuario</button>
 										</div>
 									</c:when>
 									<c:otherwise>
@@ -274,6 +268,10 @@
 												</div>
 											</div>
 										</c:forEach>
+										<div class="tiposMensaje">
+											<button onclick="openCreacionUsuarioModal()">Crear
+												Usuario</button>
+										</div>
 									</c:otherwise>
 								</c:choose>
 							</div>
@@ -329,21 +327,13 @@
 					<div class="encabezado">
 						<!--Si esta sin imagen un imput para insertar una imagen-->
 						<div class="divImagenPerfil">
-
 							<c:choose>
 								<c:when test="${not empty usuario.fotoUsu}">
 									<img src="<c:out value='${usuario.fotoUsu}' />"
 										alt="Foto Perfil del usuario" class="imagenUsuPerfil">
 								</c:when>
 								<c:otherwise>
-									<!-- Mostrar un formulario si no hay imagen -->
-									<form action="" method="post" enctype="multipart/form-data"
-										class="formularioFoto">
-										<input type="file" name="fotoUsu" id="fotoUsu" required
-											class="fotoUsu" /> <label for="fotoUsu" class="btn-file">Seleccionar
-											archivo</label>
-										<button type="submit" class=" botonSubir botonNavegador">Subir</button>
-									</form>
+									<div class="imagenUsuPerfil">no Avatar</div>
 								</c:otherwise>
 							</c:choose>
 						</div>
@@ -560,7 +550,8 @@
 										<c:out value="No se encontraron grupos disponibles." />
 									</div>
 									<div class="tiposMensaje">
-										<button>Crear Usuario</button>
+										<button onclick="openCreacionUsuarioModal()">Crear
+											Usuario</button>
 									</div>
 								</c:when>
 								<c:otherwise>
