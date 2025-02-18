@@ -15,11 +15,19 @@ public class UsuarioPerfilDto {
 	private Boolean esPremium = false;
 	private String rolUsu = "user";
 	private Boolean esVerificadoEntidad = false;
-
+	private String contraseniaString = "aaaaa";
 	// Getter y setter
 
 	public Boolean getEsVerificadoEntidad() {
 		return esVerificadoEntidad;
+	}
+
+	public String getContraseniaString() {
+		return contraseniaString;
+	}
+
+	public void setContraseniaString(String contraseniaString) {
+		this.contraseniaString = contraseniaString;
 	}
 
 	public String getFotoString() {

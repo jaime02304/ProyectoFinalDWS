@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
 import edu.ProyectoFinal.Dto.UsuarioRegistroDto;
+import edu.ProyectoFinal.Utilidades.Util;
 import jakarta.servlet.http.HttpSession;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -27,6 +28,8 @@ import jakarta.ws.rs.core.Response;
 public class InicioSesionServicio {
 
 	GruposServicios servicioGrupos = new GruposServicios();
+
+	Util utilidades = new Util();
 
 	// representa un patrón de expresión regular para luego compararla
 	private Pattern email1 = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.(com|net|es)$");
@@ -68,6 +71,7 @@ public class InicioSesionServicio {
 		String url = "http://localhost:8081/api/usuario/registro";
 
 		try (Client cliente = ClientBuilder.newClient()) {
+			usuarioNuevo.setContraseniaUsu(utilidades.encriptarASHA256(usuarioNuevo.getContraseniaUsu()));
 			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioNuevo);
 
 			Response respuestaApi = cliente.target(url).request(MediaType.APPLICATION_JSON)
@@ -118,6 +122,7 @@ public class InicioSesionServicio {
 		String url = "http://localhost:8081/api/usuario/inicioSesion";
 
 		try (Client cliente = ClientBuilder.newClient()) {
+			usuario.setContraseniaUsu(utilidades.encriptarASHA256(usuario.getContraseniaUsu()));
 			String usuarioJson = new ObjectMapper().writeValueAsString(usuario);
 
 			Response respuesta = cliente.target(url).request(MediaType.APPLICATION_JSON)

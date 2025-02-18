@@ -20,6 +20,7 @@ import edu.ProyectoFinal.Dto.GruposListadoDto;
 import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
 import edu.ProyectoFinal.Dto.UsuarioRegistroDto;
 import edu.ProyectoFinal.Dto.eliminarElementoPerfilDto;
+import edu.ProyectoFinal.Utilidades.Util;
 import jakarta.servlet.http.HttpSession;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -34,6 +35,8 @@ import jakarta.ws.rs.core.Response;
  * @author jpribio - 03/02/25
  */
 public class PerfilServicio {
+
+	Util utilidades = new Util();
 
 	private static final Logger logger = LoggerFactory.getLogger(PerfilServicio.class);
 
@@ -518,6 +521,7 @@ public class PerfilServicio {
 
 		try {
 			// Convertir el objeto a JSON para enviarlo a la API
+			usuarioCreado.setContraseniaString(utilidades.encriptarASHA256(usuarioCreado.getContraseniaString()));
 			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioCreado);
 			logger.debug("Usuario a crear en JSON: {}", usuarioJson);
 
