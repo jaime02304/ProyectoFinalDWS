@@ -234,7 +234,7 @@
 									</c:when>
 									<c:otherwise>
 										<div class="tiposMensaje">
-											<button>Crear</button>
+											<button onclick="openCreacionComentarioModal(true)">Crear</button>
 										</div>
 									</c:otherwise>
 								</c:choose>
@@ -499,7 +499,7 @@
 								</c:when>
 								<c:otherwise>
 									<div class="tiposMensaje">
-										<button>Crear</button>
+										<button onclick="openCreacionComentarioModal(true)">Crear</button>
 									</div>
 								</c:otherwise>
 							</c:choose>
@@ -693,6 +693,53 @@
 				</form>
 			</div>
 		</div>
+
+		<!-- MODAL PARA LA CREACION DE COMENTARIOS -->
+		<c:set var="usuario" value="${sessionScope.Usuario}" />
+		<div id="formularioCreacionComentarioModal" class="modal">
+			<div class="contenidoModal2">
+				<span class="close" onclick="closeCreacionComentarioModal()">&times;</span>
+				<h2 id="modalTituloComentarioNuevo"
+					style="word-wrap: break-word; width: 90%;">Nuevo Comentario</h2>
+				<form id="formularioCreacionComentario"
+					onsubmit="enviarCreacionComentario(event)">
+					<!-- Campo oculto para el ID del usuario, tomado del sessionScope -->
+					<input type="hidden" id="idUsuarioComentario" name="idUsuario"
+						value="${usuario.idUsu}" />
+
+					<div>
+						<label for="contenidoComentarioNuevo">Comentario</label>
+						<textarea id="contenidoComentarioNuevo"
+							name="contenidoComentarioNuevo"
+							placeholder="Escribe tu comentario aquí..." required
+							maxlength="255"></textarea>
+					</div>
+
+					<div>
+						<label for="categoriaComentarioNuevo">Categoría</label> <select
+							id="categoriaComentarioNuevo" name="categoriaComentarioNuevo"
+							onchange="actualizarSubcategoriasCreacion()" disabled>
+							<option value="anime">Anime</option>
+							<option value="videojuegos">Videojuegos</option>
+							<option value="auxiliar">Auxiliar</option>
+						</select>
+					</div>
+
+					<div>
+						<label for="subCategoriaComentarioNuevo">Subcategoría</label> <select
+							id="subCategoriaComentarioNuevo"
+							name="subCategoriaComentarioNuevo" disabled>
+							<!-- Las opciones se llenarán dinámicamente con JavaScript -->
+						</select>
+					</div>
+
+					<div>
+						<button type="submit" class="manga-button">Publicar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
 
 		<!-- MODAL PARA LA ELIMINACION DE ELEMENTOS -->
 		<div id="formularioEliminacionModal" class="modal">

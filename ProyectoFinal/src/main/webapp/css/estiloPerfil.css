@@ -471,7 +471,7 @@ body, html {
 /* Formulario en el modal */
 #formularioDatosModal, #formularioModificacionDatosModal,
 	#formularioModificacionGrupo, #formularioCreacionUsuario,
-	#formularioCreacionGrupo {
+	#formularioCreacionGrupo, #formularioCreacionComentario {
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
@@ -479,14 +479,15 @@ body, html {
 	background: transparent;
 }
 
-#formularioCreacionUsuario, #formularioCreacionGrupo {
+#formularioCreacionUsuario, #formularioCreacionGrupo,
+	#formularioCreacionComentario {
 	gap: 5px;
 }
 
 /* Etiquetas de ambos formularios */
 #formularioDatosModal label, #formularioModificacionDatosModal label,
 	#formularioModificacionGrupo label, #formularioCreacionUsuario label,
-	#formularioCreacionGrupo label {
+	#formularioCreacionGrupo label, #formularioCreacionComentario label {
 	font-size: 22px;
 	text-align: center;
 }
@@ -495,7 +496,9 @@ body, html {
 #formularioDatosModal input, #formularioModificacionDatosModal input,
 	#formularioModificacionGrupo input, #formularioModificacionGrupo select,
 	#formularioCreacionUsuario input, #formularioCreacionUsuario select,
-	#formularioCreacionGrupo input, #formularioCreacionGrupo select {
+	#formularioCreacionGrupo input, #formularioCreacionGrupo select,
+	#formularioCreacionComentario input, #formularioCreacionComentario select,
+	#formularioCreacionComentario textarea {
 	padding: 10px;
 	border: 3px solid black;
 	font-size: 18px;
@@ -509,19 +512,21 @@ body, html {
 @media ( max-width : 600px) {
 	#formularioDatosModal label, #formularioModificacionDatosModal label,
 		#formularioModificacionGrupo label, #formularioCreacionUsuario label,
-		#formularioCreacionGrupo label {
+		#formularioCreacionGrupo label, #formularioCreacionComentario label {
 		font-size: 18px;
 	}
 	#formularioDatosModal input, #formularioModificacionDatosModal input,
 		#formularioModificacionGrupo input, #formularioModificacionGrupo select,
 		#formularioCreacionUsuario input, #formularioCreacionUsuario select,
-		#formularioCreacionGrupo input, #formularioCreacionGrupo select {
+		#formularioCreacionGrupo input, #formularioCreacionGrupo select,
+		#formularioCreacionComentario input, #formularioCreacionComentario select,
+		#formularioCreacionComentario textarea {
 		font-size: 16px;
 		padding: 8px;
 	}
 	#formularioDatosModal, #formularioModificacionDatosModal,
 		#formularioModificacionGrupo, #formularioCreacionUsuario,
-		#formularioCreacionGrupo {
+		#formularioCreacionGrupo, #formularioCreacionComentario {
 		gap: 0;
 	}
 }
