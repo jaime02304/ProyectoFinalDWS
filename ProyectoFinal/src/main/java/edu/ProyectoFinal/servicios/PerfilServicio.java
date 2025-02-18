@@ -521,7 +521,7 @@ public class PerfilServicio {
 
 		try {
 			// Convertir el objeto a JSON para enviarlo a la API
-			usuarioCreado.setContraseniaString(utilidades.encriptarASHA256(usuarioCreado.getContraseniaString()));
+			usuarioCreado.setContraseniaUsu(utilidades.encriptarASHA256(usuarioCreado.getContraseniaUsu()));
 			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioCreado);
 			logger.debug("Usuario a crear en JSON: {}", usuarioJson);
 

@@ -66,7 +66,8 @@
 						<!--Si esta sin imagen un imput para insertar una imagen-->
 						<div class="divImagenPerfil">
 							<c:choose>
-								<c:when test="${not empty usuario.fotoUsu}">
+								<c:when
+									test="${not empty usuario.fotoUsu} || ${usuario.fotoUsu==null }">
 									<img src="<c:out value='${usuario.fotoUsu}' />"
 										alt="Foto Perfil del usuario" class="imagenUsuPerfil">
 								</c:when>
@@ -328,7 +329,8 @@
 						<!--Si esta sin imagen un imput para insertar una imagen-->
 						<div class="divImagenPerfil">
 							<c:choose>
-								<c:when test="${not empty usuario.fotoUsu}">
+								<c:when
+									test="${not empty usuario.fotoUsu} || ${usuario.fotoUsu==null }">>
 									<img src="<c:out value='${usuario.fotoUsu}' />"
 										alt="Foto Perfil del usuario" class="imagenUsuPerfil">
 								</c:when>
@@ -776,7 +778,6 @@
 		</div>
 
 		<!-- MODAL PARA LA MODIFICACIÓN DE GRUPOS -->
-
 		<div id="formularioModificacionGrupoModal" class="modal">
 			<div class="contenidoModal2">
 				<span class="close" onclick="closeModificacionGrupoModal()">&times;</span>

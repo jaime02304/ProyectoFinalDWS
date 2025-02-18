@@ -5,10 +5,13 @@ body, html {
 }
 
 .imagenUsuPerfil {
+	font-family: 'Bangers';
+	text-align: center;
 	width: 85%;
 	height: 100%;
 	border: 1px solid black;
 	border-radius: 20px;
+	font-size: 24px;
 }
 
 .aliasPerfil {
