@@ -900,7 +900,7 @@
 		<!-- ALERTA PERSONALIZADA -->
 		<div id="alertaPersonalizada" class="alerta-personalizada">
 			<div class="alerta-contenido">
-				<p id="alertaMensaje">Mensaje de alerta</p>
+				<p id="alertaMensaje">${ ErrorMensaje}</p>
 				<button onclick="cerrarAlertaPersonalizada()">Aceptar</button>
 			</div>
 		</div>

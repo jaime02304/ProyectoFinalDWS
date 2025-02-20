@@ -7,9 +7,8 @@ function alertaDelPremium() {
 }
 
 // Función para mostrar alertas personalizadas
-function mostrarAlertaPersonalizada(mensaje) {
+function mostrarAlertaPersonalizada() {
 	var alerta = document.getElementById("alertaPersonalizada");
-	document.getElementById("alertaMensaje").textContent = mensaje;
 	alerta.style.display = "flex";
 }
 
@@ -265,7 +264,7 @@ function openModificacionGrupoModal(id, nombreGrupo, categoria, subcategoria) {
 	document.getElementById("categoriaGrupo").value = categoria;
 
 	// Actualizar subcategorías según la categoría seleccionada
-	actualizarSubcategorias();
+	actualizarSubcategoriasGM();
 	document.getElementById("subCategoriaGrupo").value = subcategoria;
 
 	// Actualizamos el título del modal (opcional)
@@ -278,7 +277,7 @@ function closeModificacionGrupoModal() {
 }
 
 // Función para actualizar dinámicamente las subcategorías
-function actualizarSubcategorias() {
+function actualizarSubcategoriasGM() {
 	const categoria = document.getElementById("categoriaGrupo").value;
 	const subcategoriaSelect = document.getElementById("subCategoriaGrupo");
 
@@ -423,7 +422,7 @@ function openCreacionGrupoModal() {
 
 	// Establecer un valor por defecto en la categoría y actualizar subcategorías
 	document.getElementById("categoriaGrupoNuevo").value = "anime";
-	actualizarSubcategoriasCreacion();
+	actualizarSubcategoriasCreacionG();
 }
 
 // Función para cerrar el modal de creación de grupo
@@ -432,7 +431,7 @@ function closeCreacionGrupoModal() {
 }
 
 // Función para actualizar dinámicamente las subcategorías en el modal de creación
-function actualizarSubcategoriasCreacion() {
+function actualizarSubcategoriasCreacionG() {
 	const categoria = document.getElementById("categoriaGrupoNuevo").value;
 	const subCategoriaSelect = document.getElementById("subCategoriaGrupoNuevo");
 
@@ -490,9 +489,11 @@ function enviarCreacionGrupo(event) {
 		.then(function(response) {
 			closeCreacionGrupoModal();
 			if (response.ok) {
-				mostrarAlertaPersonalizada("El grupo ha sido creado correctamente.");
+				mostrarAlertaPersonalizada();
+
 			} else {
-				mostrarAlertaPersonalizada("Error al crear el grupo. Inténtelo nuevamente.");
+				mostrarAlertaPersonalizada();
+
 			}
 		})
 		.catch(function(error) {
@@ -549,7 +550,7 @@ function actualizarSubcategoriasCreacion() {
 			{ value: "deportes", text: "Deportes - Juegos deportivos" }
 		],
 		auxiliar: [
-			{ value: "general", text: "General - Comentarios auxiliares" }
+			{ value: "auxiliar", text: "Auxiliar - Comentarios auxiliares" }
 		]
 	};
 
@@ -584,14 +585,14 @@ function enviarCreacionComentario(event) {
 		.then(response => {
 			closeCreacionComentarioModal();
 			if (response.ok) {
-				alert("El comentario ha sido publicado correctamente.");
+				mostrarAlertaPersonalizada("El comentario ha sido creado correctamente.");
 			} else {
-				alert("Error al publicar el comentario. Inténtelo nuevamente.");
+				mostrarAlertaPersonalizada("Error al crear el comentario. Inténtelo nuevamente.");
 			}
 		})
 		.catch(error => {
 			console.error("Error en la solicitud:", error);
 			closeCreacionComentarioModal();
-			alert("Ocurrió un error inesperado.");
+			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
 		});
 }

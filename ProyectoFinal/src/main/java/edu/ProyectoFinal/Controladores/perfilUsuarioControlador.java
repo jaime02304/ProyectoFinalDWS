@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.ProyectoFinal.Dto.ComentariosPerfilDto;
 import edu.ProyectoFinal.Dto.GruposDto;
 import edu.ProyectoFinal.Dto.GruposListadoDto;
 import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
@@ -169,6 +170,27 @@ public class perfilUsuarioControlador {
 		} catch (Exception ex) {
 			ModelAndView vistaError = new ModelAndView("error");
 			vistaError.addObject("error", "Ha ocurrido un error al crear el grupo. Por favor, inténtalo de nuevo.");
+			return vistaError;
+		}
+	}
+
+	/**
+	 * MEtodo de crear un nuevo comentario ya sea en la pagina de comentarios o en
+	 * en la parte de perefil
+	 * 
+	 * @author jpribio - 20/02/25
+	 * @param nuevoComentario
+	 * @param sesion
+	 * @return
+	 */
+	@PostMapping("/CrearComentario")
+	public ModelAndView crearComentario(@ModelAttribute ComentariosPerfilDto nuevoComentario, HttpSession sesion) {
+		try {
+			return servicioPerfil.crearComentarioPerfil(nuevoComentario, sesion);
+		} catch (Exception ex) {
+			ModelAndView vistaError = new ModelAndView("error");
+			vistaError.addObject("error",
+					"Ha ocurrido un error al crear el comentario. Por favor, inténtalo de nuevo.");
 			return vistaError;
 		}
 	}

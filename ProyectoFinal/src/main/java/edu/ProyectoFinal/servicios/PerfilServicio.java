@@ -3,6 +3,7 @@ package edu.ProyectoFinal.servicios;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,18 +14,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.ProyectoFinal.Controladores.perfilUsuarioControlador;
 import edu.ProyectoFinal.Dto.ComentariosPerfilDto;
 import edu.ProyectoFinal.Dto.GruposDto;
 import edu.ProyectoFinal.Dto.GruposListadoDto;
 import edu.ProyectoFinal.Dto.UsuarioPerfilDto;
-import edu.ProyectoFinal.Dto.UsuarioRegistroDto;
 import edu.ProyectoFinal.Dto.eliminarElementoPerfilDto;
 import edu.ProyectoFinal.Utilidades.Util;
 import jakarta.servlet.http.HttpSession;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -444,6 +444,10 @@ public class PerfilServicio {
 					sesion.setAttribute("Usuario", usuarioPerfil);
 					logger.info("Elemento modificado correctamente.");
 					vista = condicionYCasosPerfil(usuarioPerfil, vista);
+				} else if (respuestaApi.getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
+					String errorMsg = "El usuario esta existente: ";
+					vista.addObject("error", errorMsg);
+					logger.error("Excepción al crear un usuario");
 				} else {
 					String errorMsg = "Error al modificar el elemento: " + respuestaApi.getStatusInfo();
 					vista.addObject("error", errorMsg);
@@ -484,7 +488,6 @@ public class PerfilServicio {
 						.post(Entity.entity(grupoJson, MediaType.APPLICATION_JSON));
 
 				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
-
 				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
 					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
 					usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
@@ -538,6 +541,10 @@ public class PerfilServicio {
 					sesion.setAttribute("Usuario", usuarioPerfil);
 					logger.info("Usuario creado correctamente.");
 					vista = condicionYCasosPerfil(usuarioPerfil, vista);
+				} else if (respuestaApi.getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
+					String errorMsg = "El usuario esta existente: ";
+					vista.addObject("error", errorMsg);
+					logger.error("Excepción al crear un usuario");
 				} else {
 					String errorMsg = "Error al crear el usuario: " + respuestaApi.getStatusInfo();
 					vista.addObject("error", errorMsg);
@@ -576,16 +583,74 @@ public class PerfilServicio {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
 						.post(Entity.entity(grupoJson, MediaType.APPLICATION_JSON));
 
+				logger.info("Respuesta de la API: {}", respuestaApi.getStatus());
+
+				// Convertir la respuesta a un Map para analizar los datos recibidos
+				Map<String, Object> respuestaMap = respuestaApi.readEntity(new GenericType<Map<String, Object>>() {
+				});
+
+				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()
+						&& respuestaMap.containsKey("grupo")) {
+					Object grupo = respuestaMap.get("grupo");
+
+					// Validar si el grupo está vacío o es un string vacío
+					if (grupo == null || grupo.toString().trim().isEmpty()) {
+						String errorMsg = "El grupo ya existe.";
+						sesion.setAttribute("ErrorMensaje", errorMsg);
+						logger.error(errorMsg);
+					} else {
+						UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
+						logger.info("Grupo creado correctamente.");
+						vista.addObject("ErrorMensaje", "Se ha creado el grupo exitosamente");
+						vista = condicionYCasosPerfil(usuarioPerfil, vista);
+					}
+				} else {
+					String errorMsg = "Error al crear el grupo: ";
+					vista.addObject("error", errorMsg);
+					logger.error(errorMsg + " " + respuestaApi.getStatusInfo());
+				}
+			}
+		} catch (Exception e) {
+			String errorMsg = "Error al conectar con la API: " + e.getMessage();
+			vista.addObject("error", errorMsg);
+			vista.setViewName("error");
+			logger.error("Excepción al conectar con la API", e);
+		}
+
+		return vista;
+	}
+
+	/**
+	 * Metodo que coge el grupo de la web y lo manda hacia la api
+	 * 
+	 * @author jpribio - 20/02/25
+	 * @param nuevoComentarios
+	 * @param sesion
+	 * @return
+	 */
+	public ModelAndView crearComentarioPerfil(ComentariosPerfilDto nuevoComentarios, HttpSession sesion) {
+		logger.info("Iniciando el proceso de crear un comentario siendo administrador.");
+		ModelAndView vista = new ModelAndView();
+		String url = "http://localhost:8081/api/CrearComentarioPerfil";
+
+		try {
+			// Convertir el objeto a JSON para enviarlo a la API
+			String comentarioJson = new ObjectMapper().writeValueAsString(nuevoComentarios);
+			logger.debug("Comentario a crear en JSON: {}", nuevoComentarios);
+
+			try (Client client = ClientBuilder.newClient()) {
+				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
+						.post(Entity.entity(comentarioJson, MediaType.APPLICATION_JSON));
+
 				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
 
 				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
-					// Se obtiene el usuario en sesión para actualizar la vista (por ejemplo, para
-					// recargar el listado de grupos)
+
 					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
-					logger.info("Grupo creado correctamente.");
+					logger.info("Comentario creado correctamente.");
 					vista = condicionYCasosPerfil(usuarioPerfil, vista);
 				} else {
-					String errorMsg = "Error al crear el grupo: " + respuestaApi.getStatusInfo();
+					String errorMsg = "Error al crear el comentario: " + respuestaApi.getStatusInfo();
 					vista.addObject("error", errorMsg);
 					logger.error(errorMsg);
 				}
