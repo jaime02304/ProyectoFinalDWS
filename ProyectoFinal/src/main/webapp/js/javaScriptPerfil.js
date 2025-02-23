@@ -7,8 +7,9 @@ function alertaDelPremium() {
 }
 
 // Función para mostrar alertas personalizadas
-function mostrarAlertaPersonalizada() {
+function mostrarAlertaPersonalizada(mensaje) {
 	var alerta = document.getElementById("alertaPersonalizada");
+	document.getElementById("alertaMensaje").textContent = mensaje;
 	alerta.style.display = "flex";
 }
 
@@ -489,10 +490,10 @@ function enviarCreacionGrupo(event) {
 		.then(function(response) {
 			closeCreacionGrupoModal();
 			if (response.ok) {
-				mostrarAlertaPersonalizada();
+				mostrarAlertaPersonalizada("Grupo creado correctamente. Dale a aceptar para observar los cambios");
 
 			} else {
-				mostrarAlertaPersonalizada();
+				mostrarAlertaPersonalizada("El grupo ya existe. Dale a aceptar para continuar.");
 
 			}
 		})
@@ -511,7 +512,7 @@ function openCreacionComentarioModal(primerComentario) {
 	const modal = document.getElementById("formularioCreacionComentarioModal");
 	modal.style.display = "flex";
 	document.getElementById("categoriaComentarioNuevo").value = "auxiliar"; // Establecer valor por defecto
-	actualizarSubcategoriasCreacion();
+	actualizarSubcategoriasCreacionComM();
 
 	const contenidoComentario = document.getElementById("contenidoComentarioNuevo");
 	const categoriaSelect = document.getElementById("categoriaComentarioNuevo");
@@ -533,7 +534,7 @@ function closeCreacionComentarioModal() {
 }
 
 // Función para actualizar dinámicamente las subcategorías
-function actualizarSubcategoriasCreacion() {
+function actualizarSubcategoriasCreacionComM() {
 	const categoria = document.getElementById("categoriaComentarioNuevo").value;
 	const subCategoriaSelect = document.getElementById("subCategoriaComentarioNuevo");
 	subCategoriaSelect.innerHTML = "";

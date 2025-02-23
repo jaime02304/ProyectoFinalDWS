@@ -674,7 +674,7 @@
 					<div>
 						<label for="categoriaGrupoNuevo">Categoría</label> <select
 							id="categoriaGrupoNuevo" name="categoriaGrupoNuevo"
-							onchange="actualizarSubcategoriasCreacion()">
+							onchange="actualizarSubcategoriasCreacionG()">
 							<option value="anime">Anime</option>
 							<option value="videojuegos">Videojuegos</option>
 						</select>
@@ -711,14 +711,14 @@
 						<label for="contenidoComentarioNuevo">Comentario</label>
 						<textarea id="contenidoComentarioNuevo"
 							name="contenidoComentarioNuevo"
-							placeholder="Escribe tu comentario aquí..." required
+							placeholder="Escribe tu comentario de bienvenida aquí..." required
 							maxlength="255"></textarea>
 					</div>
 
 					<div>
 						<label for="categoriaComentarioNuevo">Categoría</label> <select
 							id="categoriaComentarioNuevo" name="categoriaComentarioNuevo"
-							onchange="actualizarSubcategoriasCreacion()" disabled>
+							onchange="actualizarSubcategoriasCreacionComM()" disabled>
 							<option value="anime">Anime</option>
 							<option value="videojuegos">Videojuegos</option>
 							<option value="auxiliar">Auxiliar</option>
@@ -843,7 +843,7 @@
 					<div>
 						<label for="categoriaGrupo">Categoría</label> <select
 							id="categoriaGrupo" name="categoriaGrupo"
-							onchange="actualizarSubcategorias()">
+							onchange="actualizarSubcategoriasGM()">
 							<option value="anime">Anime</option>
 							<option value="videojuegos">Videojuegos</option>
 						</select>
@@ -900,7 +900,7 @@
 		<!-- ALERTA PERSONALIZADA -->
 		<div id="alertaPersonalizada" class="alerta-personalizada">
 			<div class="alerta-contenido">
-				<p id="alertaMensaje">${ ErrorMensaje}</p>
+				<p id="alertaMensaje"></p>
 				<button onclick="cerrarAlertaPersonalizada()">Aceptar</button>
 			</div>
 		</div>

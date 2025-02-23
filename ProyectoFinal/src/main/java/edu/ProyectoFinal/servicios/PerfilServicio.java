@@ -10,6 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -324,47 +326,45 @@ public class PerfilServicio {
 	 * @param usuarioPaFiltrar
 	 * @return
 	 */
-	public ModelAndView modificarUsuario(UsuarioPerfilDto usuarioAModificar, HttpSession sesion) {
+	public ResponseEntity<?> modificarUsuario(UsuarioPerfilDto usuarioAModificar, HttpSession sesion) {
 		logger.info("Iniciando el proceso de modificación de usuario.");
-
-		// Obtener el usuario actual de la sesión y combinarlo con los datos a modificar
-		UsuarioPerfilDto usuarioPaFiltrar = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
-		usuarioAModificar = combinarUsuario(usuarioAModificar, usuarioPaFiltrar);
-
-		ModelAndView vista = new ModelAndView();
 		String url = "http://localhost:8081/api/ModificarUsuario";
 
 		try {
+			// Obtener el usuario actual de la sesión y combinarlo con los datos a modificar
+			UsuarioPerfilDto usuarioPaFiltrar = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
+			usuarioAModificar = combinarUsuario(usuarioAModificar, usuarioPaFiltrar);
+
 			// Convertir el objeto a JSON para enviarlo a la API
 			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioAModificar);
 			logger.debug("Usuario en JSON: {}", usuarioJson);
 
-			// Usar try-with-resources para gestionar el cierre del cliente automáticamente
+			// Usamos try-with-resources para asegurar el cierre del cliente
 			try (Client client = ClientBuilder.newClient()) {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
 						.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
 
-				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
+				logger.info("Respuesta de la API: {}", respuestaApi.getStatus());
 
-				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
-					UsuarioPerfilDto usuarioPerfil = respuestaApi.readEntity(UsuarioPerfilDto.class);
-					usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
+				// Leer la respuesta como un objeto UsuarioPerfilDto
+				UsuarioPerfilDto usuarioPerfil = respuestaApi.readEntity(UsuarioPerfilDto.class);
+
+				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode() && usuarioPerfil != null) {
+					// Actualizar la sesión con el usuario modificado
 					sesion.setAttribute("Usuario", usuarioPerfil);
-					logger.info("Usuario modificado correctamente en la sesión.");
-					vista = condicionYCasosPerfil(usuarioPerfil, vista);
+					logger.info("Usuario modificado correctamente.");
+					return ResponseEntity.ok("Se ha modificado el usuario exitosamente");
 				} else {
 					String errorMsg = "Error al modificar el usuario: " + respuestaApi.getStatusInfo();
-					vista.addObject("error", errorMsg);
 					logger.error(errorMsg);
+					return ResponseEntity.status(respuestaApi.getStatus()).body(errorMsg);
 				}
 			}
 		} catch (Exception e) {
 			String errorMsg = "Error al conectar con la API: " + e.getMessage();
-			vista.addObject("error", errorMsg);
 			logger.error("Excepción al conectar con la API", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMsg);
 		}
-
-		return vista;
 	}
 
 	/**
@@ -376,41 +376,44 @@ public class PerfilServicio {
 	 * @param sesion
 	 * @return
 	 */
-	public ModelAndView enviarElementoParaBorrar(eliminarElementoPerfilDto eliminarElemento, HttpSession sesion) {
+	public ResponseEntity<?> enviarElementoParaBorrar(eliminarElementoPerfilDto eliminarElemento, HttpSession sesion) {
 		logger.info("Iniciando el proceso de eliminar elemento siendo administrador.");
-		ModelAndView vista = new ModelAndView();
 		String url = "http://localhost:8081/api/EliminarElemento";
 
 		try {
 			// Convertir el objeto a JSON para enviarlo a la API
-			String usuarioJson = new ObjectMapper().writeValueAsString(eliminarElemento);
-			logger.debug("Elemento en JSON: {}", usuarioJson);
+			String elementoJson = new ObjectMapper().writeValueAsString(eliminarElemento);
+			logger.debug("Elemento en JSON: {}", elementoJson);
 
 			// Usar try-with-resources para gestionar el cierre del cliente automáticamente
 			try (Client client = ClientBuilder.newClient()) {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
-						.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
+						.post(Entity.entity(elementoJson, MediaType.APPLICATION_JSON));
 
 				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
 
-				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
+				// Convertir la respuesta en un Map
+				Map<String, String> respuestaMap = respuestaApi.readEntity(new GenericType<Map<String, String>>() {
+				});
+
+				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()
+						&& respuestaMap.containsKey("message")) {
+					// Actualizar la sesión si es necesario
 					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
 					sesion.setAttribute("Usuario", usuarioPerfil);
 					logger.info("Elemento eliminado correctamente.");
-					vista = condicionYCasosPerfil(usuarioPerfil, vista);
+					return ResponseEntity.ok(respuestaMap); // Devuelve el mismo Map con el mensaje de éxito
 				} else {
-					String errorMsg = "Error al eliminar el elemento: " + respuestaApi.getStatusInfo();
-					vista.addObject("error", errorMsg);
+					String errorMsg = respuestaMap.getOrDefault("error", "Error desconocido al eliminar el elemento.");
 					logger.error(errorMsg);
+					return ResponseEntity.status(respuestaApi.getStatus()).body(Map.of("error", errorMsg));
 				}
 			}
 		} catch (Exception e) {
 			String errorMsg = "Error al conectar con la API: " + e.getMessage();
-			vista.addObject("error", errorMsg);
 			logger.error("Excepción al conectar con la API", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", errorMsg));
 		}
-
-		return vista;
 	}
 
 	/**
@@ -568,9 +571,8 @@ public class PerfilServicio {
 	 * @param sesion
 	 * @return
 	 */
-	public ModelAndView crearGrupoComoAdmin(GruposDto grupoCreado, HttpSession sesion) {
+	public ResponseEntity<?> crearGrupoComoAdmin(GruposDto grupoCreado, HttpSession sesion) {
 		logger.info("Iniciando el proceso de crear un grupo siendo administrador.");
-		ModelAndView vista = new ModelAndView();
 		String url = "http://localhost:8081/api/CrearGrupoComoAdmin";
 
 		try {
@@ -578,7 +580,7 @@ public class PerfilServicio {
 			String grupoJson = new ObjectMapper().writeValueAsString(grupoCreado);
 			logger.debug("Grupo a crear en JSON: {}", grupoJson);
 
-			// Usar try-with-resources para gestionar el cierre del cliente automáticamente
+			// Usamos try-with-resources para asegurar el cierre del cliente
 			try (Client client = ClientBuilder.newClient()) {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
 						.post(Entity.entity(grupoJson, MediaType.APPLICATION_JSON));
@@ -591,33 +593,29 @@ public class PerfilServicio {
 
 				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()
 						&& respuestaMap.containsKey("grupo")) {
+
 					Object grupo = respuestaMap.get("grupo");
 
 					// Validar si el grupo está vacío o es un string vacío
 					if (grupo == null || grupo.toString().trim().isEmpty()) {
 						String errorMsg = "El grupo ya existe.";
-						sesion.setAttribute("ErrorMensaje", errorMsg);
 						logger.error(errorMsg);
+						return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMsg);
 					} else {
-						UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
 						logger.info("Grupo creado correctamente.");
-						vista.addObject("ErrorMensaje", "Se ha creado el grupo exitosamente");
-						vista = condicionYCasosPerfil(usuarioPerfil, vista);
+						return ResponseEntity.ok("Se ha creado el grupo exitosamente");
 					}
 				} else {
-					String errorMsg = "Error al crear el grupo: ";
-					vista.addObject("error", errorMsg);
-					logger.error(errorMsg + " " + respuestaApi.getStatusInfo());
+					String errorMsg = "Error al crear el grupo: " + respuestaApi.getStatusInfo();
+					logger.error(errorMsg);
+					return ResponseEntity.status(respuestaApi.getStatus()).body(errorMsg);
 				}
 			}
 		} catch (Exception e) {
 			String errorMsg = "Error al conectar con la API: " + e.getMessage();
-			vista.addObject("error", errorMsg);
-			vista.setViewName("error");
 			logger.error("Excepción al conectar con la API", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMsg);
 		}
-
-		return vista;
 	}
 
 	/**

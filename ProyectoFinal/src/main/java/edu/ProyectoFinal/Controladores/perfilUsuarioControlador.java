@@ -1,5 +1,9 @@
 package edu.ProyectoFinal.Controladores;
 
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,6 +54,8 @@ public class perfilUsuarioControlador {
 
 		return vista;
 	}
+	/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+	/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 	/**
 	 * Metodo que modifica al usuario con los valores incorporados
@@ -60,15 +66,13 @@ public class perfilUsuarioControlador {
 	 * @return
 	 */
 	@PostMapping("/ModificarUsuario")
-	public ModelAndView modificarUsuario(@ModelAttribute UsuarioPerfilDto usuarioAModificar,
+	public ResponseEntity<?> modificarUsuario(@ModelAttribute UsuarioPerfilDto usuarioAModificar,
 			HttpSession sesionDelUsuario) {
 		try {
+// Se delega en el servicio que ya retorna un ResponseEntity según el resultado
 			return servicioPerfil.modificarUsuario(usuarioAModificar, sesionDelUsuario);
 		} catch (Exception ex) {
-			ModelAndView vistaError = new ModelAndView("error");
-			vistaError.addObject("error",
-					"Ha ocurrido un error al modificar el usuario. Por favor, inténtalo de nuevo.");
-			return vistaError;
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
@@ -82,14 +86,12 @@ public class perfilUsuarioControlador {
 	 * @return
 	 */
 	@PostMapping("/EliminarElementosComoAdmin")
-	public ModelAndView eliminarUsuario(@ModelAttribute eliminarElementoPerfilDto elemento, HttpSession sesion) {
+	public ResponseEntity<?> eliminarUsuario(@ModelAttribute eliminarElementoPerfilDto elemento, HttpSession sesion) {
 		try {
 			return servicioPerfil.enviarElementoParaBorrar(elemento, sesion);
 		} catch (Exception ex) {
-			ModelAndView vistaError = new ModelAndView("error");
-			vistaError.addObject("error",
-					"Ha ocurrido un error al eliminar el elemento(usuario o grupo). Por favor, inténtalo de nuevo.");
-			return vistaError;
+			String errorMsg = "Ha ocurrido un error al eliminar el elemento (usuario o grupo). Por favor, inténtalo de nuevo.";
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", errorMsg));
 		}
 	}
 
@@ -164,13 +166,12 @@ public class perfilUsuarioControlador {
 	 * @return
 	 */
 	@PostMapping("/CrearGrupoComoAdmin")
-	public ModelAndView crearUnNuevoGrupoComoAdmin(@ModelAttribute GruposDto grupoCreado, HttpSession sesion) {
+	public ResponseEntity<?> crearUnNuevoGrupoComoAdmin(@ModelAttribute GruposDto grupoCreado, HttpSession sesion) {
 		try {
 			return servicioPerfil.crearGrupoComoAdmin(grupoCreado, sesion);
 		} catch (Exception ex) {
-			ModelAndView vistaError = new ModelAndView("error");
-			vistaError.addObject("error", "Ha ocurrido un error al crear el grupo. Por favor, inténtalo de nuevo.");
-			return vistaError;
+			String errorMsg = "Ha ocurrido un error al crear el grupo. Por favor, inténtalo de nuevo.";
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMsg);
 		}
 	}
 
@@ -195,6 +196,8 @@ public class perfilUsuarioControlador {
 		}
 	}
 
+	/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+	/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 	/**
 	 * Metodo de cerrar la sesion del usuario
 	 * 
