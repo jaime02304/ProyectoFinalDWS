@@ -135,7 +135,7 @@ a {
 }
 
 /* Boton de administrador */
-.botonAdmin .botonUser{
+.botonAdmin .botonUser {
 	font-family: "Bangers", sans-serif;
 	width: 150px;
 	height: 70px;
@@ -147,7 +147,8 @@ a {
 	font-size: 26px;
 	transition: box-shadow 0.5s ease;
 }
- .botonUser{
+
+.botonUser {
 	font-family: "Bangers", sans-serif;
 	width: 150px;
 	height: 70px;
@@ -352,11 +353,13 @@ a {
 	font-size: 24px;
 }
 
-@keyframes bombeo { 0% {
+@
+keyframes bombeo { 0% {
 	transform: scale(1);
 }
 
-50%
+50
+%
 {
 transform
 :
@@ -364,7 +367,8 @@ scale(
 1.2
 );
 }
-100%
+100
+%
 {
 transform
 :

@@ -711,8 +711,8 @@
 						<label for="contenidoComentarioNuevo">Comentario</label>
 						<textarea id="contenidoComentarioNuevo"
 							name="contenidoComentarioNuevo"
-							placeholder="Escribe tu comentario de bienvenida aquí..." required
-							maxlength="255"></textarea>
+							placeholder="Escribe tu comentario de bienvenida aquí..."
+							required maxlength="255"></textarea>
 					</div>
 
 					<div>

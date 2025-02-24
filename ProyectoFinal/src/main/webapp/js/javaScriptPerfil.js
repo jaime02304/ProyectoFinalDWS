@@ -68,7 +68,7 @@ function enviarFormulario(event) {
 		})
 			.then(function(response) {
 				if (response.ok) {
-					mostrarAlertaPersonalizada("Los datos se han guardado correctamente. Dale a aceptar y se verá los datos modificados");
+					mostrarAlertaPersonalizada("Los datos se han guardado correctamente. Dale a aceptar y se verá los datos modificados.");
 				} else {
 					mostrarAlertaPersonalizada("Error al guardar los datos. Inténtelo nuevamente.");
 				}
@@ -157,7 +157,7 @@ function enviarEliminacion(event) {
 		.then(function(response) {
 			closeEliminacionModal();
 			if (response.ok) {
-				mostrarAlertaPersonalizada("El elemento ha sido eliminado correctamente.");
+				mostrarAlertaPersonalizada("El elemento ha sido eliminado correctamente. Dale a aceptar para que se vean los cambios.");
 			} else {
 				mostrarAlertaPersonalizada("Error al eliminar el elemento. Inténtelo nuevamente.");
 			}
@@ -239,7 +239,7 @@ function enviarModificacion(event) {
 		.then(function(response) {
 			closeModificacionModal();
 			if (response.ok) {
-				mostrarAlertaPersonalizada("El usuario ha sido modificado correctamente.");
+				mostrarAlertaPersonalizada("El usuario ha sido modificado correctamente. Dale a aceptar para que se vean los cambios.");
 			} else {
 				mostrarAlertaPersonalizada("Error al modificar el usuario. Inténtelo nuevamente.");
 			}
@@ -341,9 +341,9 @@ function enviarModificacionGrupo(event) {
 		.then(function(response) {
 			closeModificacionGrupoModal();
 			if (response.ok) {
-				mostrarAlertaPersonalizada("El grupo ha sido modificado correctamente.");
+				mostrarAlertaPersonalizada("El grupo ha sido modificado correctamente. Dale a aceptar para ver los cambios. ");
 			} else {
-				mostrarAlertaPersonalizada("Error al modificar el grupo. Inténtelo nuevamente.");
+				mostrarAlertaPersonalizada("Error al modificar el grupo. Es posible que ya haya un grupo existente con el mismo nombre. Inténtelo nuevamente.");
 			}
 		})
 		.catch(function(error) {
@@ -401,9 +401,9 @@ function enviarCreacionUsuario(event) {
 		.then(response => {
 			closeCreacionUsuarioModal();
 			if (response.ok) {
-				mostrarAlertaPersonalizada("El usuario ha sido creado correctamente.");
+				mostrarAlertaPersonalizada("El usuario ha sido creado correctamente. Dale a aceptar para poder ver los cambios.");
 			} else {
-				mostrarAlertaPersonalizada("Error al crear el usuario. Inténtelo nuevamente.");
+				mostrarAlertaPersonalizada("Error al crear el usuario. Es posible que el usuario tenga ya un alias existente. Inténtelo nuevamente.");
 			}
 		})
 		.catch(error => {
@@ -490,10 +490,10 @@ function enviarCreacionGrupo(event) {
 		.then(function(response) {
 			closeCreacionGrupoModal();
 			if (response.ok) {
-				mostrarAlertaPersonalizada("Grupo creado correctamente. Dale a aceptar para observar los cambios");
+				mostrarAlertaPersonalizada("Grupo creado correctamente. Dale a aceptar para observar los cambios. ");
 
 			} else {
-				mostrarAlertaPersonalizada("El grupo ya existe. Dale a aceptar para continuar.");
+				mostrarAlertaPersonalizada("El grupo ya existe. Intentelo Con otro nombre. ");
 
 			}
 		})
@@ -586,7 +586,7 @@ function enviarCreacionComentario(event) {
 		.then(response => {
 			closeCreacionComentarioModal();
 			if (response.ok) {
-				mostrarAlertaPersonalizada("El comentario ha sido creado correctamente.");
+				mostrarAlertaPersonalizada("El comentario ha sido creado correctamente. Dale a aceptar para verificar los cambios. ");
 			} else {
 				mostrarAlertaPersonalizada("Error al crear el comentario. Inténtelo nuevamente.");
 			}

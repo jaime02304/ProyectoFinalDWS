@@ -1,5 +1,6 @@
 package edu.ProyectoFinal.Controladores;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -105,15 +106,13 @@ public class perfilUsuarioControlador {
 	 * @return
 	 */
 	@PostMapping("/ModificarUsuarioComoAdmin")
-	public ModelAndView modificarUSuarioComoAdmin(@ModelAttribute UsuarioPerfilDto usuarioAModificar,
+	public ResponseEntity<?> modificarUSuarioComoAdmin(@ModelAttribute UsuarioPerfilDto usuarioAModificar,
 			HttpSession sesion) {
 		try {
 			return servicioPerfil.enviarUsuarioAModificarComoAdmin(usuarioAModificar, sesion);
 		} catch (Exception ex) {
-			ModelAndView vistaError = new ModelAndView("error");
-			vistaError.addObject("error",
-					"Ha ocurrido un error al modificar el usuario. Por favor, inténtalo de nuevo.");
-			return vistaError;
+			String errorMEnsajeString = "Ha ocurrido un error al modificar el usuario. Por favor, inténtalo de nuevo.";
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", errorMEnsajeString));
 		}
 	}
 
@@ -126,14 +125,16 @@ public class perfilUsuarioControlador {
 	 * @return
 	 */
 	@PostMapping("/ModificarGrupoComoAdmin")
-	public ModelAndView modificarGrupoComoAdmin(@ModelAttribute GruposListadoDto usuarioAModificar,
+	public ResponseEntity<?> modificarGrupoComoAdmin(@ModelAttribute GruposListadoDto grupoAModificar,
 			HttpSession sesion) {
 		try {
-			return servicioPerfil.enviarGrupoAModificarComoAdmin(usuarioAModificar, sesion);
+			// Llamada al servicio que modifica el grupo
+			return servicioPerfil.enviarGrupoAModificarComoAdmin(grupoAModificar, sesion);
 		} catch (Exception ex) {
-			ModelAndView vistaError = new ModelAndView("error");
-			vistaError.addObject("error", "Ha ocurrido un error al modificar el grupo. Por favor, inténtalo de nuevo.");
-			return vistaError;
+			// Manejo de errores en caso de excepción
+			Map<String, Object> respuestaError = new HashMap<>();
+			String errorMEnsajeString = "Ha ocurrido un error al modificar el grupo. Por favor, inténtalo de nuevo.";
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", errorMEnsajeString));
 		}
 	}
 
@@ -146,14 +147,15 @@ public class perfilUsuarioControlador {
 	 * @return
 	 */
 	@PostMapping("/CrearUsuarioComoAdmin")
-	public ModelAndView crearUnNuevoUsuarioComoAdmin(@ModelAttribute UsuarioPerfilDto usuarioCreado,
+	public ResponseEntity<?> crearUnNuevoUsuarioComoAdmin(@ModelAttribute UsuarioPerfilDto usuarioCreado,
 			HttpSession sesion) {
 		try {
+			// Llamada al servicio que crea el usuario
 			return servicioPerfil.crearUsuarioComoAdmin(usuarioCreado, sesion);
 		} catch (Exception ex) {
-			ModelAndView vistaError = new ModelAndView("error");
-			vistaError.addObject("error", "Ha ocurrido un error al crear el usuario. Por favor, inténtalo de nuevo.");
-			return vistaError;
+			// Manejo de errores en caso de excepción
+			String errorMensaje = "Ha ocurrido un error al crear el usuario. Por favor, inténtalo de nuevo.";
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", errorMensaje));
 		}
 	}
 
@@ -185,14 +187,12 @@ public class perfilUsuarioControlador {
 	 * @return
 	 */
 	@PostMapping("/CrearComentario")
-	public ModelAndView crearComentario(@ModelAttribute ComentariosPerfilDto nuevoComentario, HttpSession sesion) {
+	public ResponseEntity<?> crearComentario(@ModelAttribute ComentariosPerfilDto nuevoComentario, HttpSession sesion) {
 		try {
 			return servicioPerfil.crearComentarioPerfil(nuevoComentario, sesion);
 		} catch (Exception ex) {
-			ModelAndView vistaError = new ModelAndView("error");
-			vistaError.addObject("error",
-					"Ha ocurrido un error al crear el comentario. Por favor, inténtalo de nuevo.");
-			return vistaError;
+			String errorMensaje = "Ha ocurrido un error al crear el comentario. Por favor, inténtalo de nuevo.";
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", errorMensaje));
 		}
 	}
 

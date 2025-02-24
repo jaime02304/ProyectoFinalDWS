@@ -57,13 +57,15 @@
 							class="botonNavegador botonCategoria">CATEGORÍA</button></a>
 					<!-- Aqui deberia de poner una condicion que si es admin coja una cosa y si no que haga la otra -->
 					<c:if test="${Usuario == null}">
-						<a href="<%=request.getContextPath()%>/InicioSesion"><button class="botonIconoIS">
+						<a href="<%=request.getContextPath()%>/InicioSesion"><button
+								class="botonIconoIS">
 								<i class="fas fa-user icono"></i>
 							</button></a>
 					</c:if>
 					<c:if test="${Usuario != null}">
 						<c:if test="${Usuario.rolUsu != 'user'}">
-							<a href="<%=request.getContextPath()%>/PerfilUsuario"><button class=" botonNavegador ">ADMIN</button></a>
+							<a href="<%=request.getContextPath()%>/PerfilUsuario"><button
+									class=" botonNavegador ">ADMIN</button></a>
 						</c:if>
 						<c:if test="${Usuario.rolUsu == 'user'}">
 							<a href="<%=request.getContextPath()%>/PerfilUsuario"><button
@@ -96,7 +98,8 @@
 						<a href="#">GRUPOS</a> <a href="#">CATEGORÍA</a>
 						<!--AQUI DEBERIA DE PONER LA CONDICION EN LA CUAL SI SE INICIA SESION PONDRA PERFIL USUARIO O PERFIL ADMINISTRADOR-->
 						<c:if test="${Usuario == null}">
-							<a href="<%=request.getContextPath()%>/InicioSesion">INICIAR SESION</a>
+							<a href="<%=request.getContextPath()%>/InicioSesion">INICIAR
+								SESION</a>
 						</c:if>
 						<c:if test="${Usuario != null}">
 							<c:if test="${Usuario.rolUsu != 'user'}">
@@ -241,10 +244,10 @@
 											<div class="NombreGrupo">
 												<c:out value="${grupo.nombreGrupo}"></c:out>
 											</div>
-											<div class="categoriaGrupo" style="margin:5%;">
+											<div class="categoriaGrupo" style="margin: 5%;">
 												<c:out value="${grupo.categoriaNombre}"></c:out>
 											</div>
-											<div class="tematicaGrupo" style="margin:5%;">
+											<div class="tematicaGrupo" style="margin: 5%;">
 												<c:out value="${grupo.subCategoriaNombre}"></c:out>
 											</div>
 											<div>
@@ -262,7 +265,7 @@
 											<div class="NombreGrupo">
 												<c:out value="${grupo.nombreGrupo}"></c:out>
 											</div>
-											<div class="categoriaGrupo" style="margin:5%;">
+											<div class="categoriaGrupo" style="margin: 5%;">
 												<c:out value="${grupo.categoriaNombre}"></c:out>
 											</div>
 											<div>

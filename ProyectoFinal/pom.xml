@@ -37,7 +37,7 @@
 			<groupId>org.glassfish.jersey.inject</groupId>
 			<artifactId>jersey-hk2</artifactId>
 		</dependency>
-		
+
 		<!-- Spring Boot Web Starter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -56,13 +56,13 @@
 			<artifactId>jersey-media-json-binding</artifactId>
 		</dependency>
 
-		<!-- Dependnecia del jakarta WS-->
+		<!-- Dependnecia del jakarta WS -->
 		<dependency>
 			<groupId>jakarta.ws.rs</groupId>
 			<artifactId>jakarta.ws.rs-api</artifactId>
 		</dependency>
 
-		<!-- Dependencia del org.JSON-->
+		<!-- Dependencia del org.JSON -->
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>

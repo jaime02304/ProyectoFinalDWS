@@ -2,6 +2,7 @@ package edu.ProyectoFinal.servicios;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ProyectoFinal.Dto.ComentariosPerfilDto;
@@ -424,46 +426,41 @@ public class PerfilServicio {
 	 * @param sesion
 	 * @return
 	 */
-	public ModelAndView enviarUsuarioAModificarComoAdmin(UsuarioPerfilDto usuarioAModificar, HttpSession sesion) {
+	public ResponseEntity<Map<String, Object>> enviarUsuarioAModificarComoAdmin(UsuarioPerfilDto usuarioAModificar,
+			HttpSession sesion) {
 		logger.info("Iniciando el proceso de modificar un usuario siendo administrador.");
-		ModelAndView vista = new ModelAndView();
 		String url = "http://localhost:8081/api/ModificarUsuarioComoAdmin";
+		Map<String, Object> responseMap = new HashMap<>();
 
 		try {
-			// Convertir el objeto a JSON para enviarlo a la API
 			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioAModificar);
 			logger.debug("Usuario a modificar en JSON: {}", usuarioJson);
-
-			// Usar try-with-resources para gestionar el cierre del cliente automáticamente
 			try (Client client = ClientBuilder.newClient()) {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
 						.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
-
 				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
-
-				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
-					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
-					usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
-					sesion.setAttribute("Usuario", usuarioPerfil);
-					logger.info("Elemento modificado correctamente.");
-					vista = condicionYCasosPerfil(usuarioPerfil, vista);
-				} else if (respuestaApi.getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
-					String errorMsg = "El usuario esta existente: ";
-					vista.addObject("error", errorMsg);
-					logger.error("Excepción al crear un usuario");
-				} else {
-					String errorMsg = "Error al modificar el elemento: " + respuestaApi.getStatusInfo();
-					vista.addObject("error", errorMsg);
-					logger.error(errorMsg);
-				}
+				// Convertir la respuesta de la API (en JSON) a un Map
+				String jsonResponse = respuestaApi.readEntity(String.class);
+				responseMap = new ObjectMapper().readValue(jsonResponse, new TypeReference<Map<String, Object>>() {
+				});
+			}
+			if (responseMap.containsKey("message")
+					&& "Usuario modificado correctamente.".equals(responseMap.get("message"))) {
+				// Actualizar datos del usuario en la sesión si la modificación fue exitosa
+				UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
+				usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
+				sesion.setAttribute("Usuario", usuarioPerfil);
+				logger.info("Usuario modificado correctamente y actualizado en la sesión.");
+				return ResponseEntity.ok(responseMap);
+			} else {
+				logger.error("Error al modificar el usuario: {}", responseMap.get("error"));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
 			}
 		} catch (Exception e) {
-			String errorMsg = "Error al conectar con la API: " + e.getMessage();
-			vista.addObject("error", errorMsg);
 			logger.error("Excepción al conectar con la API", e);
+			responseMap.put("error", "Error al conectar con la API: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMap);
 		}
-
-		return vista;
 	}
 
 	/**
@@ -475,41 +472,39 @@ public class PerfilServicio {
 	 * @param sesion
 	 * @return
 	 */
-	public ModelAndView enviarGrupoAModificarComoAdmin(GruposListadoDto grupoAModificar, HttpSession sesion) {
+	public ResponseEntity<Map<String, Object>> enviarGrupoAModificarComoAdmin(GruposListadoDto grupoAModificar,
+			HttpSession sesion) {
 		logger.info("Iniciando el proceso de modificar un grupo siendo administrador.");
-		ModelAndView vista = new ModelAndView();
 		String url = "http://localhost:8081/api/ModificarGrupoComoAdmin";
+		Map<String, Object> responseMap = new HashMap<>();
 
 		try {
-			// Convertir el objeto a JSON para enviarlo a la API
 			String grupoJson = new ObjectMapper().writeValueAsString(grupoAModificar);
 			logger.debug("Grupo a modificar en JSON: {}", grupoJson);
 
-			// Usar try-with-resources para gestionar el cierre del cliente automáticamente
 			try (Client client = ClientBuilder.newClient()) {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
 						.post(Entity.entity(grupoJson, MediaType.APPLICATION_JSON));
-
 				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
-				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
-					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
-					usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
-					sesion.setAttribute("Usuario", usuarioPerfil);
-					logger.info("Elemento modificado correctamente.");
-					vista = condicionYCasosPerfil(usuarioPerfil, vista);
-				} else {
-					String errorMsg = "Error al modificar el grupo: " + respuestaApi.getStatusInfo();
-					vista.addObject("error", errorMsg);
-					logger.error(errorMsg);
-				}
+
+				// Convertir la respuesta de la API (en JSON) a un Map
+				String jsonResponse = respuestaApi.readEntity(String.class);
+				responseMap = new ObjectMapper().readValue(jsonResponse, new TypeReference<Map<String, Object>>() {
+				});
+			}
+			if (responseMap.containsKey("message")
+					&& "Grupo modificado correctamente.".equals(responseMap.get("message"))) {
+				logger.info("Grupo modificado correctamente.");
+				return ResponseEntity.ok(responseMap);
+			} else {
+				logger.error("Error al modificar el grupo: {}", responseMap.get("error"));
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
 			}
 		} catch (Exception e) {
-			String errorMsg = "Error al conectar con la API: " + e.getMessage();
-			vista.addObject("error", errorMsg);
 			logger.error("Excepción al conectar con la API", e);
+			responseMap.put("error", "Error al conectar con la API: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMap);
 		}
-
-		return vista;
 	}
 
 	/**
@@ -520,9 +515,10 @@ public class PerfilServicio {
 	 * @param sesion
 	 * @return
 	 */
-	public ModelAndView crearUsuarioComoAdmin(UsuarioPerfilDto usuarioCreado, HttpSession sesion) {
+	public ResponseEntity<Map<String, Object>> crearUsuarioComoAdmin(UsuarioPerfilDto usuarioCreado,
+			HttpSession sesion) {
 		logger.info("Iniciando el proceso de crear un usuario siendo administrador.");
-		ModelAndView vista = new ModelAndView();
+		Map<String, Object> responseMap = new HashMap<>();
 		String url = "http://localhost:8081/api/CrearUsuarioComoAdmin";
 
 		try {
@@ -538,29 +534,30 @@ public class PerfilServicio {
 
 				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
 
-				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
+				// Leer la respuesta de la API como un Map
+				String jsonResponse = respuestaApi.readEntity(String.class);
+				responseMap = new ObjectMapper().readValue(jsonResponse, new TypeReference<Map<String, Object>>() {
+				});
+
+				// Validar la respuesta y actuar en consecuencia
+				if (responseMap.containsKey("message")
+						&& "Usuario creado correctamente.".equals(responseMap.get("message"))) {
 					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
 					usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
 					sesion.setAttribute("Usuario", usuarioPerfil);
 					logger.info("Usuario creado correctamente.");
-					vista = condicionYCasosPerfil(usuarioPerfil, vista);
-				} else if (respuestaApi.getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
-					String errorMsg = "El usuario esta existente: ";
-					vista.addObject("error", errorMsg);
-					logger.error("Excepción al crear un usuario");
+					return ResponseEntity.ok(responseMap);
 				} else {
-					String errorMsg = "Error al crear el usuario: " + respuestaApi.getStatusInfo();
-					vista.addObject("error", errorMsg);
-					logger.error(errorMsg);
+					logger.error("Error al crear el usuario: {}", responseMap.get("message"));
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
 				}
 			}
 		} catch (Exception e) {
 			String errorMsg = "Error al conectar con la API: " + e.getMessage();
-			vista.addObject("error", errorMsg);
 			logger.error("Excepción al conectar con la API", e);
+			responseMap.put("message", errorMsg); // Mensaje de error
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMap);
 		}
-
-		return vista;
 	}
 
 	/**
@@ -626,40 +623,46 @@ public class PerfilServicio {
 	 * @param sesion
 	 * @return
 	 */
-	public ModelAndView crearComentarioPerfil(ComentariosPerfilDto nuevoComentarios, HttpSession sesion) {
+	public ResponseEntity<?> crearComentarioPerfil(ComentariosPerfilDto nuevoComentarios, HttpSession sesion) {
 		logger.info("Iniciando el proceso de crear un comentario siendo administrador.");
-		ModelAndView vista = new ModelAndView();
 		String url = "http://localhost:8081/api/CrearComentarioPerfil";
-
 		try {
-			// Convertir el objeto a JSON para enviarlo a la API
 			String comentarioJson = new ObjectMapper().writeValueAsString(nuevoComentarios);
-			logger.debug("Comentario a crear en JSON: {}", nuevoComentarios);
+			logger.debug("Comentario a crear en JSON: {}", comentarioJson);
 
 			try (Client client = ClientBuilder.newClient()) {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
 						.post(Entity.entity(comentarioJson, MediaType.APPLICATION_JSON));
-
-				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
-
+				logger.info("Respuesta de la API: {}", respuestaApi.getStatus());
+				Map<String, Object> respuestaMap = respuestaApi.readEntity(new GenericType<Map<String, Object>>() {
+				});
 				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
-
-					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
-					logger.info("Comentario creado correctamente.");
-					vista = condicionYCasosPerfil(usuarioPerfil, vista);
+					if (respuestaMap.containsKey("comentario")) {
+						Object comentario = respuestaMap.get("comentario");
+						if (comentario == null || comentario.toString().trim().isEmpty()) {
+							String errorMsg = "No se pudo crear el comentario.";
+							logger.error(errorMsg);
+							return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMsg);
+						} else {
+							logger.info("Comentario creado correctamente.");
+							return ResponseEntity.ok("Se ha creado el comentario exitosamente.");
+						}
+					} else {
+						String errorMsg = "Error al crear el comentario: No se recibió información válida.";
+						logger.error(errorMsg);
+						return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMsg);
+					}
 				} else {
 					String errorMsg = "Error al crear el comentario: " + respuestaApi.getStatusInfo();
-					vista.addObject("error", errorMsg);
 					logger.error(errorMsg);
+					return ResponseEntity.status(respuestaApi.getStatus()).body(errorMsg);
 				}
 			}
 		} catch (Exception e) {
 			String errorMsg = "Error al conectar con la API: " + e.getMessage();
-			vista.addObject("error", errorMsg);
 			logger.error("Excepción al conectar con la API", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMsg);
 		}
-
-		return vista;
 	}
 
 	/**
