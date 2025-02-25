@@ -1,5 +1,8 @@
 package edu.ProyectoFinal.Dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
 /**
  * Clase donde se encuentra los atributos de los usuarios para el perfil
  */
@@ -11,6 +14,7 @@ public class UsuarioPerfilDto {
 	private String correoElectronicoUsu = "aaaaa";
 	private int movilUsu = 0;
 	private String fotoString = "";
+	@JsonFormat(shape = Shape.STRING)
 	private byte[] fotoUsu;
 	private Boolean esPremium = false;
 	private String rolUsu = "user";

@@ -41,7 +41,6 @@ function enviarFormulario(event) {
 	var aliasOriginal = aliasInput.defaultValue;
 	var nombreOriginal = nombreCompletoInput.defaultValue;
 	var movilOriginal = movilInput.defaultValue;
-
 	var aliasNuevo = aliasInput.value;
 	var nombreNuevo = nombreCompletoInput.value;
 	var movilNuevo = movilInput.value;
@@ -50,38 +49,57 @@ function enviarFormulario(event) {
 	// Verificamos si hubo cambios en los valores del formulario o si se subió una nueva foto
 	if (aliasNuevo !== aliasOriginal || nombreNuevo !== nombreOriginal || movilNuevo !== movilOriginal || fotoNuevo) {
 		// Crear un objeto FormData para enviar los datos del formulario
-		var formData = new FormData();
+		const formData = new FormData();
 		formData.append("aliasUsu", aliasNuevo);
 		formData.append("nombreCompletoUsu", nombreNuevo);
 		formData.append("movilUsu", movilNuevo);
-		if (fotoNuevo) {
-			formData.append("foto", fotoNuevo);
+
+		// Verificar si hubo cambios o si se subió una nueva foto
+		if (aliasNuevo !== aliasOriginal || nombreNuevo !== nombreOriginal || movilNuevo !== movilOriginal || fotoNuevo) {
+			// Crear un objeto FormData para enviar los datos
+			const formData = new FormData();
+			formData.append("aliasUsu", aliasNuevo);
+			formData.append("nombreCompletoUsu", nombreNuevo);
+			formData.append("movilUsu", movilNuevo);
+
+			if (fotoNuevo) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					var arrayBuffer = e.target.result;
+					var blob = new Blob([arrayBuffer], { type: fotoNuevo.type });
+					formData.append("fotoFile", blob);
+				};
+			}
+			// Enviar los datos al servidor
+			enviarDatosAlServidor(formData);
+		} else {
+			mostrarAlertaPersonalizada("No se detectaron cambios en los datos.");
 		}
 
-		// Obtener el contexto de la aplicación para construir la URL correcta
-		var contextPath = window.location.pathname.split('/')[1]; // Ejemplo: "miapp" si la URL es /miapp/ModificarUsuario
-
-		// Realizar la solicitud POST con fetch
-		fetch("/" + contextPath + "/ModificarUsuario", {
-			method: "POST",
-			body: formData
-		})
-			.then(function(response) {
-				if (response.ok) {
-					mostrarAlertaPersonalizada("Los datos se han guardado correctamente. Dale a aceptar y se verá los datos modificados.");
-				} else {
-					mostrarAlertaPersonalizada("Error al guardar los datos. Inténtelo nuevamente.");
-				}
-			})
-			.catch(function(error) {
-				console.error("Error en la solicitud:", error);
-				mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
-			});
+		// Cerrar el modal (si corresponde)
+		closeFormularioModal();
 	}
-
-	// Cerrar el modal (si corresponde)
-	closeFormularioModal();
 }
+function enviarDatosAlServidor(formData) {
+	var contextPath = window.location.pathname.split('/')[1];
+
+	fetch("/" + contextPath + "/ModificarUsuario", {
+		method: "POST",
+		body: formData
+	})
+		.then(response => {
+			if (response.ok) {
+				mostrarAlertaPersonalizada("Datos guardados correctamente.");
+			} else {
+				mostrarAlertaPersonalizada("Error al guardar los datos.");
+			}
+		})
+		.catch(error => {
+			console.error("Error en la solicitud:", error);
+			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
+		});
+}
+
 
 // Función para abrir el formulario modal
 function openFormularioModal() {

@@ -44,6 +44,11 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jdk8</artifactId>
+		</dependency>
+
 		<!-- Jersey Implementation para JAX-RS -->
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>

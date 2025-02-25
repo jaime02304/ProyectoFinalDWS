@@ -70,7 +70,6 @@ public class perfilUsuarioControlador {
 	public ResponseEntity<?> modificarUsuario(@ModelAttribute UsuarioPerfilDto usuarioAModificar,
 			HttpSession sesionDelUsuario) {
 		try {
-// Se delega en el servicio que ya retorna un ResponseEntity según el resultado
 			return servicioPerfil.modificarUsuario(usuarioAModificar, sesionDelUsuario);
 		} catch (Exception ex) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

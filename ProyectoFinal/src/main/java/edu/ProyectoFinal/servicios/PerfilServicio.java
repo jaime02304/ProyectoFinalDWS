@@ -714,8 +714,11 @@ public class PerfilServicio {
 		usuarioAModificar.setEsPremium(usuarioPaFiltrar.getEsPremium());
 		usuarioAModificar.setEsVerificadoEntidad(usuarioPaFiltrar.getEsVerificadoEntidad());
 		usuarioAModificar.setRolUsu(usuarioPaFiltrar.getRolUsu());
-		if (usuarioAModificar.getFotoUsu() == null || usuarioAModificar.getFotoString().isEmpty()) {
-			usuarioAModificar.setFotoUsu(usuarioPaFiltrar.getFotoUsu());
+		if (usuarioPaFiltrar.getFotoUsu() != null && usuarioPaFiltrar.getFotoUsu().length > 0) {
+			String base64Image = Base64.getEncoder().encodeToString(usuarioPaFiltrar.getFotoUsu());
+			usuarioAModificar.setFotoUsu(base64Image.getBytes());
+		} else {
+			usuarioAModificar.setFotoUsu(null);
 		}
 		return usuarioAModificar;
 	}
