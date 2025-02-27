@@ -79,7 +79,6 @@ public class InicioSesionServicio {
 
 			if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
 				UsuarioPerfilDto usuarioPerfil = respuestaApi.readEntity(UsuarioPerfilDto.class);
-				usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
 				sesionIniciada.setAttribute("Usuario", usuarioPerfil);
 				sesionIniciada.setMaxInactiveInterval(60 * 60 * 24 * 7);
 				vista = servicioGrupos.obtenerLosGruposTops();
@@ -136,8 +135,6 @@ public class InicioSesionServicio {
 			}
 
 			UsuarioPerfilDto usuarioPerfil = respuesta.readEntity(UsuarioPerfilDto.class);
-			usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
-
 			if (usuarioPerfil != null
 					&& usuarioPerfil.getCorreoElectronicoUsu().equals(usuario.getCorreoElectronicoUsu())) {
 				sesion.setAttribute("Usuario", usuarioPerfil);

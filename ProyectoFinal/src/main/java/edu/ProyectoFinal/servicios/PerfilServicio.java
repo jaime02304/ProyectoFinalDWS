@@ -1,5 +1,6 @@
 package edu.ProyectoFinal.servicios;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -433,6 +434,8 @@ public class PerfilServicio {
 		Map<String, Object> responseMap = new HashMap<>();
 
 		try {
+			usuarioAModificar
+					.setFotoUsu(obtenerFotoUsuario(usuarioAModificar.getFotoString(), usuarioAModificar.getFotoUsu()));
 			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioAModificar);
 			logger.debug("Usuario a modificar en JSON: {}", usuarioJson);
 			try (Client client = ClientBuilder.newClient()) {
@@ -448,7 +451,6 @@ public class PerfilServicio {
 					&& "Usuario modificado correctamente.".equals(responseMap.get("message"))) {
 				// Actualizar datos del usuario en la sesión si la modificación fue exitosa
 				UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
-				usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
 				sesion.setAttribute("Usuario", usuarioPerfil);
 				logger.info("Usuario modificado correctamente y actualizado en la sesión.");
 				return ResponseEntity.ok(responseMap);
@@ -524,6 +526,7 @@ public class PerfilServicio {
 		try {
 			// Convertir el objeto a JSON para enviarlo a la API
 			usuarioCreado.setContraseniaUsu(utilidades.encriptarASHA256(usuarioCreado.getContraseniaUsu()));
+			usuarioCreado.setFotoUsu(obtenerFotoUsuario(usuarioCreado.getFotoString(), usuarioCreado.getFotoUsu()));
 			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioCreado);
 			logger.debug("Usuario a crear en JSON: {}", usuarioJson);
 
@@ -704,6 +707,7 @@ public class PerfilServicio {
 	 * Metodo que mete los valores de la sesion del usuario con el usuario que se
 	 * modifica
 	 * 
+	 * @author jpribio - 27/02/25
 	 * @param usuarioAModificar
 	 * @param usuarioPaFiltrar
 	 * @return
@@ -714,13 +718,26 @@ public class PerfilServicio {
 		usuarioAModificar.setEsPremium(usuarioPaFiltrar.getEsPremium());
 		usuarioAModificar.setEsVerificadoEntidad(usuarioPaFiltrar.getEsVerificadoEntidad());
 		usuarioAModificar.setRolUsu(usuarioPaFiltrar.getRolUsu());
-		if (usuarioPaFiltrar.getFotoUsu() != null && usuarioPaFiltrar.getFotoUsu().length > 0) {
-			String base64Image = Base64.getEncoder().encodeToString(usuarioPaFiltrar.getFotoUsu());
-			usuarioAModificar.setFotoUsu(base64Image.getBytes());
-		} else {
-			usuarioAModificar.setFotoUsu(null);
-		}
+		usuarioAModificar
+				.setFotoUsu(obtenerFotoUsuario(usuarioAModificar.getFotoString(), usuarioPaFiltrar.getFotoUsu()));
+
 		return usuarioAModificar;
+	}
+
+	/**
+	 * MEtodo privado que recoge el string de la imagen y la transforma a un array
+	 * de bytes
+	 * 
+	 * @author jpribio - 27/02/25
+	 * @param fotoString
+	 * @param fotoBytesExistente
+	 * @return
+	 */
+	private byte[] obtenerFotoUsuario(String fotoString, byte[] fotoBytesExistente) {
+		if (fotoString != null && !fotoString.isEmpty()) {
+			return Base64.getDecoder().decode(fotoString);
+		}
+		return fotoBytesExistente;
 	}
 
 }

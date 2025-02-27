@@ -32,6 +32,7 @@ function enviarFormulario(event) {
 	var movilInput = document.getElementById("movilInput");
 	var fotoInput = document.getElementById("fotoInput");
 
+	// Verificar que todos los elementos estén disponibles
 	if (!aliasInput || !nombreCompletoInput || !movilInput || !fotoInput) {
 		console.error("Uno o más elementos del formulario no se encontraron.");
 		return;
@@ -46,40 +47,35 @@ function enviarFormulario(event) {
 	var movilNuevo = movilInput.value;
 	var fotoNuevo = fotoInput.files.length > 0 ? fotoInput.files[0] : null;
 
-	// Verificamos si hubo cambios en los valores del formulario o si se subió una nueva foto
 	if (aliasNuevo !== aliasOriginal || nombreNuevo !== nombreOriginal || movilNuevo !== movilOriginal || fotoNuevo) {
-		// Crear un objeto FormData para enviar los datos del formulario
+		// Crear un objeto FormData para enviar los datos
 		const formData = new FormData();
 		formData.append("aliasUsu", aliasNuevo);
 		formData.append("nombreCompletoUsu", nombreNuevo);
 		formData.append("movilUsu", movilNuevo);
 
-		// Verificar si hubo cambios o si se subió una nueva foto
-		if (aliasNuevo !== aliasOriginal || nombreNuevo !== nombreOriginal || movilNuevo !== movilOriginal || fotoNuevo) {
-			// Crear un objeto FormData para enviar los datos
-			const formData = new FormData();
-			formData.append("aliasUsu", aliasNuevo);
-			formData.append("nombreCompletoUsu", nombreNuevo);
-			formData.append("movilUsu", movilNuevo);
-
-			if (fotoNuevo) {
-				var reader = new FileReader();
-				reader.onload = function(e) {
-					var arrayBuffer = e.target.result;
-					var blob = new Blob([arrayBuffer], { type: fotoNuevo.type });
-					formData.append("fotoFile", blob);
-				};
-			}
-			// Enviar los datos al servidor
-			enviarDatosAlServidor(formData);
+		if (fotoNuevo) {
+			const reader = new FileReader();
+			reader.onload = function(event) {
+				let fotoBase64 = event.target.result;
+				fotoBase64 = fotoBase64.split(',')[1];
+				formData.append("fotoString", fotoBase64);
+				enviarDatosAlServidor(formData);
+			};
+			reader.readAsDataURL(fotoNuevo);
 		} else {
-			mostrarAlertaPersonalizada("No se detectaron cambios en los datos.");
+			const fotoExistente = document.getElementById("fotoActual").src.split(',')[1]; // Obtener la imagen existente
+			if (fotoExistente) {
+				formData.append("fotoString", fotoExistente); // Enviar la imagen existente
+			}
+			enviarDatosAlServidor(formData);
 		}
-
-		// Cerrar el modal (si corresponde)
+	} else {
 		closeFormularioModal();
 	}
+	closeFormularioModal();
 }
+
 function enviarDatosAlServidor(formData) {
 	var contextPath = window.location.pathname.split('/')[1];
 
@@ -99,7 +95,6 @@ function enviarDatosAlServidor(formData) {
 			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
 		});
 }
-
 
 // Función para abrir el formulario modal
 function openFormularioModal() {

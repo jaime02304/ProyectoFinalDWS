@@ -66,9 +66,8 @@
 						<!--Si esta sin imagen un imput para insertar una imagen-->
 						<div class="divImagenPerfil">
 							<c:choose>
-								<c:when
-									test="${not empty usuario.fotoUsu} || ${usuario.fotoUsu==null }">
-									<img src="<c:out value='${usuario.fotoUsu}' />"
+								<c:when test="${not empty usuario.fotoString}">
+									<img src="data:image/jpeg;base64,${usuario.fotoString}"
 										alt="Foto Perfil del usuario" class="imagenUsuPerfil">
 								</c:when>
 								<c:otherwise>
@@ -329,13 +328,12 @@
 						<!--Si esta sin imagen un imput para insertar una imagen-->
 						<div class="divImagenPerfil">
 							<c:choose>
-								<c:when
-									test="${not empty usuario.fotoUsu} || ${usuario.fotoUsu==null }">>
-									<img src="<c:out value='${usuario.fotoUsu}' />"
+								<c:when test="${not empty usuario.fotoString}">
+									<img src="data:image/jpeg;base64,${usuario.fotoString}"
 										alt="Foto Perfil del usuario" class="imagenUsuPerfil">
 								</c:when>
 								<c:otherwise>
-									<div class="imagenUsuPerfil">no Avatar</div>
+									<div class="imagenUsuPerfil">No Avatar</div>
 								</c:otherwise>
 							</c:choose>
 						</div>
@@ -888,9 +886,17 @@
 							value="${usuarioAModificar.movilUsu}" />
 					</div>
 					<div>
-						<label for="fotoInput">Fotografía:</label> <input type="file"
-							id="fotoInput" name="fotoUsu" name="fotoUsu"
-							value="${usuarioAModificar.fotoUsu}" />
+						<label for="fotoInput">Fotografía:</label>
+						<div class="foto-input-container"
+							style="display: flex; flex-direction: column; align-items: center;">
+							<!-- Mostrar imagen actual -->
+							<img id="fotoActual"
+								src="data:image/jpeg;base64,${usuarioAModificar.fotoString}"
+								alt="Foto de usuario"
+								style="width: 90px;  height: auto; display: block; margin: 5px; border-radius: 10px; display: ${usuarioAModificar.fotoString != '' ? 'block' : 'none'};" />
+							<!-- Input tipo file -->
+							<input type="file" id="fotoInput" name="fotoUsu" accept="image/*" />
+						</div>
 					</div>
 					<button type="submit" class="manga-button">Guardar</button>
 				</form>
