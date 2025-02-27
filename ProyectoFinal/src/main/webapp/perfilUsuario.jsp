@@ -260,7 +260,7 @@
 												</div>
 												<div>
 													<a class="verGrupo2"
-														onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad})">Modificar</a>
+														onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad},'${usuario.fotoString}')">Modificar</a>
 												</div>
 												<div>
 													<a class="verGrupo2"
@@ -298,7 +298,7 @@
 												</div>
 												<div>
 													<a class="verGrupo2"
-														onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad})">Modificar</a>
+														onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad}, '${usuario.fotoString}')">Modificar</a>
 												</div>
 												<div>
 													<a class="verGrupo2"
@@ -524,7 +524,7 @@
 											</div>
 											<div>
 												<a class="verGrupo2"
-													onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad})">Modificar</a>
+													onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad},'${usuario.fotoString}')">Modificar</a>
 											</div>
 											<div>
 												<a class="verGrupo2"
@@ -563,7 +563,7 @@
 											<div>
 
 												<a class="verGrupo2"
-													onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad})">Modificar</a>
+													onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad}, '${usuario.fotoString}')">Modificar</a>
 											</div>
 											<div>
 												<a class="verGrupo2"
@@ -787,9 +787,17 @@
 							id="movilUsu" name="movilUsu" placeholder="Número de móvil"
 							required />
 					</div>
-					<div>
-						<label for="fotoUsu">Foto</label> <input type="file" id="fotoUsu"
-							name="fotoUsu" accept="image/*" />
+					<div class="foto-input-container"
+						style="display: flex; flex-direction: column; align-items: center;">
+						<div
+							style="display: flex; justify-content: center; align-items: center;">
+							<label for="fotoUsu">Fotografía</label>
+							<!-- Mostrar imagen actual -->
+							<img id="fotoActualAdmin" src="" alt="Foto de usuario"
+								style="width: 90px; height: auto; display: block; margin: 5px; border-radius: 10px;" />
+						</div>
+						<!-- Input tipo file -->
+						<input type="file" id="fotoUsu" name="fotoUsu" accept="image/*" />
 					</div>
 					<div
 						style="display: flex; justify-content: center; align-items: center;">

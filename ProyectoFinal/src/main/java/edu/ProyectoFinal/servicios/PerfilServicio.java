@@ -304,7 +304,7 @@ public class PerfilServicio {
 					usuario.setCorreoElectronicoUsu(jsonUsuario.getString("correoElectronicoUsu"));
 					usuario.setEsPremium(jsonUsuario.getBoolean("esPremium"));
 					usuario.setEsVerificadoEntidad(jsonUsuario.getBoolean("esVerificadoEntidad"));
-					// usuario.setFotoUsu(jsonUsuario.);
+					usuario.setFotoString(jsonUsuario.optString("fotoString"));
 					usuario.setMovilUsu(jsonUsuario.getInt("movilUsu"));
 					usuario.setNombreCompletoUsu(jsonUsuario.getString("nombreCompletoUsu"));
 					usuario.setRolUsu(jsonUsuario.getString("rolUsu"));

@@ -187,8 +187,8 @@ function enviarEliminacion(event) {
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 // Abrir modal de modificación de usuario
-function openModificacionModal(id, nombreCompleto, alias, correo, movil, esPremium, rol, esVerificadoEntidad) {
-	// Cacheamos el modal del DOM
+// Abrir modal y cargar los valores en los campos
+function openModificacionModal(id, nombreCompleto, alias, correo, movil, esPremium, rol, esVerificadoEntidad, fotoString) {
 	const modal = document.getElementById("formularioModificacionModal");
 	modal.style.display = "flex";
 
@@ -198,16 +198,24 @@ function openModificacionModal(id, nombreCompleto, alias, correo, movil, esPremi
 	document.getElementById("aliasUsu").value = alias;
 	document.getElementById("correoElectronicoUsu").value = correo;
 	document.getElementById("movilUsu").value = movil;
-	// Nota: No es posible pre-cargar el campo file (fotoUsu) por razones de seguridad
 	document.getElementById("esPremium").checked = esPremium;
 	document.getElementById("rolUsu").value = rol;
 	document.getElementById("esVerificadoEntidad").checked = esVerificadoEntidad;
 
-	// Actualizamos el título del modal (opcional)
+	// Mostrar imagen actual si existe
+	const fotoElement = document.getElementById("fotoActualAdmin");
+	if (fotoString) {
+		fotoElement.src = `data:image/jpeg;base64,${fotoString}`;
+		fotoElement.style.display = 'block';
+	} else {
+		fotoElement.style.display = 'none';
+	}
+
+	// Actualizamos el título del modal
 	document.getElementById("modalTituloMod").innerText = `Modificar usuario: ${alias}`;
 }
 
-// Cerrar modal de modificación de usuario
+// Cerrar modal
 function closeModificacionModal() {
 	document.getElementById("formularioModificacionModal").style.display = "none";
 }
@@ -234,14 +242,33 @@ function enviarModificacion(event) {
 	formData.append("aliasUsu", alias);
 	formData.append("correoElectronicoUsu", correo);
 	formData.append("movilUsu", movil);
-	if (fotoFile) {
-		formData.append("fotoUsu", fotoFile);
-	}
 	formData.append("esPremium", esPremium);
 	formData.append("rolUsu", rol);
 	formData.append("esVerificadoEntidad", esVerificadoEntidad);
+	// Si se seleccionó una nueva foto
+	if (fotoFile) {
+		const reader = new FileReader();
+		reader.onload = function(event) {
+			let fotoBase64 = event.target.result;
+			fotoBase64 = fotoBase64.split(',')[1]; // Obtener solo la parte base64
+			formData.append("fotoString", fotoBase64);
+			enviarDatosAlServidorM(formData); // Enviar al servidor después de leer la imagen
+		};
+		reader.readAsDataURL(fotoFile); // Leer la foto como base64
+	} else {
+		// Si no se seleccionó una nueva foto, obtener la foto existente y enviarla
+		const fotoExistente = document.getElementById("fotoActualAdmin").src.split(',')[1]; // Obtener la imagen existente
+		if (fotoExistente) {
+			formData.append("fotoString", fotoExistente); // Enviar la imagen existente
+		}
+		enviarDatosAlServidorM(formData); // Enviar al servidor sin nueva foto
+	}
 
-	// Obtenemos el contexto de la aplicación (asumiendo que está en la URL)
+	
+}
+
+// Función para enviar los datos al servidor
+function enviarDatosAlServidorM(formData) {
 	const contextPath = window.location.pathname.split('/')[1];
 
 	// Realizamos la solicitud POST usando fetch
@@ -250,9 +277,9 @@ function enviarModificacion(event) {
 		body: formData
 	})
 		.then(function(response) {
-			closeModificacionModal();
+			closeModificacionModal(); // Cerrar el modal
 			if (response.ok) {
-				mostrarAlertaPersonalizada("El usuario ha sido modificado correctamente. Dale a aceptar para que se vean los cambios.");
+				mostrarAlertaPersonalizada("El usuario ha sido modificado correctamente.");
 			} else {
 				mostrarAlertaPersonalizada("Error al modificar el usuario. Inténtelo nuevamente.");
 			}
@@ -263,6 +290,7 @@ function enviarModificacion(event) {
 			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
 		});
 }
+
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */

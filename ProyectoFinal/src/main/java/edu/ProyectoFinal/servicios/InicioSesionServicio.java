@@ -1,6 +1,5 @@
 package edu.ProyectoFinal.servicios;
 
-import java.util.Base64;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
