@@ -1,6 +1,5 @@
 package edu.ProyectoFinal.servicios;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -10,8 +9,6 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,8 +40,6 @@ public class PerfilServicio {
 
 	Util utilidades = new Util();
 
-	private static final Logger logger = LoggerFactory.getLogger(PerfilServicio.class);
-
 	/**
 	 * Metodo que coge el comentario por defecto del usuario
 	 * 
@@ -72,12 +67,10 @@ public class PerfilServicio {
 					vista.addObject("mensajePerfil", "No se encontraron comentarios para el usuario.");
 				}
 			} else {
-				logger.warn("Error en la API, código de estado: {}", respuestaApi.getStatus());
 				vista.addObject("error", "No se ha encontrado ningún comentario debido a un error en la API.");
 				vista.setViewName("error");
 			}
 		} catch (Exception e) {
-			logger.error("Error al conectar con la API", e);
 			vista.addObject("error", "Error al conectar con la API: " + e.getMessage());
 			vista.setViewName("error");
 		}
@@ -97,7 +90,6 @@ public class PerfilServicio {
 			JSONObject jsonComentario = jsonResponse.optJSONObject("comentarios");
 
 			if (jsonComentario == null) {
-				logger.warn("No se encontró el objeto 'comentario' en la respuesta JSON.");
 				return null; // Retorna un objeto vacío en lugar de null
 			}
 
@@ -107,7 +99,6 @@ public class PerfilServicio {
 			comentariosPerfilDto.setSubCategoriaTipo(jsonComentario.optString("subCategoriaTipo"));
 			return comentariosPerfilDto;
 		} catch (JSONException e) {
-			logger.error("Error al parsear la respuesta JSON", e);
 			throw new RuntimeException("Error procesando la respuesta JSON", e);
 		}
 	}
@@ -330,7 +321,6 @@ public class PerfilServicio {
 	 * @return
 	 */
 	public ResponseEntity<?> modificarUsuario(UsuarioPerfilDto usuarioAModificar, HttpSession sesion) {
-		logger.info("Iniciando el proceso de modificación de usuario.");
 		String url = "http://localhost:8081/api/ModificarUsuario";
 
 		try {
@@ -340,14 +330,11 @@ public class PerfilServicio {
 
 			// Convertir el objeto a JSON para enviarlo a la API
 			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioAModificar);
-			logger.debug("Usuario en JSON: {}", usuarioJson);
 
 			// Usamos try-with-resources para asegurar el cierre del cliente
 			try (Client client = ClientBuilder.newClient()) {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
 						.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
-
-				logger.info("Respuesta de la API: {}", respuestaApi.getStatus());
 
 				// Leer la respuesta como un objeto UsuarioPerfilDto
 				UsuarioPerfilDto usuarioPerfil = respuestaApi.readEntity(UsuarioPerfilDto.class);
@@ -355,17 +342,14 @@ public class PerfilServicio {
 				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode() && usuarioPerfil != null) {
 					// Actualizar la sesión con el usuario modificado
 					sesion.setAttribute("Usuario", usuarioPerfil);
-					logger.info("Usuario modificado correctamente.");
 					return ResponseEntity.ok("Se ha modificado el usuario exitosamente");
 				} else {
 					String errorMsg = "Error al modificar el usuario: " + respuestaApi.getStatusInfo();
-					logger.error(errorMsg);
 					return ResponseEntity.status(respuestaApi.getStatus()).body(errorMsg);
 				}
 			}
 		} catch (Exception e) {
 			String errorMsg = "Error al conectar con la API: " + e.getMessage();
-			logger.error("Excepción al conectar con la API", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMsg);
 		}
 	}
@@ -380,20 +364,16 @@ public class PerfilServicio {
 	 * @return
 	 */
 	public ResponseEntity<?> enviarElementoParaBorrar(eliminarElementoPerfilDto eliminarElemento, HttpSession sesion) {
-		logger.info("Iniciando el proceso de eliminar elemento siendo administrador.");
 		String url = "http://localhost:8081/api/EliminarElemento";
 
 		try {
 			// Convertir el objeto a JSON para enviarlo a la API
 			String elementoJson = new ObjectMapper().writeValueAsString(eliminarElemento);
-			logger.debug("Elemento en JSON: {}", elementoJson);
 
 			// Usar try-with-resources para gestionar el cierre del cliente automáticamente
 			try (Client client = ClientBuilder.newClient()) {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
 						.post(Entity.entity(elementoJson, MediaType.APPLICATION_JSON));
-
-				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
 
 				// Convertir la respuesta en un Map
 				Map<String, String> respuestaMap = respuestaApi.readEntity(new GenericType<Map<String, String>>() {
@@ -404,17 +384,14 @@ public class PerfilServicio {
 					// Actualizar la sesión si es necesario
 					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
 					sesion.setAttribute("Usuario", usuarioPerfil);
-					logger.info("Elemento eliminado correctamente.");
 					return ResponseEntity.ok(respuestaMap); // Devuelve el mismo Map con el mensaje de éxito
 				} else {
 					String errorMsg = respuestaMap.getOrDefault("error", "Error desconocido al eliminar el elemento.");
-					logger.error(errorMsg);
 					return ResponseEntity.status(respuestaApi.getStatus()).body(Map.of("error", errorMsg));
 				}
 			}
 		} catch (Exception e) {
 			String errorMsg = "Error al conectar con la API: " + e.getMessage();
-			logger.error("Excepción al conectar con la API", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", errorMsg));
 		}
 	}
@@ -429,7 +406,6 @@ public class PerfilServicio {
 	 */
 	public ResponseEntity<Map<String, Object>> enviarUsuarioAModificarComoAdmin(UsuarioPerfilDto usuarioAModificar,
 			HttpSession sesion) {
-		logger.info("Iniciando el proceso de modificar un usuario siendo administrador.");
 		String url = "http://localhost:8081/api/ModificarUsuarioComoAdmin";
 		Map<String, Object> responseMap = new HashMap<>();
 
@@ -437,11 +413,9 @@ public class PerfilServicio {
 			usuarioAModificar
 					.setFotoUsu(obtenerFotoUsuario(usuarioAModificar.getFotoString(), usuarioAModificar.getFotoUsu()));
 			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioAModificar);
-			logger.debug("Usuario a modificar en JSON: {}", usuarioJson);
 			try (Client client = ClientBuilder.newClient()) {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
 						.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
-				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
 				// Convertir la respuesta de la API (en JSON) a un Map
 				String jsonResponse = respuestaApi.readEntity(String.class);
 				responseMap = new ObjectMapper().readValue(jsonResponse, new TypeReference<Map<String, Object>>() {
@@ -452,14 +426,11 @@ public class PerfilServicio {
 				// Actualizar datos del usuario en la sesión si la modificación fue exitosa
 				UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
 				sesion.setAttribute("Usuario", usuarioPerfil);
-				logger.info("Usuario modificado correctamente y actualizado en la sesión.");
 				return ResponseEntity.ok(responseMap);
 			} else {
-				logger.error("Error al modificar el usuario: {}", responseMap.get("error"));
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
 			}
 		} catch (Exception e) {
-			logger.error("Excepción al conectar con la API", e);
 			responseMap.put("error", "Error al conectar con la API: " + e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMap);
 		}
@@ -476,18 +447,15 @@ public class PerfilServicio {
 	 */
 	public ResponseEntity<Map<String, Object>> enviarGrupoAModificarComoAdmin(GruposListadoDto grupoAModificar,
 			HttpSession sesion) {
-		logger.info("Iniciando el proceso de modificar un grupo siendo administrador.");
 		String url = "http://localhost:8081/api/ModificarGrupoComoAdmin";
 		Map<String, Object> responseMap = new HashMap<>();
 
 		try {
 			String grupoJson = new ObjectMapper().writeValueAsString(grupoAModificar);
-			logger.debug("Grupo a modificar en JSON: {}", grupoJson);
 
 			try (Client client = ClientBuilder.newClient()) {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
 						.post(Entity.entity(grupoJson, MediaType.APPLICATION_JSON));
-				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
 
 				// Convertir la respuesta de la API (en JSON) a un Map
 				String jsonResponse = respuestaApi.readEntity(String.class);
@@ -496,14 +464,11 @@ public class PerfilServicio {
 			}
 			if (responseMap.containsKey("message")
 					&& "Grupo modificado correctamente.".equals(responseMap.get("message"))) {
-				logger.info("Grupo modificado correctamente.");
 				return ResponseEntity.ok(responseMap);
 			} else {
-				logger.error("Error al modificar el grupo: {}", responseMap.get("error"));
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
 			}
 		} catch (Exception e) {
-			logger.error("Excepción al conectar con la API", e);
 			responseMap.put("error", "Error al conectar con la API: " + e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMap);
 		}
@@ -519,7 +484,6 @@ public class PerfilServicio {
 	 */
 	public ResponseEntity<Map<String, Object>> crearUsuarioComoAdmin(UsuarioPerfilDto usuarioCreado,
 			HttpSession sesion) {
-		logger.info("Iniciando el proceso de crear un usuario siendo administrador.");
 		Map<String, Object> responseMap = new HashMap<>();
 		String url = "http://localhost:8081/api/CrearUsuarioComoAdmin";
 
@@ -528,14 +492,11 @@ public class PerfilServicio {
 			usuarioCreado.setContraseniaUsu(utilidades.encriptarASHA256(usuarioCreado.getContraseniaUsu()));
 			usuarioCreado.setFotoUsu(obtenerFotoUsuario(usuarioCreado.getFotoString(), usuarioCreado.getFotoUsu()));
 			String usuarioJson = new ObjectMapper().writeValueAsString(usuarioCreado);
-			logger.debug("Usuario a crear en JSON: {}", usuarioJson);
 
 			// Usar try-with-resources para gestionar el cierre del cliente automáticamente
 			try (Client client = ClientBuilder.newClient()) {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
 						.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
-
-				logger.debug("Respuesta de la API: {}", respuestaApi.getStatus());
 
 				// Leer la respuesta de la API como un Map
 				String jsonResponse = respuestaApi.readEntity(String.class);
@@ -548,16 +509,13 @@ public class PerfilServicio {
 					UsuarioPerfilDto usuarioPerfil = (UsuarioPerfilDto) sesion.getAttribute("Usuario");
 					usuarioPerfil.setFotoUsu(Base64.getDecoder().decode(usuarioPerfil.getFotoString()));
 					sesion.setAttribute("Usuario", usuarioPerfil);
-					logger.info("Usuario creado correctamente.");
 					return ResponseEntity.ok(responseMap);
 				} else {
-					logger.error("Error al crear el usuario: {}", responseMap.get("message"));
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMap);
 				}
 			}
 		} catch (Exception e) {
 			String errorMsg = "Error al conectar con la API: " + e.getMessage();
-			logger.error("Excepción al conectar con la API", e);
 			responseMap.put("message", errorMsg); // Mensaje de error
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMap);
 		}
@@ -572,20 +530,16 @@ public class PerfilServicio {
 	 * @return
 	 */
 	public ResponseEntity<?> crearGrupoComoAdmin(GruposDto grupoCreado, HttpSession sesion) {
-		logger.info("Iniciando el proceso de crear un grupo siendo administrador.");
 		String url = "http://localhost:8081/api/CrearGrupoComoAdmin";
 
 		try {
 			// Convertir el objeto a JSON para enviarlo a la API
 			String grupoJson = new ObjectMapper().writeValueAsString(grupoCreado);
-			logger.debug("Grupo a crear en JSON: {}", grupoJson);
 
 			// Usamos try-with-resources para asegurar el cierre del cliente
 			try (Client client = ClientBuilder.newClient()) {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
 						.post(Entity.entity(grupoJson, MediaType.APPLICATION_JSON));
-
-				logger.info("Respuesta de la API: {}", respuestaApi.getStatus());
 
 				// Convertir la respuesta a un Map para analizar los datos recibidos
 				Map<String, Object> respuestaMap = respuestaApi.readEntity(new GenericType<Map<String, Object>>() {
@@ -599,21 +553,17 @@ public class PerfilServicio {
 					// Validar si el grupo está vacío o es un string vacío
 					if (grupo == null || grupo.toString().trim().isEmpty()) {
 						String errorMsg = "El grupo ya existe.";
-						logger.error(errorMsg);
 						return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMsg);
 					} else {
-						logger.info("Grupo creado correctamente.");
 						return ResponseEntity.ok("Se ha creado el grupo exitosamente");
 					}
 				} else {
 					String errorMsg = "Error al crear el grupo: " + respuestaApi.getStatusInfo();
-					logger.error(errorMsg);
 					return ResponseEntity.status(respuestaApi.getStatus()).body(errorMsg);
 				}
 			}
 		} catch (Exception e) {
 			String errorMsg = "Error al conectar con la API: " + e.getMessage();
-			logger.error("Excepción al conectar con la API", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMsg);
 		}
 	}
@@ -627,16 +577,13 @@ public class PerfilServicio {
 	 * @return
 	 */
 	public ResponseEntity<?> crearComentarioPerfil(ComentariosPerfilDto nuevoComentarios, HttpSession sesion) {
-		logger.info("Iniciando el proceso de crear un comentario siendo administrador.");
 		String url = "http://localhost:8081/api/CrearComentarioPerfil";
 		try {
 			String comentarioJson = new ObjectMapper().writeValueAsString(nuevoComentarios);
-			logger.debug("Comentario a crear en JSON: {}", comentarioJson);
 
 			try (Client client = ClientBuilder.newClient()) {
 				Response respuestaApi = client.target(url).request(MediaType.APPLICATION_JSON)
 						.post(Entity.entity(comentarioJson, MediaType.APPLICATION_JSON));
-				logger.info("Respuesta de la API: {}", respuestaApi.getStatus());
 				Map<String, Object> respuestaMap = respuestaApi.readEntity(new GenericType<Map<String, Object>>() {
 				});
 				if (respuestaApi.getStatus() == Response.Status.OK.getStatusCode()) {
@@ -644,26 +591,21 @@ public class PerfilServicio {
 						Object comentario = respuestaMap.get("comentario");
 						if (comentario == null || comentario.toString().trim().isEmpty()) {
 							String errorMsg = "No se pudo crear el comentario.";
-							logger.error(errorMsg);
 							return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMsg);
 						} else {
-							logger.info("Comentario creado correctamente.");
 							return ResponseEntity.ok("Se ha creado el comentario exitosamente.");
 						}
 					} else {
 						String errorMsg = "Error al crear el comentario: No se recibió información válida.";
-						logger.error(errorMsg);
 						return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMsg);
 					}
 				} else {
 					String errorMsg = "Error al crear el comentario: " + respuestaApi.getStatusInfo();
-					logger.error(errorMsg);
 					return ResponseEntity.status(respuestaApi.getStatus()).body(errorMsg);
 				}
 			}
 		} catch (Exception e) {
 			String errorMsg = "Error al conectar con la API: " + e.getMessage();
-			logger.error("Excepción al conectar con la API", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMsg);
 		}
 	}

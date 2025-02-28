@@ -2,6 +2,8 @@ package edu.ProyectoFinal.Controladores;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,6 +19,8 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class ControladorIndex {
 
+	private static final Logger logger = LoggerFactory.getLogger(ControladorIndex.class);
+
 	GruposServicios serviciosGrupos = new GruposServicios();
 
 	/**
@@ -30,13 +34,14 @@ public class ControladorIndex {
 		ModelAndView vista = new ModelAndView();
 
 		try {
-			// Obtención de los grupos y establecimiento del nombre de la vista
 			vista = serviciosGrupos.obtenerLosGruposTops();
 			vista.setViewName("LandinPage");
+			logger.info("Grupos cargados correctamente.");
 		} catch (Exception e) {
-			// Manejo de excepciones y configuración del error
+			logger.error("Error al cargar la página inicial.", e);
 			vista.setViewName("error");
 			vista.addObject("error", "Error al cargar la página inicial.");
+			logger.warn("Se produjo un error al cargar la página inicial.");
 		}
 
 		return vista;

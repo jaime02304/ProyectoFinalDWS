@@ -625,7 +625,7 @@
 								style="width: 70px; height: auto; display: none; margin: 5px; border-radius: 10px;" />
 						</div>
 						<input type="file" id="fotoNuevo" name="fotoNuevo"
-							accept="image/*" />
+							accept="image/jpeg, image/png, image/svg+xml, image/gif, image/webp, image/bmp, image/tiff, image/x-icon" />
 					</div>
 					<div
 						style="display: flex; justify-content: center; align-items: center;">
@@ -804,7 +804,8 @@
 								style="width: 90px; height: auto; display: block; margin: 5px; border-radius: 10px;" />
 						</div>
 						<!-- Input tipo file -->
-						<input type="file" id="fotoUsu" name="fotoUsu" accept="image/*" />
+						<input type="file" id="fotoUsu" name="fotoUsu"
+							accept="image/jpeg, image/png, image/svg+xml, image/gif, image/webp, image/bmp, image/tiff, image/x-icon" />
 					</div>
 					<div
 						style="display: flex; justify-content: center; align-items: center;">
@@ -910,7 +911,8 @@
 								alt="Foto de usuario"
 								style="width: 90px;  height: auto; display: block; margin: 5px; border-radius: 10px; display: ${usuarioAModificar.fotoString != '' ? 'block' : 'none'};" />
 							<!-- Input tipo file -->
-							<input type="file" id="fotoInput" name="fotoUsu" accept="image/*" />
+							<input type="file" id="fotoInput" name="fotoUsu"
+								accept="image/jpeg, image/png, image/svg+xml, image/gif, image/webp, image/bmp, image/tiff, image/x-icon" />
 						</div>
 					</div>
 					<button type="submit" class="manga-button">Guardar</button>

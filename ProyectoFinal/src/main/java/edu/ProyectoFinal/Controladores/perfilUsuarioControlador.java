@@ -3,6 +3,8 @@ package edu.ProyectoFinal.Controladores;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,8 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class perfilUsuarioControlador {
 
+	private static final Logger logger = LoggerFactory.getLogger(perfilUsuarioControlador.class);
+
 	GruposServicios servicioGrupos = new GruposServicios();
 
 	PerfilServicio servicioPerfil = new PerfilServicio();
@@ -47,10 +51,16 @@ public class perfilUsuarioControlador {
 		UsuarioPerfilDto usuarioABuscar = (UsuarioPerfilDto) sesionIniciada.getAttribute("Usuario");
 
 		try {
+			logger.info("Cargando perfil para el usuario: {}",
+					usuarioABuscar != null ? usuarioABuscar.getNombreCompletoUsu() : "Desconocido");
 			vista = servicioPerfil.condicionYCasosPerfil(usuarioABuscar, vista);
+			logger.info("Perfil cargado correctamente para el usuario: {}",
+					usuarioABuscar != null ? usuarioABuscar.getNombreCompletoUsu() : "Desconocido");
 		} catch (Exception e) {
+			logger.error("Error al cargar el perfil del usuario.", e);
 			vista.setViewName("error");
 			vista.addObject("error", "No se ha cargado la página del perfil personal");
+			logger.warn("Se produjo un error al intentar cargar el perfil del usuario.");
 		}
 
 		return vista;
@@ -70,8 +80,10 @@ public class perfilUsuarioControlador {
 	public ResponseEntity<?> modificarUsuario(@ModelAttribute UsuarioPerfilDto usuarioAModificar,
 			HttpSession sesionDelUsuario) {
 		try {
+			logger.info("Intentando modificar los datos del usuario: {}", usuarioAModificar.getNombreCompletoUsu());
 			return servicioPerfil.modificarUsuario(usuarioAModificar, sesionDelUsuario);
 		} catch (Exception ex) {
+			logger.error("Error al modificar el usuario: {}", usuarioAModificar.getNombreCompletoUsu(), ex);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -88,8 +100,10 @@ public class perfilUsuarioControlador {
 	@PostMapping("/EliminarElementosComoAdmin")
 	public ResponseEntity<?> eliminarUsuario(@ModelAttribute eliminarElementoPerfilDto elemento, HttpSession sesion) {
 		try {
+			logger.info("Iniciando eliminación del elemento: {}", elemento.getIdElementoEliminar());
 			return servicioPerfil.enviarElementoParaBorrar(elemento, sesion);
 		} catch (Exception ex) {
+			logger.error("Error al eliminar el elemento: {}", elemento.getIdElementoEliminar(), ex);
 			String errorMsg = "Ha ocurrido un error al eliminar el elemento (usuario o grupo). Por favor, inténtalo de nuevo.";
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", errorMsg));
 		}
@@ -108,8 +122,10 @@ public class perfilUsuarioControlador {
 	public ResponseEntity<?> modificarUSuarioComoAdmin(@ModelAttribute UsuarioPerfilDto usuarioAModificar,
 			HttpSession sesion) {
 		try {
+			logger.info("Iniciando modificación del usuario como admin: {}", usuarioAModificar.getNombreCompletoUsu());
 			return servicioPerfil.enviarUsuarioAModificarComoAdmin(usuarioAModificar, sesion);
 		} catch (Exception ex) {
+			logger.error("Error al modificar el usuario como admin: {}", usuarioAModificar.getNombreCompletoUsu(), ex);
 			String errorMEnsajeString = "Ha ocurrido un error al modificar el usuario. Por favor, inténtalo de nuevo.";
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", errorMEnsajeString));
 		}
@@ -127,10 +143,10 @@ public class perfilUsuarioControlador {
 	public ResponseEntity<?> modificarGrupoComoAdmin(@ModelAttribute GruposListadoDto grupoAModificar,
 			HttpSession sesion) {
 		try {
-			// Llamada al servicio que modifica el grupo
+			logger.info("Iniciando la modificación del grupo con ID: {}", grupoAModificar.getIdGrupo());
 			return servicioPerfil.enviarGrupoAModificarComoAdmin(grupoAModificar, sesion);
 		} catch (Exception ex) {
-			// Manejo de errores en caso de excepción
+			logger.error("Error al modificar el grupo con ID: {}", grupoAModificar.getIdGrupo(), ex);
 			Map<String, Object> respuestaError = new HashMap<>();
 			String errorMEnsajeString = "Ha ocurrido un error al modificar el grupo. Por favor, inténtalo de nuevo.";
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", errorMEnsajeString));
@@ -149,10 +165,11 @@ public class perfilUsuarioControlador {
 	public ResponseEntity<?> crearUnNuevoUsuarioComoAdmin(@ModelAttribute UsuarioPerfilDto usuarioCreado,
 			HttpSession sesion) {
 		try {
-			// Llamada al servicio que crea el usuario
+			logger.info("Iniciando la creación de un nuevo usuario con nombre: {}",
+					usuarioCreado.getNombreCompletoUsu());
 			return servicioPerfil.crearUsuarioComoAdmin(usuarioCreado, sesion);
 		} catch (Exception ex) {
-			// Manejo de errores en caso de excepción
+			logger.error("Error al crear el usuario con nombre: {}", usuarioCreado.getNombreCompletoUsu(), ex);
 			String errorMensaje = "Ha ocurrido un error al crear el usuario. Por favor, inténtalo de nuevo.";
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", errorMensaje));
 		}
@@ -169,8 +186,10 @@ public class perfilUsuarioControlador {
 	@PostMapping("/CrearGrupoComoAdmin")
 	public ResponseEntity<?> crearUnNuevoGrupoComoAdmin(@ModelAttribute GruposDto grupoCreado, HttpSession sesion) {
 		try {
+			logger.info("Iniciando la creación de un nuevo grupo con nombre: {}", grupoCreado.getNombreGrupo());
 			return servicioPerfil.crearGrupoComoAdmin(grupoCreado, sesion);
 		} catch (Exception ex) {
+			logger.error("Error al crear el grupo con nombre: {}", grupoCreado.getNombreGrupo(), ex);
 			String errorMsg = "Ha ocurrido un error al crear el grupo. Por favor, inténtalo de nuevo.";
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMsg);
 		}
@@ -188,8 +207,10 @@ public class perfilUsuarioControlador {
 	@PostMapping("/CrearComentario")
 	public ResponseEntity<?> crearComentario(@ModelAttribute ComentariosPerfilDto nuevoComentario, HttpSession sesion) {
 		try {
+			logger.info("Iniciando la creación de un nuevo comentario: {}", nuevoComentario.getComentarioTexto());
 			return servicioPerfil.crearComentarioPerfil(nuevoComentario, sesion);
 		} catch (Exception ex) {
+			logger.error("Error al crear el comentario: {}", nuevoComentario.getComentarioTexto(), ex);
 			String errorMensaje = "Ha ocurrido un error al crear el comentario. Por favor, inténtalo de nuevo.";
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", errorMensaje));
 		}
@@ -208,10 +229,12 @@ public class perfilUsuarioControlador {
 	public ModelAndView cerrarSesionUsuario(HttpSession cerrarSesion) {
 		ModelAndView vista = new ModelAndView();
 		try {
+			logger.info("Cerrando sesión del usuario.");
 			cerrarSesion.invalidate();
 			vista = servicioGrupos.obtenerLosGruposTops();
 			vista.setViewName("LandinPage");
 		} catch (Exception e) {
+			logger.error("Error al cerrar la sesión del usuario", e);
 			vista.setViewName("error");
 			vista.addObject("error", "No se ha cargado la página principal.");
 		}

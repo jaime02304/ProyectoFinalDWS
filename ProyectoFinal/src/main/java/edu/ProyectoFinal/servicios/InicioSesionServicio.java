@@ -2,8 +2,6 @@ package edu.ProyectoFinal.servicios;
 
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,11 +56,9 @@ public class InicioSesionServicio {
 	 * @throws IllegalArgumentException
 	 */
 	public ModelAndView nuevoUsuario(UsuarioRegistroDto usuarioNuevo, HttpSession sesionIniciada) {
-		Logger logger = LoggerFactory.getLogger(getClass());
 		ModelAndView vista = new ModelAndView("InicioSesion");
 
 		if (!validarEmail(usuarioNuevo.getCorreoElectronicoUsu())) {
-			logger.warn("Correo electrónico inválido: {}", usuarioNuevo.getCorreoElectronicoUsu());
 			vista.addObject("error", "Correo electrónico inválido.");
 			return vista;
 		}
@@ -83,12 +79,10 @@ public class InicioSesionServicio {
 				vista = servicioGrupos.obtenerLosGruposTops();
 				vista.setViewName("LandinPage");
 			} else {
-				logger.error("Error en el registro: Código HTTP {}", respuestaApi.getStatus());
 				vista.setViewName("error");
 				vista.addObject("error", "Ha habido un error con la web, por favor vuelva en 5 minutos.");
 			}
 		} catch (Exception e) {
-			logger.error("Error al registrar usuario", e);
 			vista.setViewName("error");
 			vista.addObject("error", "Ocurrió un problema inesperado. Inténtelo más tarde.");
 		}
@@ -109,7 +103,6 @@ public class InicioSesionServicio {
 	 * @throws IllegalArgumentException
 	 */
 	public ModelAndView inicioSesion(UsuarioRegistroDto usuario, HttpSession sesion) {
-		Logger logger = LoggerFactory.getLogger(getClass());
 		ModelAndView vista = new ModelAndView("InicioSesion");
 
 		if (!validarEmail(usuario.getCorreoElectronicoUsu())) {
@@ -127,7 +120,6 @@ public class InicioSesionServicio {
 					.post(Entity.entity(usuarioJson, MediaType.APPLICATION_JSON));
 
 			if (respuesta.getStatus() != Response.Status.OK.getStatusCode()) {
-				logger.error("Error en la API de inicio de sesión: Código HTTP {}", respuesta.getStatus());
 				vista.setViewName("error");
 				vista.addObject("error", "Ha habido un error con la web, por favor intente más tarde.");
 				return vista;
@@ -145,7 +137,6 @@ public class InicioSesionServicio {
 				vista.addObject("mensaje", "El usuario no ha sido encontrado.");
 			}
 		} catch (Exception e) {
-			logger.error("Error en el inicio de sesión", e);
 			vista.setViewName("error");
 			vista.addObject("error", "Ocurrió un problema inesperado. Inténtelo más tarde.");
 		}

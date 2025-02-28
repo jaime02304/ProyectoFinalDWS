@@ -81,6 +81,9 @@
 				<div class="formularioContenedor sign-in-container">
 					<form action="${pageContext.request.contextPath}/IS" method="post">
 						<h2 class="inicioSesionTitulo">Inicio sesion</h2>
+						<c:if test="${not empty mensaje}">
+							<div class="error-message" style="color: red;">${mensaje}</div>
+						</c:if>
 						<input type="email" placeholder="Correo electrónico"
 							name="correoElectronicoUsu"
 							value="${nuevoUsuario.correoElectronicoUsu}" required /> <input
@@ -122,6 +125,9 @@
 					<form action="${pageContext.request.contextPath}/IS" method="post"
 						class="form formsm">
 						<h2 class="inicioSesionTitulo1">Inicio sesion</h2>
+						<c:if test="${not empty mensaje}">
+							<div class="error-message" style="color: #00fff5;">${mensaje}</div>
+						</c:if>
 						<input type="email"
 							placeholder="C o r r e o  e l e c t r ó n i c o"
 							name="correoElectronicoUsu"
