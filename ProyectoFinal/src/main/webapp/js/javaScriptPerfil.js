@@ -264,7 +264,7 @@ function enviarModificacion(event) {
 		enviarDatosAlServidorM(formData); // Enviar al servidor sin nueva foto
 	}
 
-	
+
 }
 
 // Función para enviar los datos al servidor
@@ -405,6 +405,19 @@ function closeCreacionUsuarioModal() {
 	document.getElementById("formularioCreacionUsuarioModal").style.display = "none";
 }
 
+document.getElementById("fotoNuevo").addEventListener("change", function(event) {
+	const file = event.target.files[0];
+	if (file) {
+		const reader = new FileReader();
+		reader.onload = function(e) {
+			const fotoPreview = document.getElementById("fotoPreview");
+			fotoPreview.src = e.target.result;
+			fotoPreview.style.display = "block"; // Muestra la imagen una vez cargada
+		}
+		reader.readAsDataURL(file);
+	}
+});
+
 function enviarCreacionUsuario(event) {
 	event.preventDefault(); // Evita recargar la página
 
@@ -424,30 +437,41 @@ function enviarCreacionUsuario(event) {
 	formData.append("aliasUsu", alias);
 	formData.append("correoElectronicoUsu", correo);
 	formData.append("movilUsu", movil);
-	if (fotoFile) {
-		formData.append("fotoUsu", fotoFile);
-	}
 	formData.append("esPremium", esPremium);
 	formData.append("esVerificadoEntidad", esVerificado);
 	formData.append("rolUsu", rol);
 
-	// Obtener el contexto de la aplicación (si es necesario)
+	if (fotoFile) {
+		const reader = new FileReader();
+		reader.onload = function(event) {
+			let fotoBase64 = event.target.result;
+			fotoBase64 = fotoBase64.split(',')[1];
+			formData.append("fotoString", fotoBase64);
+			enviarDatosAlServidorC(formData); 
+		};
+		reader.readAsDataURL(fotoFile); 
+	} else {
+		enviarDatosAlServidorC(formData);
+	}
+}
+
+function enviarDatosAlServidorC(formData) {
 	const contextPath = window.location.pathname.split('/')[1];
 
-	// Realizar la solicitud POST
+	// Realizamos la solicitud POST usando fetch
 	fetch(`/${contextPath}/CrearUsuarioComoAdmin`, {
 		method: "POST",
 		body: formData
 	})
-		.then(response => {
+		.then(function(response) {
 			closeCreacionUsuarioModal();
 			if (response.ok) {
-				mostrarAlertaPersonalizada("El usuario ha sido creado correctamente. Dale a aceptar para poder ver los cambios.");
+				mostrarAlertaPersonalizada("El usuario ha sido creado correctamente.");
 			} else {
-				mostrarAlertaPersonalizada("Error al crear el usuario. Es posible que el usuario tenga ya un alias existente. Inténtelo nuevamente.");
+				mostrarAlertaPersonalizada("Error al crear el usuario. Es posible que el usuario ya tenga un alias existente. Inténtelo nuevamente.");
 			}
 		})
-		.catch(error => {
+		.catch(function(error) {
 			console.error("Error en la solicitud:", error);
 			closeCreacionUsuarioModal();
 			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");

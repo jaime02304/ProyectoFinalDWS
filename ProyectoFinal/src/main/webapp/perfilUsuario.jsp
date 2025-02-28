@@ -615,11 +615,18 @@
 							required />
 					</div>
 
-					<div>
-						<label for="fotoNuevo">Foto</label> <input type="file"
-							id="fotoNuevo" name="fotoNuevo" accept="image/*" />
+					<div class="foto-input-container"
+						style="display: flex; flex-direction: column; align-items: center;">
+						<div
+							style="display: flex; justify-content: center; align-items: center;">
+							<label for="fotoNuevo">Fotografía</label>
+							<!-- Imagen preview, inicialmente oculta -->
+							<img id="fotoPreview" src="" alt="Vista previa"
+								style="width: 70px; height: auto; display: none; margin: 5px; border-radius: 10px;" />
+						</div>
+						<input type="file" id="fotoNuevo" name="fotoNuevo"
+							accept="image/*" />
 					</div>
-
 					<div
 						style="display: flex; justify-content: center; align-items: center;">
 						<div
