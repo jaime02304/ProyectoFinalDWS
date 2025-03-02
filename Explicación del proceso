@@ -1,0 +1,17 @@
+En el diseño de nuestra plataforma web, nos encontramos con un foro informativo que ofrece distintas funcionalidades según el rol del usuario. Al acceder por primera vez, 
+el usuario tendrá acceso limitado a dos acciones principales: explorar la página principal con sus elementos o registrarse (o iniciar sesión, si ya posee una cuenta). 
+Una vez registrado, el usuario obtendrá acceso a su perfil personal, donde podrá visualizar y modificar sus datos personales, crear grupos y publicar un comentario de bienvenida. 
+En esta primera versión, el usuario podrá observar cómo la web responde a estas acciones, aunque en la versión final, estas funcionalidades estarán restringidas hasta que su cuenta sea validada.
+
+En cuanto a la creación de grupos, el usuario tendrá la capacidad de crearlos y eliminarlos, pero no podrá modificarlos una vez creados. 
+De manera similar, los comentarios solo podrán ser creados, sin opción de edición posterior.
+
+Por otro lado, la plataforma cuenta con una capa administrativa, accesible desde la misma sección que el perfil de usuario. 
+Los administradores tendrán privilegios adicionales, como la capacidad de ver, modificar y eliminar todos los grupos existentes, así como crear nuevos grupos. 
+Además, en lugar de comentarios, los administradores dispondrán de un listado de usuarios con rol "user", permitiéndoles eliminarlos en caso de incumplimiento de normas.
+
+Finalmente, el superadministrador posee un nivel de acceso aún mayor, pudiendo gestionar tanto usuarios comunes como administradores. 
+Tanto los administradores como el superadministrador podrán crear nuevos usuarios, especificando sus datos relevantes, excepto la contraseña, 
+la cual se generará automáticamente con un valor predeterminado. 
+Esta contraseña podrá ser modificada posteriormente por el usuario a través de la opción "¿Has olvidado tu contraseña?" en la pantalla de inicio de sesión, 
+funcionalidad que no estará disponible en la primera versión de la plataforma.
