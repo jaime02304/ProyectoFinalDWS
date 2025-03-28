@@ -162,7 +162,7 @@
 						</div>
 						<div class="col-12">
 							<div class="zonaGruposMain">
-								<div class="tituloBienvenida">GRUPOS</div>
+								<div class="tituloBienvenida">GRUPOS TOPS</div>
 								<div class="contenedorGrupos">
 
 									<c:if test="${empty listaGrupos}">
@@ -170,23 +170,30 @@
 											<c:out value="${mensajeGrupo}"></c:out>
 										</div>
 									</c:if>
-
-									<c:forEach var="grupo" items="${listaGrupos}">
+									<c:if test="${not empty listaGrupos }">
 										<div class="trozoGrupo">
-											<div class="NombreGrupo">
-												<c:out value="${grupo.nombreGrupo}"></c:out>
-											</div>
-											<div class="categoriaGrupo">
-												<c:out value="${grupo.categoriaNombre}"></c:out>
-											</div>
-											<div class="tematicaGrupo">
-												<c:out value="${grupo.subCategoriaNombre}"></c:out>
-											</div>
-											<div>
-												<a href="#" class="verGrupo">Ver</a>
-											</div>
+											<div class="NombreGrupo">Nombre</div>
+											<div class="categoriaGrupo">Categoría</div>
+											<div class="tematicaGrupo">SubCategoría</div>
+											<div>Acción</div>
 										</div>
-									</c:forEach>
+										<c:forEach var="grupo" items="${listaGrupos}">
+											<div class="trozoGrupo">
+												<div class="NombreGrupo">
+													<c:out value="${grupo.nombreGrupo}"></c:out>
+												</div>
+												<div class="categoriaGrupo">
+													<c:out value="${grupo.categoriaNombre}"></c:out>
+												</div>
+												<div class="tematicaGrupo">
+													<c:out value="${grupo.subCategoriaNombre}"></c:out>
+												</div>
+												<div>
+													<a href="#" class="verGrupo">Ver</a>
+												</div>
+											</div>
+										</c:forEach>
+									</c:if>
 
 								</div>
 							</div>
@@ -237,42 +244,67 @@
 
 						<div class="col">
 							<div class="zonaGruposMain2 d-md-none d-lg-block">
-								<div class="tituloBienvenida">GRUPOS</div>
+								<div class="tituloBienvenida">GRUPOS TOPS</div>
 								<div class="contenedorGrupos">
-									<c:forEach var="grupo" items="${listaGrupos}">
-										<div class="trozoGrupo">
-											<div class="NombreGrupo">
-												<c:out value="${grupo.nombreGrupo}"></c:out>
-											</div>
-											<div class="categoriaGrupo" style="margin: 5%;">
-												<c:out value="${grupo.categoriaNombre}"></c:out>
-											</div>
-											<div class="tematicaGrupo" style="margin: 5%;">
-												<c:out value="${grupo.subCategoriaNombre}"></c:out>
-											</div>
-											<div>
-												<a href="#" class="verGrupo">Ver</a>
-											</div>
+									<c:if test="${empty listaGrupos}">
+										<div class="mensajeGrupo">
+											<c:out value="${mensajeGrupo}"></c:out>
 										</div>
-									</c:forEach>
+									</c:if>
+									<c:if test="${not empty listaGrupos }">
+										<div class="trozoGrupo">
+											<div class="NombreGrupo">Nombre</div>
+											<div class="categoriaGrupo">Categoría</div>
+											<div class="tematicaGrupo">SubCategoría</div>
+											<div>Acción</div>
+										</div>
+										<c:forEach var="grupo" items="${listaGrupos}">
+											<div class="trozoGrupo">
+												<div class="NombreGrupo">
+													<c:out value="${grupo.nombreGrupo}"></c:out>
+												</div>
+												<div class="categoriaGrupo" style="margin: 5%;">
+													<c:out value="${grupo.categoriaNombre}"></c:out>
+												</div>
+												<div class="tematicaGrupo" style="margin: 5%;">
+													<c:out value="${grupo.subCategoriaNombre}"></c:out>
+												</div>
+												<div>
+													<a href="#" class="verGrupo">Ver</a>
+												</div>
+											</div>
+										</c:forEach>
+									</c:if>
 								</div>
 							</div>
 							<div class="zonaGruposMain2 d-lg-none">
-								<div class="tituloBienvenida">GRUPOS</div>
+								<div class="tituloBienvenida">GRUPOS TOPS</div>
 								<div class="contenedorGrupos">
-									<c:forEach var="grupo" items="${listaGrupos}">
-										<div class="trozoGrupo">
-											<div class="NombreGrupo">
-												<c:out value="${grupo.nombreGrupo}"></c:out>
-											</div>
-											<div class="categoriaGrupo" style="margin: 5%;">
-												<c:out value="${grupo.categoriaNombre}"></c:out>
-											</div>
-											<div>
-												<a href="#" class="verGrupo">Ver</a>
-											</div>
+									<c:if test="${empty listaGrupos}">
+										<div class="mensajeGrupo">
+											<c:out value="${mensajeGrupo}"></c:out>
 										</div>
-									</c:forEach>
+									</c:if>
+									<c:if test="${not empty listaGrupos }">
+										<div class="trozoGrupo">
+											<div class="NombreGrupo">Nombre</div>
+											<div class="categoriaGrupo">Categoría</div>
+											<div>Acción</div>
+										</div>
+										<c:forEach var="grupo" items="${listaGrupos}">
+											<div class="trozoGrupo">
+												<div class="NombreGrupo">
+													<c:out value="${grupo.nombreGrupo}"></c:out>
+												</div>
+												<div class="categoriaGrupo" style="margin: 5%;">
+													<c:out value="${grupo.categoriaNombre}"></c:out>
+												</div>
+												<div>
+													<a href="#" class="verGrupo">Ver</a>
+												</div>
+											</div>
+										</c:forEach>
+									</c:if>
 								</div>
 							</div>
 						</div>
@@ -319,21 +351,33 @@
 				</div>
 				<div class="col-12">
 					<div class="zonaGruposMain2">
-						<div class="tituloBienvenida">GRUPOS</div>
+						<div class="tituloBienvenida">GRUPOS TOPS</div>
 						<div class="contenedorGrupos">
-							<c:forEach var="grupo" items="${listaGrupos}">
-								<div class="trozoGrupo">
-									<div class="NombreGrupo">
-										<c:out value="${grupo.nombreGrupo}"></c:out>
-									</div>
-									<div class="categoriaGrupo">
-										<c:out value="${grupo.categoriaNombre}"></c:out>
-									</div>
-									<div>
-										<a href="#" class="verGrupo">Ver</a>
-									</div>
+							<c:if test="${empty listaGrupos}">
+								<div class="mensajeGrupo">
+									<c:out value="${mensajeGrupo}"></c:out>
 								</div>
-							</c:forEach>
+							</c:if>
+							<c:if test="${not empty listaGrupos }">
+								<div class="trozoGrupo">
+									<div class="NombreGrupo">Nombre</div>
+									<div class="categoriaGrupo">Categoría</div>
+									<div>Acción</div>
+								</div>
+								<c:forEach var="grupo" items="${listaGrupos}">
+									<div class="trozoGrupo">
+										<div class="NombreGrupo">
+											<c:out value="${grupo.nombreGrupo}"></c:out>
+										</div>
+										<div class="categoriaGrupo">
+											<c:out value="${grupo.categoriaNombre}"></c:out>
+										</div>
+										<div>
+											<a href="#" class="verGrupo">Ver</a>
+										</div>
+									</div>
+								</c:forEach>
+							</c:if>
 						</div>
 					</div>
 				</div>

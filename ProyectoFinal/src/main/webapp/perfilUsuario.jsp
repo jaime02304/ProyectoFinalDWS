@@ -121,9 +121,6 @@
 						<div class="ContenedorDatosPerfil">
 							<a href="<%=request.getContextPath()%>/CerrarSesion"><button
 									class="hacersePremiumBoton botonNavegador">Cerrar</button></a>
-							<c:if test="${usuario.esVerificadoEntidad==false}">
-								<button class="ValidarUsuario botonNavegador">Validar</button>
-							</c:if>
 							<button class="hacersePremiumBoton botonNavegador"
 								onclick="alertaDelPremium()">Premium</button>
 						</div>
@@ -147,22 +144,30 @@
 										</div>
 									</c:when>
 									<c:otherwise>
-										<c:forEach var="grupo" items="${listadoGruposUsuario}">
-											<div class="trozoGrupo" style="height: auto;">
-												<div class="NombreGrupo">
-													<c:out value="${grupo.nombreGrupo}" />
-												</div>
-												<div class="categoriaGrupo">
-													<c:out value="${grupo.categoriaNombre}" />
-												</div>
-												<div class="tematicaGrupo">
-													<c:out value="${grupo.subCategoriaNombre}" />
-												</div>
-												<div>
-													<a href="#" class="verGrupo">Ver</a>
-												</div>
-											</div>
-										</c:forEach>
+										<table class="tablaGrupos" style="width: 100%;">
+											<thead>
+												<tr class="trozoGrupo encabezado">
+													<th class="NombreGrupo" style="font-weight: lighter;">Nombre</th>
+													<th class="categoriaGrupo" style="font-weight: lighter;">Categoría</th>
+													<th class="tematicaGrupo" style="font-weight: lighter;">Temática</th>
+													<th style="font-weight: lighter;">Acciones</th>
+												</tr>
+											</thead>
+											<tbody
+												style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+												<c:forEach var="grupo" items="${listadoGruposUsuario}">
+													<tr class="trozoGrupo">
+														<td class="NombreGrupo"><c:out
+																value="${grupo.nombreGrupo}" /></td>
+														<td class="categoriaGrupo"><c:out
+																value="${grupo.categoriaNombre}" /></td>
+														<td class="tematicaGrupo"><c:out
+																value="${grupo.subCategoriaNombre}" /></td>
+														<td><a href="#" class="verGrupo">Ver</a></td>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
 										<div class="tiposMensaje">
 											<button onclick="openCreacionGrupoModal()">Crear
 												Grupo</button>
@@ -183,21 +188,28 @@
 										</div>
 									</c:when>
 									<c:otherwise>
-										<c:forEach var="grupo" items="${listadoGruposAdmin}">
-											<div class="trozoGrupo" style="height: auto;">
-												<div class="NombreGrupo">
-													<c:out value="${grupo.nombreGrupo}" />
-												</div>
-												<div>
-													<a class="verGrupo2"
-														onclick="openModificacionGrupoModal('${grupo.idGrupo}', '${grupo.nombreGrupo}', '${grupo.categoriaNombre}', '${grupo.subCategoriaNombre}')">Modificar</a>
-												</div>
-												<div>
-													<a class="verGrupo2"
-														onclick="openEliminacionModal('${grupo.idGrupo}', '${grupo.nombreGrupo}', ${false})">Borrar</a>
-												</div>
-											</div>
-										</c:forEach>
+										<table class="tablaGrupos" style="width: 100%;">
+											<thead>
+												<tr class="trozoGrupo encabezado" style="height: auto;">
+													<th class="NombreGrupo" style="font-weight: lighter;">Nombre</th>
+													<th style="font-weight: lighter;">Acciones</th>
+												</tr>
+											</thead>
+											<tbody
+												style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+												<c:forEach var="grupo" items="${listadoGruposAdmin}">
+													<tr class="trozoGrupo" style="height: auto;">
+														<td class="NombreGrupo"><c:out
+																value="${grupo.nombreGrupo}" /></td>
+														<td><a class="verGrupo2"
+															onclick="openModificacionGrupoModal('${grupo.idGrupo}', '${grupo.nombreGrupo}', '${grupo.categoriaNombre}', '${grupo.subCategoriaNombre}')">
+																Modificar </a> <a class="verGrupo2"
+															onclick="openEliminacionModal('${grupo.idGrupo}', '${grupo.nombreGrupo}', ${false})">
+																Borrar </a></td>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
 										<div class="tiposMensaje">
 											<button onclick="openCreacionGrupoModal()">Crear
 												Grupo</button>
@@ -253,21 +265,34 @@
 										</div>
 									</c:when>
 									<c:otherwise>
-										<c:forEach var="usuario" items="${listadoUsuariosAdmin}">
-											<div class="trozoGrupo" style="height: auto;">
-												<div class="NombreGrupo">
-													<c:out value="${usuario.aliasUsu}" />
-												</div>
-												<div>
-													<a class="verGrupo2"
-														onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad},'${usuario.fotoString}')">Modificar</a>
-												</div>
-												<div>
-													<a class="verGrupo2"
-														onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}' , ${true})">Borrar</a>
-												</div>
-											</div>
-										</c:forEach>
+										<table class="tablaUsuarios" style="width: 100%;">
+											<thead>
+												<tr class="trozoGrupo encabezado" style="height: auto;">
+													<th class="NombreGrupo"
+														style="font-weight: lighter; padding-right: 15px; width: 40%;">Alias</th>
+													<th class="NombreGrupo"
+														style="font-weight: lighter; padding-right: 15px; width: 40%; text-align: left;">Rol</th>
+													<th
+														style="font-weight: lighter; width: 40%; text-align: left;">Acciones</th>
+												</tr>
+											</thead>
+											<tbody
+												style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+												<c:forEach var="usuario" items="${listadoUsuariosAdmin}">
+													<tr class="trozoGrupo" style="height: auto;">
+														<td class="NombreGrupo"><c:out
+																value="${usuario.aliasUsu}" /></td>
+														<td class="NombreGrupo"><c:out
+																value="${usuario.rolUsu}" /></td>
+														<td><a class="verGrupo2"
+															onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad}, '${usuario.fotoString}')">
+																Modificar </a> <a class="verGrupo2"
+															onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}', ${true})">
+																Borrar </a></td>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
 										<div class="tiposMensaje">
 											<button onclick="openCreacionUsuarioModal()">Crear
 												Usuario</button>
@@ -291,21 +316,34 @@
 										</div>
 									</c:when>
 									<c:otherwise>
-										<c:forEach var="usuario" items="${listadoUsuariosSAdmin}">
-											<div class="trozoGrupo" style="height: auto;">
-												<div class="NombreGrupo">
-													<c:out value="${usuario.aliasUsu}" />
-												</div>
-												<div>
-													<a class="verGrupo2"
-														onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad}, '${usuario.fotoString}')">Modificar</a>
-												</div>
-												<div>
-													<a class="verGrupo2"
-														onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}' , ${true})">Borrar</a>
-												</div>
-											</div>
-										</c:forEach>
+										<table class="tablaUsuarios" style="width: 100%;">
+											<thead>
+												<tr class="trozoGrupo encabezado" style="height: auto;">
+													<th class="NombreGrupo"
+														style="font-weight: lighter; padding-right: 15px; width: 40%;">Alias</th>
+													<th class="NombreGrupo"
+														style="font-weight: lighter; padding-right: 15px; width: 40%; text-align: left;">Rol</th>
+													<th
+														style="font-weight: lighter; width: 40%; text-align: left;">Acciones</th>
+												</tr>
+											</thead>
+											<tbody
+												style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+												<c:forEach var="usuario" items="${listadoUsuariosSAdmin}">
+													<tr class="trozoGrupo" style="height: auto;">
+														<td class="NombreGrupo"><c:out
+																value="${usuario.aliasUsu}" /></td>
+														<td class="NombreGrupo"><c:out
+																value="${usuario.rolUsu}" /></td>
+														<td><a class="verGrupo2"
+															onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad}, '${usuario.fotoString}')">
+																Modificar </a> <a class="verGrupo2"
+															onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}', ${true})">
+																Borrar </a></td>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
 										<div class="tiposMensaje">
 											<button onclick="openCreacionUsuarioModal()">Crear
 												Usuario</button>
@@ -388,12 +426,6 @@
 								<button class="hacersePremiumBoton2 botonNavegador"
 									onclick="alertaDelPremium()">Premium</button>
 							</div>
-
-							<div class="divBoton">
-								<c:if test="${usuario.esVerificadoEntidad==false}">
-									<button class="ValidarUsuario2 botonNavegador">Validar</button>
-								</c:if>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -413,22 +445,30 @@
 									</div>
 								</c:when>
 								<c:otherwise>
-									<c:forEach var="grupo" items="${listadoGruposUsuario}">
-										<div class="trozoGrupo" style="height: auto;">
-											<div class="NombreGrupo">
-												<c:out value="${grupo.nombreGrupo}" />
-											</div>
-											<div class="categoriaGrupo">
-												<c:out value="${grupo.categoriaNombre}" />
-											</div>
-											<div class="tematicaGrupo">
-												<c:out value="${grupo.subCategoriaNombre}" />
-											</div>
-											<div>
-												<a href="#" class="verGrupo">Ver</a>
-											</div>
-										</div>
-									</c:forEach>
+									<table class="tablaGrupos" style="width: 100%;">
+										<thead>
+											<tr class="trozoGrupo encabezado">
+												<th class="NombreGrupo" style="font-weight: lighter;">Nombre</th>
+												<th class="categoriaGrupo" style="font-weight: lighter;">Categoría</th>
+												<th class="tematicaGrupo" style="font-weight: lighter;">Temática</th>
+												<th style="font-weight: lighter;">Acciones</th>
+											</tr>
+										</thead>
+										<tbody
+											style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+											<c:forEach var="grupo" items="${listadoGruposUsuario}">
+												<tr class="trozoGrupo">
+													<td class="NombreGrupo"><c:out
+															value="${grupo.nombreGrupo}" /></td>
+													<td class="categoriaGrupo"><c:out
+															value="${grupo.categoriaNombre}" /></td>
+													<td class="tematicaGrupo"><c:out
+															value="${grupo.subCategoriaNombre}" /></td>
+													<td><a href="#" class="verGrupo">Ver</a></td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
 									<div class="tiposMensaje">
 										<button onclick="openCreacionGrupoModal()">Crear
 											Grupo</button>
@@ -449,21 +489,28 @@
 									</div>
 								</c:when>
 								<c:otherwise>
-									<c:forEach var="grupo" items="${listadoGruposAdmin}">
-										<div class="trozoGrupo" style="height: auto;">
-											<div class="NombreGrupo">
-												<c:out value="${grupo.nombreGrupo}" />
-											</div>
-											<div>
-												<a class="verGrupo2"
-													onclick="openModificacionGrupoModal('${grupo.idGrupo}', '${grupo.nombreGrupo}', '${grupo.categoriaNombre}', '${grupo.subCategoriaNombre}')">Modificar</a>
-											</div>
-											<div>
-												<a class="verGrupo2"
-													onclick="openEliminacionModal('${grupo.idGrupo}', '${grupo.nombreGrupo}', ${false})">Borrar</a>
-											</div>
-										</div>
-									</c:forEach>
+									<table class="tablaGrupos" style="width: 100%;">
+										<thead>
+											<tr class="trozoGrupo encabezado" style="height: auto;">
+												<th class="NombreGrupo" style="font-weight: lighter;">Nombre</th>
+												<th style="font-weight: lighter;">Acciones</th>
+											</tr>
+										</thead>
+										<tbody
+											style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+											<c:forEach var="grupo" items="${listadoGruposAdmin}">
+												<tr class="trozoGrupo" style="height: auto;">
+													<td class="NombreGrupo"><c:out
+															value="${grupo.nombreGrupo}" /></td>
+													<td><a class="verGrupo2"
+														onclick="openModificacionGrupoModal('${grupo.idGrupo}', '${grupo.nombreGrupo}', '${grupo.categoriaNombre}', '${grupo.subCategoriaNombre}')">
+															Modificar </a> <a class="verGrupo2"
+														onclick="openEliminacionModal('${grupo.idGrupo}', '${grupo.nombreGrupo}', ${false})">
+															Borrar </a></td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
 									<div class="tiposMensaje">
 										<button onclick="openCreacionGrupoModal()">Crear
 											Grupo</button>
@@ -517,21 +564,34 @@
 									</div>
 								</c:when>
 								<c:otherwise>
-									<c:forEach var="usuario" items="${listadoUsuariosAdmin}">
-										<div class="trozoGrupo" style="height: auto;">
-											<div class="NombreGrupo">
-												<c:out value="${usuario.aliasUsu}" />
-											</div>
-											<div>
-												<a class="verGrupo2"
-													onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad},'${usuario.fotoString}')">Modificar</a>
-											</div>
-											<div>
-												<a class="verGrupo2"
-													onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}', ${true})">Borrar</a>
-											</div>
-										</div>
-									</c:forEach>
+									<table class="tablaUsuarios" style="width: 100%;">
+										<thead>
+											<tr class="trozoGrupo encabezado" style="height: auto;">
+												<th class="NombreGrupo"
+													style="font-weight: lighter; padding-right: 15px; width: 40%;">Alias</th>
+												<th class="NombreGrupo"
+													style="font-weight: lighter; padding-right: 15px; width: 40%; text-align: left;">Rol</th>
+												<th
+													style="font-weight: lighter; width: 40%; text-align: left;">Acciones</th>
+											</tr>
+										</thead>
+										<tbody
+											style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+											<c:forEach var="usuario" items="${listadoUsuariosAdmin}">
+												<tr class="trozoGrupo" style="height: auto;">
+													<td class="NombreGrupo"><c:out
+															value="${usuario.aliasUsu}" /></td>
+													<td class="NombreGrupo"><c:out
+															value="${usuario.rolUsu}" /></td>
+													<td><a class="verGrupo2"
+														onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad}, '${usuario.fotoString}')">
+															Modificar </a> <a class="verGrupo2"
+														onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}', ${true})">
+															Borrar </a></td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
 									<div class="tiposMensaje">
 										<button onclick="openCreacionUsuarioModal()">Crear
 											Usuario</button>
@@ -555,22 +615,34 @@
 									</div>
 								</c:when>
 								<c:otherwise>
-									<c:forEach var="usuario" items="${listadoUsuariosSAdmin}">
-										<div class="trozoGrupo" style="height: auto;">
-											<div class="NombreGrupo">
-												<c:out value="${usuario.aliasUsu}" />
-											</div>
-											<div>
-
-												<a class="verGrupo2"
-													onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad}, '${usuario.fotoString}')">Modificar</a>
-											</div>
-											<div>
-												<a class="verGrupo2"
-													onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}', ${true})">Borrar</a>
-											</div>
-										</div>
-									</c:forEach>
+									<table class="tablaUsuarios" style="width: 100%;">
+										<thead>
+											<tr class="trozoGrupo encabezado" style="height: auto;">
+												<th class="NombreGrupo"
+													style="font-weight: lighter; padding-right: 15px; width: 40%;">Alias</th>
+												<th class="NombreGrupo"
+													style="font-weight: lighter; padding-right: 15px; width: 40%; text-align: left;">Rol</th>
+												<th
+													style="font-weight: lighter; width: 40%; text-align: left;">Acciones</th>
+											</tr>
+										</thead>
+										<tbody
+											style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+											<c:forEach var="usuario" items="${listadoUsuariosSAdmin}">
+												<tr class="trozoGrupo" style="height: auto;">
+													<td class="NombreGrupo"><c:out
+															value="${usuario.aliasUsu}" /></td>
+													<td class="NombreGrupo"><c:out
+															value="${usuario.rolUsu}" /></td>
+													<td><a class="verGrupo2"
+														onclick="openModificacionModal('${usuario.idUsu}', '${usuario.nombreCompletoUsu}', '${usuario.aliasUsu}', '${usuario.correoElectronicoUsu}', '${usuario.movilUsu}', ${usuario.esPremium}, '${usuario.rolUsu}', ${usuario.esVerificadoEntidad}, '${usuario.fotoString}')">
+															Modificar </a> <a class="verGrupo2"
+														onclick="openEliminacionModal('${usuario.idUsu}', '${usuario.aliasUsu}', ${true})">
+															Borrar </a></td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
 									<div class="tiposMensaje">
 										<button onclick="openCreacionUsuarioModal()">Crear
 											Usuario</button>
@@ -757,8 +829,16 @@
 					<input type="hidden" id="elementoAEliminar" name="modal" /> <input
 						type="hidden" id="idElementoAEliminar" name="modal" /> <input
 						type="hidden" id="esUsuarioElementoAEliminar" name="modal" />
+
+					<!-- Mostramos el nombre a eliminar de forma destacada -->
 					<div>
-						<button type="submit" class="manga-button">Si</button>
+						<label for="confirmacionInput" id="confirmarEliminacion">Confirma eliminacion
+							escribiendo "Eliminar/":</label> <input type="text" id="confirmacionInput"
+							placeholder="Escribe el alias aquí" required>
+					</div>
+
+					<div>
+						<button type="submit" class="manga-button">Enviar</button>
 					</div>
 				</form>
 			</div>

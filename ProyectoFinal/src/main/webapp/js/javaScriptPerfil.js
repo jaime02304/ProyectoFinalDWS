@@ -127,6 +127,7 @@ function openEliminacionModal(id, filtradorNombre, esUsuario) {
 	const nombreInput = document.getElementById("elementoAEliminar");
 	const esUsuarioV = document.getElementById("esUsuarioElementoAEliminar");
 	const modalTitulo = document.getElementById("modalTitulo");
+	const confirmarEliminacion = document.getElementById("confirmarEliminacion");
 
 	// Abrimos el modal y asignamos los valores correspondientes
 	modal.style.display = "flex";
@@ -134,6 +135,8 @@ function openEliminacionModal(id, filtradorNombre, esUsuario) {
 	nombreInput.value = filtradorNombre;
 	esUsuarioV.value = esUsuario;
 	modalTitulo.innerText = `Eliminar a: ${filtradorNombre}`;
+	confirmarEliminacion.innerText = `	Confirma eliminacion escribiendo "Eliminar/${filtradorNombre}":`;
+
 }
 
 function closeEliminacionModal() {
@@ -147,9 +150,14 @@ function enviarEliminacion(event) {
 	const nombre = document.getElementById("elementoAEliminar").value;
 	const id = document.getElementById("idElementoAEliminar").value;
 	const esUsuario = document.getElementById("esUsuarioElementoAEliminar").value;
+	const confirmacion = document.getElementById("confirmacionInput").value.trim();
+	const confirmacionCorrecta = `Eliminar/${nombre}`;
 
-	if (!nombre) {
-		console.error("No se encontró el nombre o identificador del usuario a eliminar.");
+
+	// Validamos que la confirmación sea exactamente "Eliminar/NOMBRE"
+	if (confirmacion !== confirmacionCorrecta) {
+		closeEliminacionModal();
+		mostrarAlertaPersonalizada(`Debes escribir exactamente: "${confirmacionCorrecta}" para confirmar la eliminación.`);
 		return;
 	}
 
@@ -447,9 +455,9 @@ function enviarCreacionUsuario(event) {
 			let fotoBase64 = event.target.result;
 			fotoBase64 = fotoBase64.split(',')[1];
 			formData.append("fotoString", fotoBase64);
-			enviarDatosAlServidorC(formData); 
+			enviarDatosAlServidorC(formData);
 		};
-		reader.readAsDataURL(fotoFile); 
+		reader.readAsDataURL(fotoFile);
 	} else {
 		enviarDatosAlServidorC(formData);
 	}
