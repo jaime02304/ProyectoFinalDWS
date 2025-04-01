@@ -11,6 +11,15 @@ public class GruposDto {
 	private String categoriaNombre = "aaaaa";
 	private String subCategoriaNombre = "aaaaa";
 	private String aliasCreadorUString = "aaaaa";
+	private String descripcionGrupo = "";
+
+	public String getDescripcionGrupo() {
+		return descripcionGrupo;
+	}
+
+	public void setDescripcionGrupo(String descripcionGrupo) {
+		this.descripcionGrupo = descripcionGrupo;
+	}
 
 	public String getAliasCreadorUString() {
 		return aliasCreadorUString;

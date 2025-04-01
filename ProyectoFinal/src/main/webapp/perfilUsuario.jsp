@@ -220,7 +220,7 @@
 						</div>
 
 
-						<c:if test="${ usuario.rolUsu == 'user'}">
+						<c:if test="${usuario.rolUsu == 'user'}">
 							<div class="col contenedorInfoPerfilDerechoB">
 								<div class="contenidoMensaje">
 									<div class="contenidoMensaje2">
@@ -765,6 +765,14 @@
 					</div>
 
 					<div>
+						<label for="descripcionGrupoNuevo">Descripción</label>
+						<textarea id="descripcionGrupoNuevo" name="descripcionGrupoNuevo"
+							class="descripcionGrupoNuevo"
+							placeholder="Escribe una descripción breve para tu grupo"
+							rows="4" cols="50"></textarea>
+					</div>
+
+					<div>
 						<button type="submit" class="manga-button">Crear</button>
 					</div>
 				</form>
@@ -832,9 +840,10 @@
 
 					<!-- Mostramos el nombre a eliminar de forma destacada -->
 					<div>
-						<label for="confirmacionInput" id="confirmarEliminacion">Confirma eliminacion
-							escribiendo "Eliminar/":</label> <input type="text" id="confirmacionInput"
-							placeholder="Escribe el alias aquí" required>
+						<label for="confirmacionInput" id="confirmarEliminacion">Confirma
+							eliminacion escribiendo "Eliminar/":</label> <input type="text"
+							id="confirmacionInput" placeholder="Escribe el alias aquí"
+							required>
 					</div>
 
 					<div>

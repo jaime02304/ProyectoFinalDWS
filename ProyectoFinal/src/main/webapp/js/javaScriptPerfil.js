@@ -544,6 +544,8 @@ function enviarCreacionGrupo(event) {
 	const categoriaGrupo = document.getElementById("categoriaGrupoNuevo").value;
 	const subCategoriaGrupo = document.getElementById("subCategoriaGrupoNuevo").value;
 	const aliasCreador = document.getElementById("aliasCreadorNuevo").value;
+	const descripcionGrupo = document.getElementById("descripcionGrupoNuevo").value;
+
 
 	// Crear FormData para enviar los datos
 	const formData = new FormData();
@@ -551,6 +553,8 @@ function enviarCreacionGrupo(event) {
 	formData.append("categoriaNombre", categoriaGrupo);
 	formData.append("subCategoriaNombre", subCategoriaGrupo);
 	formData.append("aliasCreadorUString", aliasCreador);
+	formData.append("descripcionGrupo", descripcionGrupo); // Añadir la descripción
+
 
 	// Obtener el contexto de la aplicación (si es necesario)
 	const contextPath = window.location.pathname.split('/')[1];

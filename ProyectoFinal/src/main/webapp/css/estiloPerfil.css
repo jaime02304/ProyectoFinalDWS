@@ -602,3 +602,13 @@ body, html {
 	border-radius: 4px; /* Bordes redondeados */
 	margin-bottom: 10px; /* Espaciado */
 }
+
+.descripcionGrupoNuevo {
+	padding: 10px;
+	border: 3px solid black;
+	font-size: 18px;
+	text-align: center;
+	width: 100%;
+	color: black;
+	max-width: 400px;
+}
