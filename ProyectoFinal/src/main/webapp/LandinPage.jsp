@@ -4,8 +4,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-</head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>AnimeXp</title>
@@ -49,12 +47,15 @@
 				<!-- Columna de los botones (a la derecha) -->
 				<div class="boton-contenedor">
 					<a href="#"><button class="botonNavegador botonGrupo">GRUPOS</button></a>
-					<a href="#" class="d-xl-block d-none"><button
-							class="botonNavegador botonAnime">ANIMES</button></a> <a href="#"
+					<a href="<%=request.getContextPath()%>/ComentarioPagina"
+						class="d-xl-block d-none"><button
+							class="botonNavegador botonAnime">ANIMES</button></a> <a
+						href="<%=request.getContextPath()%>/ComentarioPagina"
 						class="d-xl-block d-none"><button
 							class="botonNavegador botonVideojuegos">VIDEOJUEGOS</button></a> <a
-						href="#" class="d-xl-none d-md-block d-none"><button
-							class="botonNavegador botonCategoria">CATEGORÍA</button></a>
+						href="<%=request.getContextPath()%>/ComentarioPagina"
+						class="d-xl-none d-md-block d-none"><button
+							class="botonNavegador botonCategoria">COMENTARIOS</button></a>
 					<!-- Aqui deberia de poner una condicion que si es admin coja una cosa y si no que haga la otra -->
 					<c:if test="${Usuario == null}">
 						<a href="<%=request.getContextPath()%>/InicioSesion"><button
@@ -95,7 +96,8 @@
 						<i class="fa-solid fa-bars"></i>
 					</button>
 					<div class="menu-desplegable" id="menuOpciones">
-						<a href="#">GRUPOS</a> <a href="#">CATEGORÍA</a>
+						<a href="#">GRUPOS</a> <a
+							href="<%=request.getContextPath()%>/ComentarioPagina">COMENTARIOS</a>
 						<!--AQUI DEBERIA DE PONER LA CONDICION EN LA CUAL SI SE INICIA SESION PONDRA PERFIL USUARIO O PERFIL ADMINISTRADOR-->
 						<c:if test="${Usuario == null}">
 							<a href="<%=request.getContextPath()%>/InicioSesion">INICIAR
