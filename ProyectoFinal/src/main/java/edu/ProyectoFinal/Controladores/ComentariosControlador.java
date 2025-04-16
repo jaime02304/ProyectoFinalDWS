@@ -12,15 +12,21 @@ import jakarta.servlet.http.HttpSession;
 public class ComentariosControlador {
 
 	private static final SesionLogger logger = new SesionLogger(ComentariosControlador.class);
-	
+
 	ComentariosServicios servicioComentarios = new ComentariosServicios();
-	
+
 	@GetMapping("/ComentarioPagina")
 	public ModelAndView vistaPaginaPerfil(HttpSession sesionIniciada) {
 		try {
+			if (sesionIniciada == null || sesionIniciada.getAttribute("Usuario") == null) {
+				ModelAndView errorVista = new ModelAndView("error");
+				errorVista.addObject("error",
+						"No se ha detectado un usuario activo. Por favor, inicie sesión antes de continuar.");
+				return errorVista;
+			}
 			logger.info("Cargando la vista de comenatarios");
 			ModelAndView vista = new ModelAndView();
-			vista=servicioComentarios.recogidaDeComentarios(sesionIniciada);
+			vista = servicioComentarios.recogidaDeComentarios(sesionIniciada);
 			vista.setViewName("ComentarioPagina");
 			return vista;
 		} catch (Exception e) {
@@ -31,7 +37,5 @@ public class ComentariosControlador {
 			return vista;
 		}
 	}
-	
-	
-	
+
 }

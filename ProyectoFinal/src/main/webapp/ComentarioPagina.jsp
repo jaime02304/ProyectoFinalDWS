@@ -162,12 +162,13 @@
 						</div>
 					</div>
 					<div class="nuevoComentario">
-						<button class="publicar" id="publicar">Publicar</button>
+						<button class="publicar" id="publicar"
+							onclick="openCreacionComentarioModal(false)">Publicar</button>
 					</div>
 				</div>
 
-				
-					<div class="contenedorComentario">
+
+				<div class="contenedorComentario">
 					<c:forEach var="comentario" items="${listadoComentarios}">
 						<c:choose>
 							<c:when test="${comentario.idUsuario == usuario.idUsu}">
@@ -195,7 +196,7 @@
 						</c:choose>
 					</c:forEach>
 				</div>
-				
+
 			</div>
 		</div>
 		<div class="contenedorPrincipalComentario d-lg-none d-block">
@@ -220,10 +221,11 @@
 							</div>
 						</div>
 
-						<button class="publicar2 d-none d-sm-block">Publicar</button>
+						<button class="publicar2 d-none d-sm-block"
+							onclick="openCreacionComentarioModal(false)">Publicar</button>
 					</div>
 				</div>
-					<div class="contenedorComentario2">
+				<div class="contenedorComentario2">
 					<c:forEach var="comentario" items="${listadoComentarios}">
 						<c:choose>
 							<c:when test="${comentario.idUsuario == usuario.idUsu}">
@@ -251,9 +253,62 @@
 						</c:choose>
 					</c:forEach>
 				</div>
-				
 
-				<button class="publicar3 d-sm-none d-block">Publicar</button>
+
+				<button class="publicar3 d-sm-none d-block"
+					onclick="openCreacionComentarioModal(false)">Publicar</button>
+			</div>
+		</div>
+
+
+		<div id="formularioCreacionComentarioModal" class="modal">
+			<div class="contenidoModal2">
+				<span class="close" onclick="closeCreacionComentarioModal()">&times;</span>
+				<h2 id="modalTituloComentarioNuevo"
+					style="word-wrap: break-word; width: 90%;">Nuevo Comentario</h2>
+				<form id="formularioCreacionComentario"
+					onsubmit="enviarCreacionComentario(event)">
+					<!-- Campo oculto para el ID del usuario, tomado del sessionScope -->
+					<input type="hidden" id="idUsuarioComentario" name="idUsuario"
+						value="${usuario.idUsu}" />
+
+					<div>
+						<label for="contenidoComentarioNuevo">Comentario</label>
+						<textarea id="contenidoComentarioNuevo"
+							name="contenidoComentarioNuevo"
+							placeholder="Escribe tu comentario de bienvenida aquí..."
+							required maxlength="255"></textarea>
+					</div>
+
+					<div>
+						<label for="categoriaComentarioNuevo">Categoría</label> <select
+							id="categoriaComentarioNuevo" name="categoriaComentarioNuevo"
+							onchange="actualizarSubcategoriasCreacionComM()" disabled>
+							<option value="anime">Anime</option>
+							<option value="videojuegos">Videojuegos</option>
+							<option value="auxiliar">Auxiliar</option>
+						</select>
+					</div>
+
+					<div>
+						<label for="subCategoriaComentarioNuevo">Subcategoría</label> <select
+							id="subCategoriaComentarioNuevo"
+							name="subCategoriaComentarioNuevo" disabled>
+							<!-- Las opciones se llenarán dinámicamente con JavaScript -->
+						</select>
+					</div>
+
+					<div>
+						<button type="submit" class="manga-button">Publicar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div id="alertaPersonalizada" class="alerta-personalizada">
+			<div class="alerta-contenido">
+				<p id="alertaMensaje"></p>
+				<button onclick="cerrarAlertaPersonalizada()">Aceptar</button>
 			</div>
 		</div>
 	</main>

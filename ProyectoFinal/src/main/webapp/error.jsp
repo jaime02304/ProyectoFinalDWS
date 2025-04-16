@@ -42,7 +42,6 @@
 				<div class="col elementoDePosicionamiento">
 					<div>
 						<h1>${error}</h1>
-						<h5>Sentimos las molestias ocasionadas por la web</h5>
 					</div>
 					<a href="<%=request.getContextPath()%>/"><button
 							class="botonNavegador agrandar">Volver a la pagina

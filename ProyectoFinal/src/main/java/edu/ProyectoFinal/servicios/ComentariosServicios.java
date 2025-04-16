@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.ProyectoFinal.Dto.ComentariosDTO;
-import edu.ProyectoFinal.Dto.GruposListadoDto;
 import jakarta.servlet.http.HttpSession;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.MediaType;
