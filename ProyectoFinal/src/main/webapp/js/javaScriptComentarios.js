@@ -1,3 +1,9 @@
+document.addEventListener('DOMContentLoaded', () => {
+	// Quitar estado activo por defecto
+	buttons.forEach(btn => btn.classList.remove('active'));
+	subcategorias.forEach(sub => sub.classList.remove('active'));
+});
+
 const buttons = document.querySelectorAll(".categorias button");
 const subcategorias = document.querySelectorAll(".subcategorias");
 
@@ -161,3 +167,114 @@ function enviarCreacionComentario(event) {
 			mostrarAlertaPersonalizada("Ocurrió un error inesperado.");
 		});
 }
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+const subcatsAll = document.querySelectorAll(".subcategorias");
+const comentarios = document.querySelectorAll(".comentario");
+
+let currentCat = null;
+let currentSub = null;
+
+function filterComments() {
+	const todos = document.querySelectorAll(".comentario, .miContenido, .contenidoOtros");
+	todos.forEach(c => {
+		if (!currentCat) {
+			c.style.display = "";
+		} else {
+			const cat = c.dataset.categoria.toLowerCase();
+			const sub = c.dataset.subcategoria.toLowerCase();
+			const okCat = cat === currentCat;
+			const okSub = !currentSub || sub === currentSub;
+			c.style.display = (okCat && okSub) ? "" : "none";
+		}
+	});
+}
+
+// Handler de click en categorías (desktop)
+buttons.forEach(btn => {
+	btn.addEventListener("click", () => {
+		const target = btn.dataset.target;
+		// Si clicas la misma, desactivas todo
+		if (currentCat === target) {
+			currentCat = null;
+			currentSub = null;
+			buttons.forEach(b => b.classList.remove("active"));
+			subcatsAll.forEach(s => s.classList.remove("active"));
+		} else {
+			// Si es nueva categoría, activas solo esa
+			currentCat = target;
+			currentSub = null;
+			buttons.forEach(b => b.classList.toggle("active", b === btn));
+			subcatsAll.forEach(s => s.classList.toggle("active", s.id === target));
+			// además, desactiva cualquier sub-boton activo
+			document.querySelectorAll(`[data-sub].active`).forEach(x => x.classList.remove("active"));
+		}
+		filterComments();
+	});
+});
+
+subcatsAll.forEach(section => {
+	section.addEventListener("click", e => {
+		if (!e.target.matches("button[data-sub]")) return;
+		const sub = e.target.dataset.sub.toLowerCase();
+		if (currentSub === sub) {
+			currentSub = null;
+			e.target.classList.remove("active");
+		} else {
+			currentSub = sub;
+			section.querySelectorAll("button[data-sub]").forEach(b => b.classList.remove("active"));
+			e.target.classList.add("active");
+		}
+		filterComments();
+	});
+});
+
+
+// Cuando cambias categoría en móvil, si vuelves a seleccionar la misma, la desactivas
+categoriaFiltro.addEventListener("change", () => {
+	if (currentCat === categoriaFiltro.value) {
+		categoriaFiltro.value = "";   // forzamos “no selección”
+		currentCat = null;
+	} else {
+		currentCat = categoriaFiltro.value;
+	}
+	// reset sub siempre que cambie categoría
+	currentSub = null;
+	actualizarSubcategoriasFiltro();
+	filtrarMobile();
+});
+
+// Subcategoría móvil
+subcategoriaFiltro.addEventListener("change", () => {
+	if (currentSub === subcategoriaFiltro.value) {
+		subcategoriaFiltro.value = "";
+		currentSub = null;
+	} else {
+		currentSub = subcategoriaFiltro.value;
+	}
+	filtrarMobile();
+});
+
+function filtrarMobile() {
+	const comentarios = document.querySelectorAll(
+		".contenedorComentario2 .miContenido, " +
+		".contenedorComentario2 .contenidoOtros"
+	);
+	comentarios.forEach(c => {
+		if (!currentCat) {
+			c.style.display = "";
+		} else {
+			const cat = c.dataset.categoria;
+			const sub = c.dataset.subcategoria;
+			const okCat = cat === currentCat;
+			const okSub = !currentSub || sub === currentSub;
+			c.style.display = (okCat && okSub) ? "" : "none";
+		}
+	});
+}
+
+// Al cargar la página
+filterComments();
+filtrarMobile();

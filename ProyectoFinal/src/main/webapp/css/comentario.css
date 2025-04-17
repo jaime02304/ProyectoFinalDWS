@@ -178,21 +178,17 @@
 .subcategorias ul {
 	list-style: none;
 	padding: 0;
-	margin: 15px;
 }
 
-.subcategorias li {
-	margin: 5px 0;
-}
-
-.subcategorias a {
+.subcategorias button {
+	border: none;
 	text-decoration: none;
 	color: black;
-	font-size: 26px;
+	font-size: 22px;
 	font-family: "Bangers", sans-serif;
 }
 
-.subcategorias a:hover {
+.subcategorias button:hover, .subcategorias button.active {
 	color: rgb(255, 103, 15);
 }
 

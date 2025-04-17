@@ -122,6 +122,7 @@
 			</div>
 		</nav>
 	</header>
+
 	<c:set var="usuario" value="${sessionScope.Usuario}" />
 	<main class="contenedorMainComentario">
 		<div class="contenedorPrincipalComentario d-none d-lg-block">
@@ -139,25 +140,25 @@
 						<div id="anime" class="subcategorias active">
 							<h4>Subcategorías</h4>
 							<ul>
-								<li><a href="#">Shonen</a></li>
-								<li><a href="#">Isekai</a></li>
-								<li><a href="#">Shojo</a></li>
+								<li><button data-sub="Shonen">Shonen</button></li>
+								<li><button data-sub="Isekai">Isekai</button></li>
+								<li><button data-sub="Shojo">Shojo</button></li>
 							</ul>
 						</div>
 
 						<div id="videojuegos" class="subcategorias">
 							<h4>Subcategorías</h4>
 							<ul>
-								<li><a href="#">Shooters</a></li>
-								<li><a href="#">Aventuras</a></li>
-								<li><a href="#">Deportes</a></li>
+								<li><button data-sub="Shooters">Shooters</button></li>
+								<li><button data-sub="Aventuras">Aventuras</button></li>
+								<li><button data-sub="Deportes">Deportes</button></li>
 							</ul>
 						</div>
 
 						<div id="auxiliar" class="subcategorias">
 							<h4>Subcategorías</h4>
 							<ul>
-								<li><a href="#">Auxiliar</a></li>
+								<li><button data-sub="auxiliar">Auxiliar</button></li>
 							</ul>
 						</div>
 					</div>
@@ -172,7 +173,9 @@
 					<c:forEach var="comentario" items="${listadoComentarios}">
 						<c:choose>
 							<c:when test="${comentario.idUsuario == usuario.idUsu}">
-								<div class="miContenido">
+								<div class="comentario miContenido"
+									data-categoria="${comentario.categoriaTipo}"
+									data-subcategoria="${comentario.subCategoriaTipo}">
 									<div class="autor">${comentario.aliasUsuarioComentario}</div>
 									<div class="contenido">${comentario.comentarioTexto}</div>
 									<div class="tematicaComentario">
@@ -183,7 +186,9 @@
 								</div>
 							</c:when>
 							<c:otherwise>
-								<div class="contenidoOtros">
+								<div class="comentario contenidoOtros"
+									data-categoria="${comentario.categoriaTipo}"
+									data-subcategoria="${comentario.subCategoriaTipo}">
 									<div class="autor">${comentario.aliasUsuarioComentario}</div>
 									<div class="contenido">${comentario.comentarioTexto}</div>
 									<div class="tematicaComentario">
@@ -229,7 +234,9 @@
 					<c:forEach var="comentario" items="${listadoComentarios}">
 						<c:choose>
 							<c:when test="${comentario.idUsuario == usuario.idUsu}">
-								<div class="miContenido">
+								<div class="miContenido"
+									data-categoria="${comentario.categoriaTipo.toLowerCase()}"
+									data-subcategoria="${comentario.subCategoriaTipo.toLowerCase()}">
 									<div class="autor">${comentario.aliasUsuarioComentario}</div>
 									<div class="contenido">${comentario.comentarioTexto}</div>
 									<div class="tematicaComentario">
@@ -240,7 +247,9 @@
 								</div>
 							</c:when>
 							<c:otherwise>
-								<div class="contenidoOtros">
+								<div class="contenidoOtros"
+									data-categoria="${comentario.categoriaTipo.toLowerCase()}"
+									data-subcategoria="${comentario.subCategoriaTipo.toLowerCase()}">
 									<div class="autor">${comentario.aliasUsuarioComentario}</div>
 									<div class="contenido">${comentario.comentarioTexto}</div>
 									<div class="tematicaComentario">
