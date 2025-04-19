@@ -1,3 +1,9 @@
+function cerrarAlertaPersonalizada() {
+	document.getElementById("alertaPersonalizada").style.display = "none";
+}
+
+
+
 // LA PARTE DEL MENU DESPLEGABLE EN MOVIL
 document.addEventListener("DOMContentLoaded", () => {
 	const menuToggle = document.getElementById("menuToggle");

@@ -385,6 +385,14 @@
 				</div>
 			</div>
 		</div>
+		<c:if test="${not empty infoVerificacion}">
+			<div id="alertaPersonalizada" class="alerta-personalizada">
+				<div class="alerta-contenido">
+					<p id="alertaMensaje"> ${infoVerificacion}</p>
+					<button onclick="cerrarAlertaPersonalizada()">Aceptar</button>
+				</div>
+			</div>
+		</c:if>
 	</main>
 
 	<script src="<%=request.getContextPath()%>/js/javaScript.js"></script>

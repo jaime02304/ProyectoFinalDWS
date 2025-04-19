@@ -78,6 +78,8 @@ public class InicioSesionServicio {
 				sesionIniciada.setMaxInactiveInterval(60 * 60 * 24 * 7);
 				vista = servicioGrupos.obtenerLosGruposTops();
 				vista.setViewName("LandinPage");
+				  vista.addObject("infoVerificacion", 
+					        "Registro completado con éxito. Por favor, revisa tu correo electrónico para verificar tu cuenta.");
 			} else {
 				vista.setViewName("error");
 				vista.addObject("error", "Ha habido un error con la web, por favor vuelva en 5 minutos.");
