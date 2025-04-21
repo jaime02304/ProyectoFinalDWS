@@ -93,7 +93,9 @@
 							<div class="social-contenedor">
 								<a href="#" class="social"><i class="fab fa-google"></i></a>
 							</div>
-							<a href="#">¿Has olvidado tu contraseña?</a>
+							<button type="button" class="botonOlvidado"
+								onclick="openRecuperacionModal()">¿Has olvidado tu
+								contraseña?</button>
 						</div>
 						<button type="submit" class="botonNavegador botonIS1">Iniciar
 							Sesion</button>
@@ -139,7 +141,10 @@
 							<div class="social-contenedor">
 								<a href="#" class="social1"><i class="fab fa-google"></i></a>
 							</div>
-							<a href="#" class="olvidoContra">¿Has olvidado tu contraseña?</a>
+							<button type="button" class="olvidoContra"
+								onclick="openRecuperacionModal()">¿Has olvidado tu
+								contraseña?</button>
+							>
 						</div>
 						<div
 							style="display: flex; width: 100%; flex-direction: column; height: 30%; justify-content: space-evenly; align-items: center;">
@@ -186,6 +191,50 @@
 				<button onclick="cerrarAlertaPersonalizada()">Aceptar</button>
 			</div>
 		</div>
+
+		<div id="formularioRecuperacionModal" class="modal-recuperacion">
+			<div class="contenidoModalRecuperacion">
+				<span class="close" onclick="closeRecuperacionModal()">&times;</span>
+				<h2 id="tituloRecuperacion">Recuperar contraseña</h2>
+				<form id="formularioRecuperacionCorreo"
+					onsubmit="enviarRecuperacion(event)">
+					<div>
+						<label for="emailRecuperacion">Introduce tu correo
+							electrónico:</label> <input type="email" id="emailRecuperacion"
+							placeholder="ejemplo@correo.com" required>
+					</div>
+					<div>
+						<button type="submit" class="recuperacion-button">Enviar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div id="formularioCambioModal" class="modal-recuperacion">
+			<div class="contenidoModalRecuperacion">
+				<span class="close" onclick="closeCambioModal()">&times;</span>
+				<h2 id="tituloCambio">Cambiar contraseña</h2>
+				<form id="formularioCambioContrasena"
+					style="background-color: white;"
+					onsubmit="enviarCambioContrasena(event)">
+					<div>
+						<label for="nuevaContrasena">Nueva contraseña:</label> <input
+							type="password" id="nuevaContrasena" required
+							style="border: 2px solid black; border-radius: 10px; color: black; text-align: center;">
+					</div>
+					<div>
+						<label for="confirmarContrasena">Confirmar contraseña:</label> <input
+							type="password" id="confirmarContrasena" required
+							style="border: 2px solid black; border-radius: 10px; color: black; text-align: center;">
+					</div>
+					<input type="hidden" id="tokenRecuperacion" name="token">
+					<div>
+						<button type="submit" class="recuperacion-button">Guardar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
 	</main>
 	<c:set var="mensaje" value="${mensaje}" />
 	<script

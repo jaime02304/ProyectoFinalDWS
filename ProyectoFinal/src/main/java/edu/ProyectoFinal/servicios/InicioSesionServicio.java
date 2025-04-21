@@ -1,5 +1,7 @@
 package edu.ProyectoFinal.servicios;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -78,8 +80,8 @@ public class InicioSesionServicio {
 				sesionIniciada.setMaxInactiveInterval(60 * 60 * 24 * 7);
 				vista = servicioGrupos.obtenerLosGruposTops();
 				vista.setViewName("LandinPage");
-				  vista.addObject("infoVerificacion", 
-					        "Registro completado con éxito. Por favor, revisa tu correo electrónico para verificar tu cuenta.");
+				vista.addObject("infoVerificacion",
+						"Registro completado con éxito. Por favor, revisa tu correo electrónico para verificar tu cuenta.");
 			} else {
 				vista.setViewName("error");
 				vista.addObject("error", "Ha habido un error con la web, por favor vuelva en 5 minutos.");
@@ -146,4 +148,61 @@ public class InicioSesionServicio {
 		return vista;
 	}
 
+	/**
+	 * Metodo que envia el correo electronico hacia la api
+	 * 
+	 * @author jpribio - 21/04/25
+	 * @param correo
+	 * @return
+	 */
+	public boolean enviarCorreoRecuperacion(String correo) {
+		String url = "http://localhost:8081/api/usuario/recuperarContrasena";
+
+		try (Client cliente = ClientBuilder.newClient()) {
+			Map<String, String> datos = new HashMap<>();
+			datos.put("correo", correo);
+			String json = new ObjectMapper().writeValueAsString(datos);
+
+			Response respuesta = cliente.target(url).request(MediaType.APPLICATION_JSON)
+					.post(Entity.entity(json, MediaType.APPLICATION_JSON));
+
+			if (respuesta.getStatus() == Response.Status.OK.getStatusCode()) {
+				return true;
+			} else {
+				System.err.println("Error al recuperar contraseña: Código " + respuesta.getStatus());
+			}
+		} catch (Exception e) {
+			System.err.println("Excepción al recuperar contraseña: " + e.getMessage());
+		}
+
+		return false;
+	}
+
+	/**
+	 * Metodo que manda la nueva contraseña y el token a la api
+	 * 
+	 * @author jpribio - 21/04/25
+	 * @param token
+	 * @param nuevaContrasena
+	 * @return
+	 */
+	public boolean realizarCambioContrasena(String token, String nuevaContrasena) {
+		String url = "http://localhost:8081/api/usuario/cambiarContrasena";
+
+		try (Client cliente = ClientBuilder.newClient()) {
+			Map<String, String> datos = new HashMap<>();
+			datos.put("token", token);
+			datos.put("nuevaContrasena", utilidades.encriptarASHA256(nuevaContrasena));
+
+			String json = new ObjectMapper().writeValueAsString(datos);
+
+			Response respuesta = cliente.target(url).request(MediaType.APPLICATION_JSON)
+					.post(Entity.entity(json, MediaType.APPLICATION_JSON));
+
+			return respuesta.getStatus() == Response.Status.OK.getStatusCode();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

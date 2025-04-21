@@ -165,7 +165,9 @@ input::placeholder {
 @keyframes show { 0%, 49.99% {
 	opacity: 0;
 	z-index: 1;
-}50%,100%
+}
+
+50%,100%
 {
 opacity:1;
 z-index:5;
@@ -453,8 +455,14 @@ z-index:5;
 }
 
 .olvidoContra {
+	background: none;
+	border: none;
 	font-size: 2vb;
 	text-decoration: none;
+	color: skyblue;
+}
+
+.olvidoContra:hover{
 	color: skyblue;
 }
 
@@ -552,5 +560,138 @@ z-index:5;
 	.alerta-contenido button {
 		font-size: 18px;
 		padding: 8px 16px;
+	}
+}
+
+
+.botonOlvidado {
+	background: none;
+	border: none;
+	color: skyblue;
+	text-decoration: underline;
+	padding: 0;
+	font-size: 1rem;
+	cursor: pointer;
+}
+
+.botonOlvidado:hover {
+	color: skyblue;
+}
+
+.recuperacion-button {
+	background: white;
+	color: black;
+	font-family: "Bangers", sans-serif;
+	font-size: 26px;
+	font-weight: bold;
+	padding: 15px 30px;
+	border: 4px solid black;
+	border-radius: 15px;
+	cursor: pointer;
+	text-transform: uppercase;
+	position: relative;
+	width: 150px;
+	margin: 10px;
+	transition: all 0.3s ease-in-out;
+}
+
+.recuperacion-button:hover {
+	background: black;
+	color: white;
+}
+
+.modal-recuperacion {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	overflow-y: auto;
+}
+
+.contenidoModalRecuperacion {
+	background-color: white;
+	border: 6px solid black;
+	padding: 30px;
+	width: 70%;
+	max-width: 600px;
+	text-align: center;
+	font-size: 20px;
+	box-shadow: 12px 12px 0px black;
+	position: relative;
+	transform: rotate(-2deg);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+	.contenidoModalRecuperacion {
+		width: 100%;
+		padding: 20px;
+		font-size: 18px;
+		transform: none;
+	}
+}
+
+.close {
+	color: black;
+	font-size: 30px;
+	font-weight: bold;
+	position: absolute;
+	top: 10px;
+	right: 15px;
+	cursor: pointer;
+	background: white;
+	padding: 6px;
+	border: 4px solid black;
+	box-shadow: 4px 4px 0px black;
+	transform: rotate(5deg);
+	transition: all 0.3s;
+}
+
+.close:hover {
+	background: red;
+	color: white;
+}
+
+#formularioRecuperacionCorreo {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	align-items: center;
+	background: transparent;
+}
+
+#formularioRecuperacionCorreo label {
+	font-size: 22px;
+	text-align: center;
+}
+
+#formularioRecuperacionCorreo input {
+	padding: 10px;
+	border: 3px solid black;
+	font-size: 18px;
+	text-align: center;
+	width: 100%;
+	color: black;
+	max-width: 400px;
+}
+
+@media (max-width: 600px) {
+	#formularioRecuperacionCorreo label {
+		font-size: 18px;
+	}
+	#formularioRecuperacionCorreo input {
+		font-size: 16px;
+		padding: 8px;
 	}
 }
